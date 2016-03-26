@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +23,7 @@
 			</div>
 			<!-- TODO disabled="disabled" -->
 			<label for="status"> Sipariş Durumu: </label> <select name="status"
-				 id="status" ng-model="data.selectedOption">
+				id="status" ng-model="data.selectedOption">
 				<!-- 				default data vermek için ng-module kullan -->
 				<option ng-repeat="option in data" value="{{option.key}}">{{option.value}}</option>
 			</select>
@@ -33,6 +33,8 @@
 					class="btn btn-primary">Teslim Et</button>
 			</div>
 		</form>
+
+		<button type="submit" ng-click="asdad">Dummy</button>
 	</div>
 
 
