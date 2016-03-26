@@ -24,4 +24,12 @@ public class PairModel {
 		this.key=value;
 		this.value=value;
 	}
+	
+	@Override
+	public String toString(){
+		StringBuilder sb = new StringBuilder("PairModel: key: ");
+		sb.append(this.key);
+		sb.append(" value: " +this.value);
+		return sb.toString();
+	}
 }

@@ -30,7 +30,7 @@ public class AuthController {
 	 */
 	@RequestMapping(value = "/siparis", method = RequestMethod.GET)
 	  public String siparis() {
-	    return "siparis";
+	    return "teslimat";
 	  }
 	
 	/**

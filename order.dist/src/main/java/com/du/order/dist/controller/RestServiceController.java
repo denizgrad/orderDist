@@ -5,12 +5,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.hibernate.validator.internal.util.privilegedactions.GetClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.du.order.dist.interfaces.NamedEnum;
+import com.du.order.dist.model.Order;
 import com.du.order.dist.model.util.PairModel;
 
 
@@ -27,7 +28,7 @@ import com.du.order.dist.model.util.PairModel;
 public class RestServiceController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-    private static String comboPackagePrefix = "com.cu.order.dist.model.util.combo.";
+    private static String comboPackagePrefix = "com.du.order.dist.model.util.combo.";
     
     @Resource
     private Environment env;
@@ -35,15 +36,15 @@ public class RestServiceController {
     @SuppressWarnings("unchecked")
 	@ResponseBody
     @RequestMapping(
-              value = "/statusCombo"
-            , consumes = "application/json"
+              value = "/fillCombo/{comboName}"
+//            , consumes = "application/json"
             , produces = "application/json"
             , method = RequestMethod.POST)
-    public ResponseEntity<List<PairModel>> test(@RequestBody String comboName) {
+    public ResponseEntity<List<PairModel>> test(@PathVariable("comboName") String umut) {
     	Class<? extends Enum<?>> comboEnum = null;
     	List<PairModel> retList = new ArrayList<>();
     	try {
-			comboEnum = (Class<? extends Enum<?>>) Class.forName(comboPackagePrefix+comboName);
+			comboEnum = (Class<? extends Enum<?>>) Class.forName(comboPackagePrefix+umut);
 		} catch (ClassNotFoundException e) {
 			logger.error("Requested Combo class not found!");
 		}
@@ -54,6 +55,19 @@ public class RestServiceController {
 		}
     	return new ResponseEntity<>(retList , HttpStatus.OK);
     }
+    
+    @SuppressWarnings("unchecked")
+   	@ResponseBody
+       @RequestMapping(
+                 value = "/yarat"
+               , consumes = "application/json"
+               , produces = "application/json"
+               , method = RequestMethod.POST)
+       public ResponseEntity<List<PairModel>> create(@RequestBody PairModel pairModel) {
+       	
+    	System.out.println(pairModel.toString());
+    	return new ResponseEntity<>(null , HttpStatus.OK);
+       }
 //    public ResponseEntity<BaseVo> sendShipment(@RequestBody Shipment shipment,
 //                                               @RequestHeader(value="Authorization") String authorization) {
 //

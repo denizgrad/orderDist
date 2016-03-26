@@ -13,7 +13,7 @@ angular.module("teslimatModule", []).controller("tes", function($scope, $http) {
 	
 	function getStatus() {
 		debugger;
-		$http.post('myFancyServiceCall.js', {"comboName" : "OrderStatus"}).success(function(response) {
+		$http.post('siparis/islem/fillCombo/OrderStatus').success(function(response) {
 			debugger;
 //			if (response.success) {
 //				alert(success);

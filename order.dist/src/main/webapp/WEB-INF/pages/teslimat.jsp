@@ -1,9 +1,11 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
 
-<script src="js/angular/angular.min.js"></script>
-<script src="teslimat.controller.js"></script>
+<script src="js/lib/angular/angular.min.js"></script>
+<script src="js/app/controllers/teslimat.controller.js"></script>
 
 
 <meta charset="UTF-8">
@@ -23,7 +25,7 @@
 			<label for="status"> Sipariş Durumu: </label> <select name="status"
 				 id="status" ng-model="data.selectedOption">
 				<!-- 				default data vermek için ng-module kullan -->
-				<option ng-repeat="option in data.status" value="{{option.id}}">{{option.name}}</option>
+				<option ng-repeat="option in data" value="{{option.key}}">{{option.value}}</option>
 			</select>
 
 			<div class="form-actions">
