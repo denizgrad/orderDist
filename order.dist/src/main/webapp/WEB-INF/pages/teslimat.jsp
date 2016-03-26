@@ -34,7 +34,7 @@
 			</div>
 		</form>
 
-		<button type="submit" ng-click="asdad">Dummy</button>
+		<button type="submit" ng-click="asdad()">Dummy</button>
 	</div>
 
 
