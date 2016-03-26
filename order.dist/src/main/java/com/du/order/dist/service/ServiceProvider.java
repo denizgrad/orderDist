@@ -28,4 +28,14 @@ public class ServiceProvider implements ApplicationContextAware {
         }
 
     }
+
+    private static String currentUserName;
+
+	public static String getCurrentUserName() {
+		return currentUserName;
+	}
+
+	public static void setCurrentUserName(String currentUserName) {
+		ServiceProvider.currentUserName = currentUserName;
+	}
 }

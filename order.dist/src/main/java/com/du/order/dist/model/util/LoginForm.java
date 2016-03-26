@@ -1,4 +1,4 @@
-package com.du.order.dist.model;
+package com.du.order.dist.model.util;
 
 public class LoginForm {
 	private String username;

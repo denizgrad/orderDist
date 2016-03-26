@@ -8,7 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.du.order.dist.model.LoginForm;
+import com.du.order.dist.model.util.LoginForm;
+import com.du.order.dist.service.ServiceProvider;
 
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 	Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
@@ -23,13 +24,15 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		    !request.getRequestURI().equals("/login.failed"))
 		  {
 			  LoginForm userData = (LoginForm) request.getSession().getAttribute("LOGGEDIN_USER");
-		   if(userData == null)
-		   {
+			 
+		   if(userData == null)		   {
 		    response.sendRedirect("/");
 		    return false;
-		   }   
-		  }
-		  return true;
+		   } else {
+			   ServiceProvider.setCurrentUserName(userData.getUsername());
+		   }
+	  }
+	  return true;
 	}
 	
 	@Override

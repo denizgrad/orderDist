@@ -15,7 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.du.order.dist.model.LoginForm;
+import com.du.order.dist.model.util.LoginForm;
 
 @Controller
 public class AuthController {
