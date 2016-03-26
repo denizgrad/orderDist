@@ -3,15 +3,14 @@ package com.du.order.dist.interceptors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class LoggerInterceptor extends HandlerInterceptorAdapter {
 
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
-
-
+    private Logger logger = LoggerFactory.getLogger(getClass());
     //TODO timestampi normal saat yap
     @Override
     public boolean preHandle(HttpServletRequest request,

@@ -25,9 +25,6 @@ public class Initializer implements WebApplicationInitializer {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-//    private static final String CONFIG_LOCATION = "com.softnec.config";
-    private static final String MAPPING_URL = "/*";
-
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
 
@@ -42,6 +39,7 @@ public class Initializer implements WebApplicationInitializer {
         servletContext.addListener(new ContextLoaderListener(rootContext));
         servletContext.setInitParameter("defaultHtmlEscape", "true");
         servletContext.setInitParameter("encoding", "UTF-8");
+        servletContext.setInitParameter("log4j-config-location", "WEB-INF/log4j.properties");
 
         FilterRegistration.Dynamic fr = servletContext.addFilter("encodingFilter",new CharacterEncodingFilter());
         fr.setInitParameter("encoding", "UTF-8");

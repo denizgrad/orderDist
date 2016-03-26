@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.hibernate.ejb.HibernatePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,17 +19,19 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.du.order.dist.interceptors.AuthenticationInterceptor;
 import com.du.order.dist.interceptors.LoggerInterceptor;
-import com.softnec.interceptors.RestServiceInterceptor;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = "com.du.order.dist")
+@ComponentScan(basePackages = {"com.du.order.dist.service" , "com.du.order.dist.controller"})
 @EnableTransactionManagement
 @EnableJpaRepositories("com.du.order.dist.repository")
 public class WebMvcConfig extends WebMvcConfigurerAdapter{
@@ -36,10 +39,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 	@Autowired
 	Environment env;
 	
+	@Value("${project.env:dev}")
+	String projectEnv;
+	
     @Bean(name = "messageSource")
     public ResourceBundleMessageSource getMessageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename(env.getRequiredProperty("message.source.basename"));
+        messageSource.setBasename( projectEnv + "/app_messages.properties");//TODO deniz
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
@@ -61,34 +67,50 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistence.class);
-        entityManagerFactoryBean.setPackagesToScan(env.getRequiredProperty("com.du.order.dist.model"));
+        entityManagerFactoryBean.setPackagesToScan("com.du.order.dist.model");
         entityManagerFactoryBean.setJpaProperties(hibProperties());
 
         return entityManagerFactoryBean;
     }
 
     @Bean
-    public JavaMailSender javaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        Properties mailProperties = new Properties();
-        mailProperties.put("mail.smtp.auth", env.getProperty("mail.smtp.auth"));
-        mailProperties.put("mail.smtp.starttls.enable", env.getProperty("mail.smtp.starttls"));
-        mailProperties.put("mail.smtp.starttls.required", env.getProperty("mail.smtp.starttls"));
-        //mailProperties.put("mail.smtps.ssl.checkserveridentity", "true");
-        //mailProperties.put("mail.smtps.ssl.trust", "*");
-        //mailProperties.setProperty("mail.debug", "true");
-        mailSender.setJavaMailProperties(mailProperties);
-        mailSender.setHost(env.getProperty("mail.host"));
-        mailSender.setPort(Integer.parseInt(env.getProperty("mail.port")));
-        mailSender.setProtocol(env.getProperty("mail.protocol"));
-        mailSender.setUsername(env.getProperty("mail.username"));
-        mailSender.setPassword(env.getProperty("mail.password"));
-        return mailSender;
+    public ViewResolver getViewResolver() {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/WEB-INF/pages/");
+        viewResolver.setSuffix(".jsp");
+        return viewResolver;
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/css/**").addResourceLocations("/css/");
+        registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+        registry.addResourceHandler("/images/**").addResourceLocations("/images/");
+        registry.addResourceHandler("/jquery-ui-1.9.2/**").addResourceLocations("/jquery-ui-1.9.2/");
+    }
+
+//    @Bean
+//    public JavaMailSender javaMailSender() {
+//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+//        Properties mailProperties = new Properties();
+//        mailProperties.put("mail.smtp.auth", env.getProperty("mail.smtp.auth"));
+//        mailProperties.put("mail.smtp.starttls.enable", env.getProperty("mail.smtp.starttls"));
+//        mailProperties.put("mail.smtp.starttls.required", env.getProperty("mail.smtp.starttls"));
+//        //mailProperties.put("mail.smtps.ssl.checkserveridentity", "true");
+//        //mailProperties.put("mail.smtps.ssl.trust", "*");
+//        //mailProperties.setProperty("mail.debug", "true");
+//        mailSender.setJavaMailProperties(mailProperties);
+//        mailSender.setHost(env.getProperty("mail.host"));
+//        mailSender.setPort(Integer.parseInt(env.getProperty("mail.port")));
+//        mailSender.setProtocol(env.getProperty("mail.protocol"));
+//        mailSender.setUsername(env.getProperty("mail.username"));
+//        mailSender.setPassword(env.getProperty("mail.password"));
+//        return mailSender;
+//    }
 
     private Properties hibProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect"  , env.getRequiredProperty("hibernate.dialec"));
+        properties.put("hibernate.dialect"  , env.getRequiredProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql" , env.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.hbm2ddl.auto" , env.getRequiredProperty("hibernate.hbm2ddl.auto"));
         properties.put("hibernate.connection.CharSet" , env.getRequiredProperty("hibernate.connection.CharSet"));
