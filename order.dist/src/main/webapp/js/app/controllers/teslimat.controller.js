@@ -30,12 +30,12 @@ angular.module("teslimatModule", []).controller(
 			;
 			$scope.asdad = function asdad() {
 
-				$http.post('siparis/islem/yarat', {
-					"data" : {
+				$http.post('siparis/islem/yarat', 
+					{
 						"key" : "asd",
 						"value" : "asd"
 					}
-				}).success(function(response) {
+				).success(function(response) {
 					debugger;
 
 				});

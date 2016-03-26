@@ -16,6 +16,9 @@ public class PairModel {
 		this.value = value;
 	}
 	
+	
+	public PairModel() {
+	}
 	public PairModel(String key, String value){
 		this.key=key;
 		this.value=value;
