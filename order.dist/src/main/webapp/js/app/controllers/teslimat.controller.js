@@ -1,48 +1,86 @@
-angular.module("teslimatModule", []).controller(
-		"tes",
-		function($scope, $http) {
-			debugger;
-			// TODO servis olarak server a taşı
-			// $scope.data = {// ilk olarak seçili gelmesi için
-			// selectedOption : "6",
-			// status : [ {
-			// id : '6',
-			// name : 'Teslim edildi'
-			// } ]
-			// };
-			var status = {};
-			getStatus();
+angular
+		.module("teslimatModule", [ "ngTable" ])
+		.controller(
+				"teslimatCtrl",
+				function($scope, $http, NgTableParams) {
 
-			function getStatus() {
-				debugger;
-				$http.post('siparis/islem/fillCombo/OrderStatus').success(
-						function(response) {
-							debugger;
-							// if (response.success) {
-							// alert(success);
-							// } else {
-							// alert("hatalar hatalar");
-							// }
-							$scope.data = response;
-						});
-
-			}
-			;
-			$scope.asdad = function asdad() {
-
-				$http.post('siparis/islem/yarat', 
-					{
-						"key" : "asd",
-						"value" : "asd"
-					}
-				).success(function(response) {
+					var barcodeLength = 10;
+					$scope.barLen = barcodeLength;
 					debugger;
 
-				});
-			}
-			$scope.teslimEdildi = function teslimEdildi(barkod, statu) {
-				debugger;
-				alert("barkod:" + barkod + "statu:" + statu);
-			};
+					getTeslimatStatus();
 
-		});
+					function getTeslimatStatus() {
+						debugger;
+						// TODO service name ve post
+						$http
+								.get('js/app/services/getTeslimatStatus.js')
+								.success(
+										function(response) {
+											debugger;
+											$scope.statusData = response;
+											$scope.statusData.selectedOption = response[0].value;
+
+										}).error(function(error) {
+									debugger;
+
+								})
+					}
+
+					$scope.teslimEt = function teslimEdildi(form) {
+
+						if (form.$valid) {
+							$http
+									.get('js/app/services/getTeslimatStatus.js')
+									.success(
+											function(response) {
+												debugger;
+												$scope.statusData = response;
+												$scope.statusData.selectedOption = response[0].value;
+
+											}).error(function(error) {
+										debugger;
+
+									});
+							debugger;
+							alert("barkod:" + form.barkod + "statu:"
+									+ form.status);
+						} else {
+							console.log("hatalar hatalar..");
+						}
+
+					}
+					$scope.getSiparisDetay = function getSiparisDetay(form) {
+						debugger;
+						if (form.$valid) {
+							$http
+									.get('js/app/services/getSiparis.js')
+									.success(
+											function(response) {
+												debugger;
+												$scope.siparisAdres = response.adres;
+												$scope.siparisToplamTutar = response.toplamTutar;
+												$scope.siparisDetay = response.siparisDetay;
+
+												$scope.siparisDetayTable = new NgTableParams(
+														{
+														},
+														{
+															total : response.siparisDetay.length,
+															getData : function(
+																	$defer,
+																	params) {
+																debugger;
+																return $defer
+																		.resolve($scope.siparisDetay);
+															}
+														});
+											}).error(function(error) {
+										debugger;
+
+									});
+						}
+
+					}
+
+				});
