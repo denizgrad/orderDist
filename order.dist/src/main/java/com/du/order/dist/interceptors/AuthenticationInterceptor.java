@@ -21,7 +21,8 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		// Avoid a redirect loop for some urls
 		if( !request.getRequestURI().equals("/") &&
 		    !request.getRequestURI().equals("/login") &&
-		    !request.getRequestURI().equals("/login.failed"))
+		    !request.getRequestURI().equals("/login.failed") &&
+			!request.getRequestURI().equals("/logout.do"))
 		  {
 			  LoginForm userData = (LoginForm) request.getSession().getAttribute("LOGGEDIN_USER");
 			 
@@ -31,6 +32,11 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		   } else {
 			   ServiceProvider.setCurrentUserName(userData.getUsername());
 		   }
+	  } else if (request.getRequestURI().equals("/logout.do")){
+		  logger.info("User logging out: "+ServiceProvider.getCurrentUserName() );
+		  request.getSession().removeAttribute("LOGGEDIN_USER");
+		  ServiceProvider.setCurrentUserName(null);
+		  response.sendRedirect("/");
 	  }
 	  return true;
 	}
