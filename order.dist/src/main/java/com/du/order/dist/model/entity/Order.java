@@ -1,13 +1,19 @@
-package com.du.order.dist.model;
+package com.du.order.dist.model.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 import com.du.order.dist.model.base.BaseModel;
 import com.du.order.dist.model.util.combo.OrderStatus;
-
+@Entity
+@Table(name="DU_ORDER")
 public class Order extends BaseModel{
 
+	@Enumerated
 	private OrderStatus status = OrderStatus.SIPARIS_OLUSTURULDU;
+	
 	private String  barcodeNumber;
-
     private String  receiverName;
     private String  receiverAddress;
     private String  receiverCityName;

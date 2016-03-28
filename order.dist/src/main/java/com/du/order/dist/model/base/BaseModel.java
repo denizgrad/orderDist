@@ -2,14 +2,19 @@ package com.du.order.dist.model.base;
 
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @MappedSuperclass
 public class BaseModel {
 	private Date lastUpdated;
 	private Date created;
 	@Id
+	 @GeneratedValue(generator="system-uuid")
+	@GenericGenerator(name="system-uuid", strategy = "uuid")
 	private String oid;
 	
 	public Date getLastUpdated() {
