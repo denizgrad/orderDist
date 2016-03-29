@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.du.order.dist.interfaces.NamedEnum;
-import com.du.order.dist.model.Order;
+import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.util.PairModel;
 
 
