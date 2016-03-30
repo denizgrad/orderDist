@@ -58,17 +58,18 @@ tesApp.controller("teslimatCtrl", function($scope, $http, NgTableParams) {
 
 						$scope.siparisDetayTable = new NgTableParams({}, {
 							total : response.siparisDetay.length,
+							group : "urunKodu",
 							getData : function($defer, params) {
 								debugger;
 								return $defer.resolve($scope.siparisDetay);
 							}
 						});
+						
 					}).error(function(error) {
 				debugger;
 
 			});
 		}
-
 	}
 
 });

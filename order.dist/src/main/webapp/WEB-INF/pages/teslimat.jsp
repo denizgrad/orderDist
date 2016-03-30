@@ -63,6 +63,11 @@
 			<div class="tutar">Toplam Tutar: {{siparisToplamTutar}}</div>
 			<div class="detayTable">
 				<table ng-table="siparisDetayTable" class="table table-bordered table-striped">
+				        <colgroup>
+				          <col width="60%" />
+				          <col width="20%" />
+				          <col width="20%" />
+				        </colgroup>
 					<tr ng-repeat="detay in siparisDetay">
 						<td title="'Ürün Kodu'">{{detay.urunKodu}}</td>
 						<td title="'Miktar'">{{detay.miktar}}</td>
@@ -72,6 +77,6 @@
 			</div>
 		</div>
 	</div>
-
+		
 </body>
 </html>
