@@ -27,6 +27,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.du.order.dist.interceptors.AuthenticationInterceptor;
 import com.du.order.dist.interceptors.LoggerInterceptor;
+import com.du.order.dist.interfaces.IMessageSource;
+import com.du.order.dist.service.ResourceMessage;
 
 @EnableWebMvc
 @Configuration
@@ -49,6 +51,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
+    }
+    
+    @Bean
+    public IMessageSource resourceMessage(){
+    	return new ResourceMessage();
     }
     
     @Bean
@@ -128,6 +135,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/sf/**");
+        registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/**");
     }
 }

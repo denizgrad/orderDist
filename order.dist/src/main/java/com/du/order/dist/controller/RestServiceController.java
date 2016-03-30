@@ -3,10 +3,10 @@ package com.du.order.dist.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,21 +17,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.du.order.dist.interfaces.IMessageSource;
+import com.du.order.dist.interfaces.IOrderService;
+import com.du.order.dist.interfaces.ITransformer;
 import com.du.order.dist.interfaces.NamedEnum;
 import com.du.order.dist.model.entity.Order;
+import com.du.order.dist.model.util.AuthenticationError;
 import com.du.order.dist.model.util.PairModel;
+import com.du.order.dist.model.util.Response;
+import com.du.order.dist.model.util.transfer.CreateSiparisIn;
+import com.du.order.dist.model.util.transfer.UpdateSiparisIn;
 
 
 
 @RestController
-@RequestMapping("/siparis/islem")
+@RequestMapping("/v1/siparis/islem")
 public class RestServiceController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     private static String comboPackagePrefix = "com.du.order.dist.model.util.combo.";
     
-    @Resource
+    @Autowired
     private Environment env;
+    
+    @Autowired
+    private IMessageSource resourceMessage;
+    
+    @Autowired
+    private ITransformer transformer;
+    
+    @Autowired
+    private IOrderService orderService;
 
     @SuppressWarnings("unchecked")
 	@ResponseBody
@@ -56,16 +72,58 @@ public class RestServiceController {
     	return new ResponseEntity<>(retList , HttpStatus.OK);
     }
     
+    
+    
     @SuppressWarnings("unchecked")
    	@ResponseBody
        @RequestMapping(
-                 value = "/yarat"
+                 value = "/createSiparis"
                , consumes = "application/json"
                , produces = "application/json"
                , method = RequestMethod.POST)
-       public ResponseEntity<List<PairModel>> create(@RequestBody PairModel pairModel) {
+       public ResponseEntity<Response> create(@RequestBody CreateSiparisIn objectIn) {
+    	
+    	Response resp = new Response(true,HttpStatus.OK.value(), resourceMessage.getMessage("service.success"));
+    	
+        try {
+        	checkValidity(objectIn);
+        	Order order = transformer.transform(objectIn);
+        	orderService.create(order);
+        }
+        catch (AuthenticationError ex){
+        	resp = new Response(false, HttpStatus.OK.value(),resourceMessage.getMessage("autentication.exception"));
+            logger.error(ex.getMessage());
+            return new ResponseEntity<>(resp,HttpStatus.OK);
+        }
+        catch (Exception ex){
+        	resp = new Response(false, HttpStatus.OK.value(),resourceMessage.getMessage("service.exception"));
+            logger.error(ex.getMessage());
+            return new ResponseEntity<>(resp,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(resp,HttpStatus.OK);
+       }
+    
+    private void checkValidity(CreateSiparisIn objectIn) throws AuthenticationError {
+    	logger.info(String.format("Incomig sfUsername :%s and password: %s", objectIn.getUserName(), objectIn.getPassword()));
+    	String sfUserName = env.getRequiredProperty("sf.userName");
+    	String sfpassword = env.getRequiredProperty("sf.password");
+    	if((sfpassword.equals(objectIn.getPassword()) || sfUserName.equals(objectIn.getUserName()))){
+    		throw new AuthenticationError();
+    	}
+    	
+	}
+
+
+
+	@SuppressWarnings("unchecked")
+   	@ResponseBody
+       @RequestMapping(
+                 value = "/updateSiparis"
+               , consumes = "application/json"
+               , produces = "application/json"
+               , method = RequestMethod.POST)
+       public ResponseEntity<Response> update(@RequestBody UpdateSiparisIn objectIn) {
        	
-    	System.out.println(pairModel.toString());
     	return new ResponseEntity<>(null , HttpStatus.OK);
        }
 //    public ResponseEntity<BaseVo> sendShipment(@RequestBody Shipment shipment,
