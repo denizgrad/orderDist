@@ -22,7 +22,9 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		if( !request.getRequestURI().equals("/") &&
 		    !request.getRequestURI().equals("/login") &&
 		    !request.getRequestURI().equals("/login.failed") &&
-			!request.getRequestURI().equals("/logout.do"))
+			!request.getRequestURI().equals("/logout.do") &&
+			!request.getRequestURI().equals("/createSiparis") &&
+			!request.getRequestURI().equals("/updateSiparis"))
 		  {
 			  LoginForm userData = (LoginForm) request.getSession().getAttribute("LOGGEDIN_USER");
 			 

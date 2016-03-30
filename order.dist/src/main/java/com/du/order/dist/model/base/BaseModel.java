@@ -12,11 +12,18 @@ import org.hibernate.annotations.GenericGenerator;
 public class BaseModel {
 	private Date lastUpdated;
 	private Date created;
+	private String remoteId;
 	@Id
-	 @GeneratedValue(generator="system-uuid")
+	@GeneratedValue(generator="system-uuid")
 	@GenericGenerator(name="system-uuid", strategy = "uuid")
 	private String oid;
 	
+	public String getRemoteId() {
+		return remoteId;
+	}
+	public void setRemoteId(String remoteId) {
+		this.remoteId = remoteId;
+	}
 	public Date getLastUpdated() {
 		return lastUpdated;
 	}
