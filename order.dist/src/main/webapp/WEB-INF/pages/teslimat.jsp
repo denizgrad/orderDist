@@ -5,12 +5,14 @@
 <head>
 
 <script src="js/lib/angular/angular.min.js"></script>
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script src="js/lib/bootstrap/bootstrap.min.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/ng-table.min.css">
 <script src="js/lib/angular/ng-table.min.js"></script>
 <script src="js/app/controllers/teslimat.controller.js"></script>
 
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>Sipariş Teslim Et</title>
 </head>
 <body ng-app="teslimatModule">
 
@@ -43,8 +45,8 @@
 
 			</div>
 			<!-- TODO disabled="disabled" -->
-			<label for="status"> Sipariş Durumu: </label> <select name="status"
-				id="status" ng-model="statusData.selectedOption" ng-disabled="true">
+			<label for="status"> Sipariş Durumu: </label>
+			 <select name="status" id="status" ng-model="statusData.selectedOption" ng-disabled="true">
 				<option ng-repeat="option in statusData" value="{{option.value}}">{{option.key}}</option>
 			</select>
 
@@ -60,10 +62,10 @@
 			<div class="adres">adres : {{siparisAdres}}</div>
 			<div class="tutar">Toplam Tutar: {{siparisToplamTutar}}</div>
 			<div class="detayTable">
-				<table ng-table="siparisDetayTable"
-					class="table table-bordered table-striped">
+				<table ng-table="siparisDetayTable" class="table table-bordered table-striped">
 					<tr ng-repeat="detay in siparisDetay">
 						<td title="'Ürün Kodu'">{{detay.urunKodu}}</td>
+						<td title="'Miktar'">{{detay.miktar}}</td>
 						<td title="'Tutar'">{{detay.birimTutar}}</td>
 					</tr>
 				</table>

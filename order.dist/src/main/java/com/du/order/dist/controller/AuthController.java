@@ -30,9 +30,13 @@ public class AuthController {
 	 */
 	@RequestMapping(value = "/siparis", method = RequestMethod.GET)
 	  public String siparis() {
-	    return "teslimat";
+	    return "siparis";
 	  }
 	
+	@RequestMapping(value = "/teslimat", method = RequestMethod.GET)
+	  public String teslimat() {
+	    return "teslimat";
+	  }
 	/**
 	 * Simply selects the login view to render by returning its name.
 	 */
