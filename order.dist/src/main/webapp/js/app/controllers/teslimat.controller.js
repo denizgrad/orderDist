@@ -1,6 +1,6 @@
-var tesApp = angular.module("teslimatModule", [ "ngTable" ]);
+var tesApp = angular.module("teslimatModule", [ "ui.grid" ]);
 
-tesApp.controller("teslimatCtrl", function($scope, $http, NgTableParams) {
+tesApp.controller("teslimatCtrl", function($scope, $http) {
 
 	var barcodeLength = 10;
 	$scope.barLen = barcodeLength;
@@ -46,7 +46,24 @@ tesApp.controller("teslimatCtrl", function($scope, $http, NgTableParams) {
 		}
 
 	}
-	$scope.getSiparisDetay = function getSiparisDetay(form) {
+	$scope.gridOptions = {
+			//enableSorting: true,
+			enableGridMenu: true,
+		    columnDefs: [
+		                 { field: 'oid', displayName: "Oid", visible: false},
+		                 { field: 'siparisOid', displayName: "siparisOid", visible: false},
+		                 { field: 'siparisKalemAdi', displayName: "Ürün Adi", visible: true},
+		                 { field: 'adet', displayName: "Miktar", visible: true},
+		                 { field: 'birimFiyat', displayName: "Birim Fiyat", visible: true},
+		                 { field: 'araToplam', displayName: "Ara Toplam", visible: true},
+		                 { field: 'indirim', displayName: "İndirim", visible: true},
+		                 { field: 'kalemFiyat', displayName: "Ürün Fiyatı", visible: true}
+		    ], 
+		    data : []
+		    
+	}
+	
+	$scope.getSiparis = function getSiparis(form) {
 		debugger;
 		if (form.$valid) {
 			$http.get('js/app/services/getSiparis.json').success(
@@ -54,16 +71,27 @@ tesApp.controller("teslimatCtrl", function($scope, $http, NgTableParams) {
 						debugger;
 						$scope.siparisAdres = response.adres;
 						$scope.siparisToplamTutar = response.toplamTutar;
-						$scope.siparisDetay = response.siparisDetay;
-
-						$scope.siparisDetayTable = new NgTableParams({}, {
-							total : response.siparisDetay.length,
-							group : "urunKodu",
-							getData : function($defer, params) {
-								debugger;
-								return $defer.resolve($scope.siparisDetay);
-							}
-						});
+						
+						
+						$scope.oid = response.oid;
+						$scope.siparisVerenFirma = response.siparisVerenFirma;
+						$scope.siparisVerenKisi = response.siparisVerenKisi;
+						$scope.tedarikEdenFirma = response.tedarikEdenFirma;
+						$scope.tedarikEdenKisi = response.tedarikEdenKisi;
+						$scope.siparisTarihi = response.siparisTarihi;
+						$scope.teslimTarihi = response.teslimTarihi;
+						$scope.araToplam = response.araToplam;
+						$scope.kdv = response.kdv;
+						$scope.indirim = response.indirim;
+						$scope.genelToplam = response.genelToplam;
+						$scope.adres = response.adres;
+						$scope.siparisAciklama = response.siparisAciklama;
+						$scope.adresAciklama = response.adresAciklama;
+						$scope.talepEdilenTeslimTarihi = response.talepEdilenTeslimTarihi;
+						$scope.siparisDurumu = response.siparisDurumu;
+						
+						
+						$scope.gridOptions.data = response.siparisDetay;
 						
 					}).error(function(error) {
 				debugger;

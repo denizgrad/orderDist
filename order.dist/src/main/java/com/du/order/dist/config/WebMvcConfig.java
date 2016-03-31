@@ -135,6 +135,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/sf/**");
     }
 }

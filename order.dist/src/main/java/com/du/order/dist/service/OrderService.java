@@ -2,10 +2,13 @@ package com.du.order.dist.service;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Component;
+
 import com.du.order.dist.interfaces.IOrderService;
 import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.repository.OrderRepository;
 
+@Component
 public class OrderService implements IOrderService{
 	@Resource
 	OrderRepository repo;

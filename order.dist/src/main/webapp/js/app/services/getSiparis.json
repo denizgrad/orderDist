@@ -1,4 +1,63 @@
-{"siparisOid":"123456789", "adres":"someAdress goes here","toplamTutar":"100.00", "status" : "1", "siparisDetay":[
-	{"urunKodu":"11111","miktar":"1","birimTutar":"50.00"},
-	{"urunKodu":"22222","miktar":"1","birimTutar":"50.00"}
-]}
+{
+    "oid": "56fd4fab77049a7d64c4f325",
+    "siparisVerenFirma": "GENMY",
+    "siparisVerenKisi": "Francis Bird",
+    "tedarikEdenFirma": "COMCUR",
+    "tedarikEdenKisi": "Lora Bowman",
+    "siparisTarihi": "Monday, July 28, 2014 5:37 AM",
+    "teslimTarihi": "Thursday, June 26, 2014 4:49 AM",
+    "araToplam": "$2,694.23",
+    "kdv": 18,
+    "indirim": "$1,191.69",
+    "genelToplam": "$1,314.94",
+    "adres": "330 Fulton Street, Taycheedah, Kentucky, 4465",
+    "siparisAciklama": "qui",
+    "adresAciklama": "magna",
+    "talepEdilenTeslimTarihi": "Thursday, June 18, 2015 10:10 AM",
+    "siparisDurumu": 5,
+    "siparisDetay" : [
+  {
+    "oid": "56fd5132deed11af51d6c0c2",
+    "siparisOid": "56fd5132287ba8d6c40ef02d",
+    "siparisKalemAdi": "Shawna Day",
+    "urun": "undefined",
+    "adet": "2",
+    "birimFiyat": "$1,555.30",
+    "araToplam": "$3,601.06",
+    "indirim": "$2,545.85",
+    "kalemFiyat": "$3,360.44"
+  },
+  {
+    "oid": "56fd5132c14275514dd600c6",
+    "siparisOid": "56fd5132fccd2a0bea5844eb",
+    "siparisKalemAdi": "Mallory Sharp",
+    "urun": "undefined",
+    "adet": "2",
+    "birimFiyat": "$1,047.61",
+    "araToplam": "$1,227.32",
+    "indirim": "$2,721.98",
+    "kalemFiyat": "$2,232.04"
+  },
+  {
+    "oid": "56fd513249eaaf46b42b1b30",
+    "siparisOid": "56fd513213cdb2204c77e09c",
+    "siparisKalemAdi": "Chaney Hansen",
+    "urun": "undefined",
+    "adet": "2",
+    "birimFiyat": "$1,087.09",
+    "araToplam": "$3,568.05",
+    "indirim": "$1,201.30",
+    "kalemFiyat": "$1,054.15"
+  },
+  {
+    "oid": "56fd513292cd402ec225bc07",
+    "siparisOid": "56fd5132e3e806448a2e763c",
+    "siparisKalemAdi": "Barker Callahan",
+    "urun": "undefined",
+    "adet": "2",
+    "birimFiyat": "$3,768.35",
+    "araToplam": "$3,375.65",
+    "indirim": "$1,004.31",
+    "kalemFiyat": "$3,199.64"
+  }]
+  }

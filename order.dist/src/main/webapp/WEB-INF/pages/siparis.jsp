@@ -12,8 +12,10 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 	
-	<link rel="stylesheet" href="css/ng-table.min.css">
-	<script src="js/lib/angular/ng-table.min.js"></script>
+<!-- 	<link rel="stylesheet" href="css/ng-table.min.css"> -->
+<!-- 	<script src="js/lib/angular/ng-table.min.js"></script> -->
+	<link rel="styleSheet" href="js/lib/angular/ui-grid/ui-grid-stable.min.css"/>
+	<script src="js/lib/angular/ui-grid/ui-grid-stable.min.js"></script>
 	<script src="js/app/controllers/siparis.controller.js"></script>
 
 
@@ -24,33 +26,38 @@
 		<div class="siparisTable" class="container" ng-controller="popupCtrl">
 			<modal visible="showModal">
 			</modal>
-			<table ng-table ="siparisTable" class="table table-bordered table-striped">
-				<tr ng-repeat="siparis in siparisList">
-					<td title="'Oid'">{{siparis.oid}}</td>
-					<td title="'Sipariş Zamanı'">{{siparis.orderDate | date}}</td>
-					<td title="'Barkod'">{{siparis.barcodeNumber}}</td>
-					<td title="'Teslim Alacak Kişi'">{{siparis.deliveryPerson}}</td>
-					<td title="'Teslim Alan Tel No'">{{siparis.receiverPhoneNumber}}</td>
-					<td title="'Teslim Tarihi'">{{siparis.deliveryDate}}</td>
-					<td title="'Sipariş Durumu'">
-<!-- 						<select name="status" id="status" ng-model= "{{siparis.status}}"> -->
-<!-- 							<option ng-repeat="option in statusData" value="{{option.value}}">{{option.key}}</option> -->
-<!-- 						</select> -->
-					</td>
-					<td>
-						<button ng-click="durumGuncelle(siparis)">Sipariş Durum Güncelle</button>
-					</td>
-					<td>
-						<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="detayGoruntule(siparis)">
-							<span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
-						</button> 
-					</td>
-					<td>
-						<button ng-click="barkodOlustur(siparis)">Barkod Oluştur</button>
-					</td>
-				</tr>
-			</table>
-
+			
+			<div class="siparisTable">
+				<div ui-grid="gridOptions"></div>
+			</div>
+			//---
+<!-- 			<table ng-table ="siparisTable" class="table table-bordered table-striped"> -->
+<!-- 				<tr ng-repeat="siparis in siparisList"> -->
+<!-- 					<td title="'Oid'">{{siparis.oid}}</td> -->
+<!-- 					<td title="'Sipariş Zamanı'">{{siparis.orderDate | date}}</td> -->
+<!-- 					<td title="'Barkod'">{{siparis.barcodeNumber}}</td> -->
+<!-- 					<td title="'Teslim Alacak Kişi'">{{siparis.deliveryPerson}}</td> -->
+<!-- 					<td title="'Teslim Alan Tel No'">{{siparis.receiverPhoneNumber}}</td> -->
+<!-- 					<td title="'Teslim Tarihi'">{{siparis.deliveryDate}}</td> -->
+<!-- 					<td title="'Sipariş Durumu'"> -->
+<!-- <!-- 						<select name="status" id="status" ng-model= "{{siparis.status}}"> --> -->
+<!-- <!-- 							<option ng-repeat="option in statusData" value="{{option.value}}">{{option.key}}</option> --> -->
+<!-- <!-- 						</select> --> -->
+<!-- 					</td> -->
+<!-- 					<td> -->
+<!-- 						<button ng-click="durumGuncelle(siparis)">Sipariş Durum Güncelle</button> -->
+<!-- 					</td> -->
+<!-- 					<td> -->
+<!-- 						<button type="button" class="btn btn-default" aria-label="Left Align" ng-click="detayGoruntule(siparis)"> -->
+<!-- 							<span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span> -->
+<!-- 						</button>  -->
+<!-- 					</td> -->
+<!-- 					<td> -->
+<!-- 						<button ng-click="barkodOlustur(siparis)">Barkod Oluştur</button> -->
+<!-- 					</td> -->
+<!-- 				</tr> -->
+<!-- 			</table> -->
+//---
 		</div>
 
 	</div>
