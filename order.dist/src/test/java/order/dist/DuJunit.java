@@ -28,6 +28,5 @@ public class DuJunit {
 	
 	public void populateOrder (Order order){
 		order.setBarcodeNumber("TEST_BARCODE_NUMBER_!'^_123_ĞÜŞİÖÇ_ığüşöç");
-		order.setReceiverName("TEST_RECEIVER_NAME_!'^_123_ĞÜŞİÖÇ_ığüşöç");
 	}
 }

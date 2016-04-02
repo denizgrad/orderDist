@@ -6,6 +6,6 @@ import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
 
 public interface ITransformer {
 
-	public Order transform(CreateGenelSiparisIn objectIn);
-	public Order transform(UpdateGenelSiparisIn objectIn);
+	public Order transform(CreateGenelSiparisIn objectIn) throws Exception; 
+	public Order transform(UpdateGenelSiparisIn objectIn) throws Exception;;
 }

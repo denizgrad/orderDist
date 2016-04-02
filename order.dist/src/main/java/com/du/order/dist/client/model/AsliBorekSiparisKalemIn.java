@@ -1,32 +1,8 @@
-package com.du.order.dist.model.util.transfer;
+package com.du.order.dist.client.model;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ManyToOne;
-
-import com.du.order.dist.model.entity.Order;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-/**
- * 
- * @author User
- *
- *	Sipariş Kalem Objesi
-	SiparişKalem Adı
-	Sipariş(Siparişe lookup sipariş kalemin hangi siparişin altında olduğunu belirtiyor)
-	Ürün(CustomProduct lookup sipariş kalemde sipariş verilen ürün)
-	Adet
-	Birim Fiyat
-	Ara Toplam(Birim fiyat ile adetin çarpımından oluşuyor)
-	İndirim(TL olacak)
-	Kalem Fiyat(Ara toplamın indirimli hali. Siparişin hesaplanmasında kullanılacak değer)
- */
-public class SiparisKalemIn {
-	@ManyToOne(cascade= CascadeType.DETACH)
-	@JsonBackReference
-	private Order order;
-	
+public class AsliBorekSiparisKalemIn {
 	private String siparisKalemAdi;
 	private String urunAdi;
 	private BigDecimal adet;
@@ -34,13 +10,6 @@ public class SiparisKalemIn {
 	private BigDecimal araToplam;
 	private BigDecimal indirim;
 	private BigDecimal kalemGenelToplam;
-	
-	public Order getOrder() {
-		return order;
-	}
-	public void setOrder(Order order) {
-		this.order = order;
-	}
 	public String getSiparisKalemAdi() {
 		return siparisKalemAdi;
 	}
@@ -83,6 +52,5 @@ public class SiparisKalemIn {
 	public void setKalemGenelToplam(BigDecimal kalemGenelToplam) {
 		this.kalemGenelToplam = kalemGenelToplam;
 	}
-	
 	
 }

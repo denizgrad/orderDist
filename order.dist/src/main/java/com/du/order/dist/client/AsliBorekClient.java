@@ -1,10 +1,5 @@
 package com.du.order.dist.client;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -15,8 +10,6 @@ import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
 import com.du.order.dist.model.util.transfer.GenelSiparisIn;
 import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
 import com.google.gson.Gson;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class AsliBorekClient {
 	private String host;

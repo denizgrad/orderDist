@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
 
 @RestController
 @RequestMapping("/v1/siparis/islem")
+@Transactional
 public class RestServiceController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());

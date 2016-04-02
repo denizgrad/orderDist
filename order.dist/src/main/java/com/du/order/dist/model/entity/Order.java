@@ -1,114 +1,193 @@
 package com.du.order.dist.model.entity;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.du.order.dist.model.base.BaseModel;
-import com.du.order.dist.model.util.combo.OrderStatus;
 @Entity
 @Table(name="DU_ORDER")
 public class Order extends BaseModel{
 
-	@Enumerated
-	private OrderStatus status = OrderStatus.SIPARIS_OLUSTURULDU;
-	
 	private String  barcodeNumber;
-    private String  receiverName;
-    private String  receiverAddress;
-    private String  receiverCityName;
-    private String  receiverTownName;
-    private String  receiverPhoneNumber;
-    private String  orderDate;
-    private String  deliveryDate;
-    private String  deliveryPerson;
-    private String  deliveryStore;
-	private String 	description;
-    private double  amount;
-    private String  productName;
+	private String siparisAdi;
+	private String siparisVerenFirma;
+	private String siparisVerenKisi;
+	private String tedarikEdenKisi;
+	private String tedarikEdenFirma;
+	private Date  siparisOlusmaTarihi;
+	/**
+	 * //yapılan
+	 */
+	private Date siparisTeslimTarihi;
+	/**
+	 * //istenen
+	 */
+	private Date siparisTalepTeslimTarihi;
+	private BigDecimal araToplam;
+	private BigDecimal kdv;
+	private BigDecimal indirim;
+	private BigDecimal genelToplam;
+	private String adres;
+	private String adresAciklama;
+	/**
+	 * <pre>
+	  	("Sipariş Oluşturuldu")
+		("Görüldü")
+		("Hazırlanıyor")
+		("Hazırlandı")
+		("Yola Çıktı")
+		("Teslim Edildi")
+		("İptal Edildi")
+	 *	</pre>
+	 */
+	private String siparisDurum = "Sipariş Oluşturuldu";
 	
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public OrderStatus getStatus() {
-		return status;
-	}
-	public void setStatus(OrderStatus status) {
-		this.status = status;
-	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade= CascadeType.ALL, orphanRemoval=true)
+    private List<Product>  productList;
+
+    //getters setters
+
 	public String getBarcodeNumber() {
 		return barcodeNumber;
 	}
+
 	public void setBarcodeNumber(String barcodeNumber) {
 		this.barcodeNumber = barcodeNumber;
 	}
-	public double getAmount() {
-		return amount;
+
+	public String getSiparisAdi() {
+		return siparisAdi;
 	}
-	public void setAmount(double amount) {
-		this.amount = amount;
+
+	public void setSiparisAdi(String siparisAdi) {
+		this.siparisAdi = siparisAdi;
 	}
-	public String getReceiverName() {
-		return receiverName;
+
+	public String getSiparisVerenFirma() {
+		return siparisVerenFirma;
 	}
-	public void setReceiverName(String receiverName) {
-		this.receiverName = receiverName;
+
+	public void setSiparisVerenFirma(String siparisVerenFirma) {
+		this.siparisVerenFirma = siparisVerenFirma;
 	}
-	public String getReceiverAddress() {
-		return receiverAddress;
+
+	public String getSiparisVerenKisi() {
+		return siparisVerenKisi;
 	}
-	public void setReceiverAddress(String receiverAddress) {
-		this.receiverAddress = receiverAddress;
+
+	public void setSiparisVerenKisi(String siparisVerenKisi) {
+		this.siparisVerenKisi = siparisVerenKisi;
 	}
-	public String getReceiverCityName() {
-		return receiverCityName;
+
+	public String getTedarikEdenKisi() {
+		return tedarikEdenKisi;
 	}
-	public void setReceiverCityName(String receiverCityName) {
-		this.receiverCityName = receiverCityName;
+
+	public void setTedarikEdenKisi(String tedarikEdenKisi) {
+		this.tedarikEdenKisi = tedarikEdenKisi;
 	}
-	public String getReceiverTownName() {
-		return receiverTownName;
+
+	public String getTedarikEdenFirma() {
+		return tedarikEdenFirma;
 	}
-	public void setReceiverTownName(String receiverTownName) {
-		this.receiverTownName = receiverTownName;
+
+	public void setTedarikEdenFirma(String tedarikEdenFirma) {
+		this.tedarikEdenFirma = tedarikEdenFirma;
 	}
-	public String getReceiverPhoneNumber() {
-		return receiverPhoneNumber;
+
+	public Date getSiparisOlusmaTarihi() {
+		return siparisOlusmaTarihi;
 	}
-	public void setReceiverPhoneNumber(String receiverPhoneNumber) {
-		this.receiverPhoneNumber = receiverPhoneNumber;
+
+	public void setSiparisOlusmaTarihi(Date siparisOlusmaTarihi) {
+		this.siparisOlusmaTarihi = siparisOlusmaTarihi;
 	}
-	public String getOrderDate() {
-		return orderDate;
+
+	public Date getSiparisTeslimTarihi() {
+		return siparisTeslimTarihi;
 	}
-	public void setOrderDate(String orderDate) {
-		this.orderDate = orderDate;
+
+	public void setSiparisTeslimTarihi(Date siparisTeslimTarihi) {
+		this.siparisTeslimTarihi = siparisTeslimTarihi;
 	}
-	public String getDeliveryDate() {
-		return deliveryDate;
+
+	public Date getSiparisTalepTeslimTarihi() {
+		return siparisTalepTeslimTarihi;
 	}
-	public void setDeliveryDate(String deliveryDate) {
-		this.deliveryDate = deliveryDate;
+
+	public void setSiparisTalepTeslimTarihi(Date siparisTalepTeslimTarihi) {
+		this.siparisTalepTeslimTarihi = siparisTalepTeslimTarihi;
 	}
-	public String getDeliveryPerson() {
-		return deliveryPerson;
+
+	public BigDecimal getAraToplam() {
+		return araToplam;
 	}
-	public void setDeliveryPerson(String deliveryPerson) {
-		this.deliveryPerson = deliveryPerson;
+
+	public void setAraToplam(BigDecimal araToplam) {
+		this.araToplam = araToplam;
 	}
-	public String getDeliveryStore() {
-		return deliveryStore;
+
+	public BigDecimal getKdv() {
+		return kdv;
 	}
-	public void setDeliveryStore(String deliveryStore) {
-		this.deliveryStore = deliveryStore;
+
+	public void setKdv(BigDecimal kdv) {
+		this.kdv = kdv;
 	}
-	public String getProductName() {
-		return productName;
+
+	public BigDecimal getIndirim() {
+		return indirim;
 	}
-	public void setProductName(String productName) {
-		this.productName = productName;
+
+	public void setIndirim(BigDecimal indirim) {
+		this.indirim = indirim;
 	}
+
+	public BigDecimal getGenelToplam() {
+		return genelToplam;
+	}
+
+	public void setGenelToplam(BigDecimal genelToplam) {
+		this.genelToplam = genelToplam;
+	}
+
+	public String getAdres() {
+		return adres;
+	}
+
+	public void setAdres(String adres) {
+		this.adres = adres;
+	}
+
+	public String getAdresAciklama() {
+		return adresAciklama;
+	}
+
+	public void setAdresAciklama(String adresAciklama) {
+		this.adresAciklama = adresAciklama;
+	}
+
+	public String getSiparisDurum() {
+		return siparisDurum;
+	}
+
+	public void setSiparisDurum(String siparisDurum) {
+		this.siparisDurum = siparisDurum;
+	}
+
+	public List<Product> getProductList() {
+		return productList;
+	}
+
+	public void setProductList(List<Product> productList) {
+		this.productList = productList;
+	}
+    
 }

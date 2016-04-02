@@ -11,13 +11,14 @@ import org.springframework.stereotype.Component;
 import com.du.order.dist.interfaces.IValidator;
 import com.du.order.dist.model.util.ValidationError;
 import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
+import com.du.order.dist.model.util.transfer.GenelSiparisIn;
 import com.du.order.dist.model.util.transfer.SiparisKalemIn;
 import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
 @Component
 public class Validator implements IValidator{
 
 	@Override
-	public void validate(CreateGenelSiparisIn siparis) throws ValidationError {
+	public void validate(GenelSiparisIn siparis) throws ValidationError {
 
 		//must must
 		if(StringUtils.isBlank(siparis.getSfId())){
@@ -31,6 +32,9 @@ public class Validator implements IValidator{
 		};
 		if((siparis.getAraToplam() == null  || siparis.getAraToplam().compareTo(BigDecimal.ZERO) == 0)){
 			nullFields.add("araToplam");
+		};
+		if((siparis.getGenelToplam() == null  || siparis.getGenelToplam().compareTo(BigDecimal.ZERO) == 0)){
+			nullFields.add("genelToplam");
 		};
 		if((siparis.getKdv() == null  || siparis.getKdv().compareTo(BigDecimal.ZERO) == 0)){
 			nullFields.add("kdv");
@@ -96,14 +100,6 @@ public class Validator implements IValidator{
 			siparis.setSiparisOlusmaTarihi(new Date()); 
 		};
 		
-	}
-
-	@Override
-	public void validate(UpdateGenelSiparisIn siparis) throws ValidationError {
-		//must must
-		if(StringUtils.isBlank(siparis.getSfId())){
-			throw new ValidationError(new String[]{"Gönderilen SalesForceId ( alan adı: sfId ) boş olamaz"}, null);
-		};
 	}
 
 }
