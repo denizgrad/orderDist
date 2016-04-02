@@ -1,6 +1,12 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
+encoding//src/main/resources/META-INF/dev/app.properties=UTF-8
+encoding//src/main/resources/META-INF/dev/app_messages.properties=UTF-8
+encoding//src/main/resources/META-INF/prod/app.properties=UTF-8
+encoding//src/main/resources/META-INF/prod/app_messages.properties=UTF-8
+encoding//src/main/resources/META-INF/test/app.properties=UTF-8
+encoding//src/main/resources/META-INF/test/app_messages.properties=UTF-8
 encoding//src/main/webapp/WEB-INF/pages/siparis.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/pages/teslimat.jsp=UTF-8
 encoding//src/test/java=UTF-8
