@@ -6,35 +6,39 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
-import com.du.order.dist.model.util.transfer.GenelSiparisIn;
-import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
+import com.du.order.dist.client.model.AsliBorekSiparisIn;
+import com.du.order.dist.client.model.CreateAsliBorekSiparisIn;
+import com.du.order.dist.client.model.UpdateAsliBorekSiparisIn;
 import com.google.gson.Gson;
 
 public class AsliBorekClient {
 	private String host;
 	private String userName;
 	private String password;
-
+/**
+ * @param host restService's host. /createSiparis or /updateSiparis will be added in case
+ * @param userName sf username defined for authentication
+ * @param password sf password defined for authentication
+ */
 	public AsliBorekClient(String host, String userName, String password) {
 		this.host = host;
 		this.userName = userName;
 		this.password = password;
 	}
 	
-	public HttpResponse createSiparis(CreateGenelSiparisIn createSiparis) throws Exception{
+	public HttpResponse createSiparis(CreateAsliBorekSiparisIn createSiparis) throws Exception{
 		createSiparis.setUserName(getUserName());
 		createSiparis.setPassword(getPassword());
 		return sendPost(createSiparis, getCreateUrl());
 	}
 	
-	public HttpResponse updateSiparis(UpdateGenelSiparisIn updateSiparis) throws Exception{
+	public HttpResponse updateSiparis(UpdateAsliBorekSiparisIn updateSiparis) throws Exception{
 		updateSiparis.setUserName(getUserName());
 		updateSiparis.setPassword(getPassword());
 		return sendPost(updateSiparis, getUpdateUrl());
 	}
 	
-	private HttpResponse sendPost(GenelSiparisIn siparis, String postUrl) throws Exception {
+	private HttpResponse sendPost(AsliBorekSiparisIn siparis, String postUrl) throws Exception {
 
 		Gson         gson          = new Gson();
 		HttpClient   httpClient    = HttpClientBuilder.create().build();

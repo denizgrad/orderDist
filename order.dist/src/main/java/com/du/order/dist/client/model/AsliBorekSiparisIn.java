@@ -6,6 +6,33 @@ import java.util.Date;
 import java.util.List;
 
 public class AsliBorekSiparisIn {
+	private String userName;
+	private String password;
+	private String sfId;
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getSfId() {
+		return sfId;
+	}
+
+	public void setSfId(String sfId) {
+		this.sfId = sfId;
+	}
 	private String siparisAdi;
 	private String siparisVerenFirma;
 	private String siparisVerenKisi;
