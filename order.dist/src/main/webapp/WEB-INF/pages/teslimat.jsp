@@ -13,9 +13,14 @@
 <link rel="styleSheet" href="js/lib/angular/ui-grid/ui-grid-stable.min.css"/>
 <script src="js/lib/angular/ui-grid/ui-grid-stable.min.js"></script>
 
+<!-- <script src="js/lib/angular/smart-table/smart-table.module.js"></script> -->
+<!-- <script src="js/lib/angular/smart-table/stTable.js"></script> -->
+
+
 <script src="js/app/controllers/teslimat.controller.js"></script>
 
-<meta charset="utf-8">
+<meta content="text/html; charset=UTF-8">
+
 <title>Sipariş Teslim Et</title>
 </head>
 <body ng-app="teslimatModule">
@@ -180,9 +185,12 @@
 
 			<hr>
 
+
+
 			<div class="detayTable">
 				<div ui-grid="gridOptions" class="siparisDetay"></div>
 			</div>
+			
 		</div>
 	</div>
 		

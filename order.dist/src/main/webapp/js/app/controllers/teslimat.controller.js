@@ -1,4 +1,4 @@
-var tesApp = angular.module("teslimatModule", [ "ui.grid" ]);
+var tesApp = angular.module("teslimatModule", [ "ui.grid"/*, "smart-table" */]);
 
 tesApp.controller("teslimatCtrl", function($scope, $http) {
 
@@ -50,8 +50,8 @@ tesApp.controller("teslimatCtrl", function($scope, $http) {
 			//enableSorting: true,
 			enableGridMenu: true,
 		    columnDefs: [
-		                 { field: 'oid', displayName: "Oid", visible: false},
-		                 { field: 'siparisOid', displayName: "siparisOid", visible: false},
+		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
+		                 { field: 'siparisOid', displayName: "siparisOid", visible: false, enableHiding: false},
 		                 { field: 'siparisKalemAdi', displayName: "Ürün Adi", visible: true},
 		                 { field: 'adet', displayName: "Miktar", visible: true},
 		                 { field: 'birimFiyat', displayName: "Birim Fiyat", visible: true},
@@ -62,7 +62,14 @@ tesApp.controller("teslimatCtrl", function($scope, $http) {
 		    data : []
 		    
 	}
-	
+//	$scope.gridOptions.onRegisterApi = function(gridApi){
+//		gridApi.ScrollingVertically = false;
+//		gridApi.ScrollingHorizontally = false; 
+//		
+//		$scope.gridApi = gridApi;
+//        
+//     };
+     
 	$scope.getSiparis = function getSiparis(form) {
 		debugger;
 		if (form.$valid) {
@@ -93,11 +100,14 @@ tesApp.controller("teslimatCtrl", function($scope, $http) {
 						
 						$scope.gridOptions.data = response.siparisDetay;
 						
+//						removeFromGridMenu(angular.element(document.getElementById("uiGridTable")), 7);
+						
+						debugger;
+						
 					}).error(function(error) {
 				debugger;
 
 			});
 		}
 	}
-
 });
