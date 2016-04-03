@@ -16,7 +16,7 @@ public interface OrderRepository extends JpaRepository<Order,Integer>{
     public Order getByOid(@Param("oid") String oid);
 
     @Modifying
-    @Query("DELETE FROM Product p WHERE p.order = :oidOrder")
+    @Query("DELETE FROM OrderDetail p WHERE p.order = :oidOrder")
 	public void deleteChildrenByOid(@Param("oidOrder")String oidOrder);
 
 }

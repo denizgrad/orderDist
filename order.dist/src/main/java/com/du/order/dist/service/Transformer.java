@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.du.order.dist.Utility;
 import com.du.order.dist.interfaces.ITransformer;
 import com.du.order.dist.model.entity.Order;
-import com.du.order.dist.model.entity.Product;
+import com.du.order.dist.model.entity.OrderDetail;
 import com.du.order.dist.model.util.OrderError;
 import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
 import com.du.order.dist.model.util.transfer.SiparisKalemIn;
@@ -33,9 +33,10 @@ public class Transformer implements ITransformer{
 		}
 		try {
 			Utility.copyPrimitiveProperties(objectIn, order, false);
-			List<Product> productList = new ArrayList<>();
+			order.setRemoteId(objectIn.getSfId());
+			List<OrderDetail> productList = new ArrayList<>();
 			for(SiparisKalemIn sk : objectIn.getSiparisKalemList()){
-				Product product = new Product();
+				OrderDetail product = new OrderDetail();
 				Utility.copyPrimitiveProperties(sk, product, false);
 				productList.add(product);
 			}
@@ -51,12 +52,12 @@ public class Transformer implements ITransformer{
 		Order order = repo.getByRemoteId(objectIn.getSfId());
 		try {
 			Utility.copyPrimitiveProperties(objectIn, order, false);
-			List<Product> productList = new ArrayList<>();
+			List<OrderDetail> productList = new ArrayList<>();
 			
 			deleteAllProducts(repo.getByRemoteId(objectIn.getSfId()).getOid());
 			
 			for(SiparisKalemIn sk : objectIn.getSiparisKalemList()){
-				Product product = new Product();
+				OrderDetail product = new OrderDetail();
 				Utility.copyPrimitiveProperties(sk, product, false);
 				productList.add(product);
 			}

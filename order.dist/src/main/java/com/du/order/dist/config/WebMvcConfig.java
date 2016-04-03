@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.ejb.HibernatePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,13 +42,14 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 	@Autowired
 	Environment env;
 	
-	@Value("${project.env:dev}")
-	String projectEnv;
-	
     @Bean(name = "messageSource")
     public ResourceBundleMessageSource getMessageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename( projectEnv + "/app_messages.properties");//TODO deniz
+        String env = "dev";
+        if(StringUtils.isNotBlank(System.getProperty("env"))){
+        	env = System.getProperty("env");
+        }
+        messageSource.setBasename( env + "/app_messages.properties");//TODO deniz
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
@@ -122,6 +124,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
         properties.put("hibernate.hbm2ddl.auto" , env.getRequiredProperty("hibernate.hbm2ddl.auto"));
         properties.put("hibernate.connection.CharSet" , env.getRequiredProperty("hibernate.connection.CharSet"));
         properties.put("hibernate.connection.characterEncoding" , env.getRequiredProperty("hibernate.connection.characterEncoding"));
+        properties.put("hibernate.connection.useUnicode" , env.getRequiredProperty("hibernate.connection.useUnicode"));
         return properties;
     }
 

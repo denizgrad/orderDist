@@ -6,6 +6,6 @@ public interface IOrderService {
 
 	public void create(Order order);
 	
-	public void update(Order order);
+	public void update(Order order) throws Exception;
 
 }

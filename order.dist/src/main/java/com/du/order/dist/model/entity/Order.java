@@ -15,6 +15,9 @@ import com.du.order.dist.model.base.BaseModel;
 @Table(name="DU_ORDER")
 public class Order extends BaseModel{
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade= CascadeType.ALL, orphanRemoval=true)
+    private List<OrderDetail>  orderDetailList;
+	
 	private String  barcodeNumber;
 	private String siparisAdi;
 	private String siparisVerenFirma;
@@ -49,9 +52,6 @@ public class Order extends BaseModel{
 	 */
 	private String siparisDurum = "Sipariş Oluşturuldu";
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade= CascadeType.ALL, orphanRemoval=true)
-    private List<Product>  productList;
-
     //getters setters
 
 	public String getBarcodeNumber() {
@@ -182,12 +182,14 @@ public class Order extends BaseModel{
 		this.siparisDurum = siparisDurum;
 	}
 
-	public List<Product> getProductList() {
-		return productList;
+	public List<OrderDetail> getOrderDetailList() {
+		return orderDetailList;
 	}
 
-	public void setProductList(List<Product> productList) {
-		this.productList = productList;
+	public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+		this.orderDetailList = orderDetailList;
 	}
+
+
     
 }

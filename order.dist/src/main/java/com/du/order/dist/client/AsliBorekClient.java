@@ -52,10 +52,10 @@ public class AsliBorekClient {
 	}
 	
 	private String getCreateUrl(){
-		return this.getHost()+"/order.dist/createSiparis";
+		return this.getHost()+"/order.dist/v1/siparis/islem/createSiparis";
 	}
 	private String getUpdateUrl(){
-		return this.getHost()+"/order.dist/updateSiparis";
+		return this.getHost()+"/order.dist/v1/siparis/islem/updateSiparis";
 	}
 	
 	//getters setters

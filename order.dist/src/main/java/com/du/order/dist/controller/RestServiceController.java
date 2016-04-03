@@ -132,7 +132,7 @@ public class RestServiceController {
         	orderService.update(order);
         }
         catch (AuthenticationError ex){
-        	resp = new Response(false, HttpStatus.OK.value(),resourceMessage.getMessage("authentication.exception"));
+        	resp = new Response(false, HttpStatus.OK.value(),"Kullanıcı adı yada parola yanlış");
             logger.error(ex.getMessage());
             return new ResponseEntity<>(resp,HttpStatus.OK);
         }
@@ -142,7 +142,7 @@ public class RestServiceController {
             return new ResponseEntity<>(resp,HttpStatus.OK);
         }
         catch (Exception ex){
-        	resp = new Response(false, HttpStatus.OK.value(),resourceMessage.getMessage("service.exception"));
+        	resp = new Response(false, HttpStatus.OK.value(),"Sistem Hatası");
             logger.error(ex.getMessage());
             return new ResponseEntity<>(resp,HttpStatus.OK);
         }
@@ -152,9 +152,7 @@ public class RestServiceController {
    	
     private void checkAuthentication(AIn objectIn) throws AuthenticationError {
     	logger.info(String.format("Incoming sfUsername :%s and password: %s", objectIn.getUserName(), objectIn.getPassword()));
-    	String sfUserName = env.getRequiredProperty("sf.userName");
-    	String sfpassword = env.getRequiredProperty("sf.password");
-    	if((sfpassword.equals(objectIn.getPassword()) || sfUserName.equals(objectIn.getUserName()))){
+    	if(!(env.getRequiredProperty("sf.password").equals(objectIn.getPassword()) || env.getRequiredProperty("sf.userName").equals(objectIn.getUserName()))){
     		throw new AuthenticationError();
     	}
 	}

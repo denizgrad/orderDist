@@ -75,10 +75,10 @@ public class Validator implements IValidator{
 				};
 			}
 		}
-		if(StringUtils.isBlank(siparis.getSiparisVerenFirma())||StringUtils.isBlank(siparis.getSiparisVerenKisi())){
+		if(StringUtils.isBlank(siparis.getSiparisVerenFirma())&& StringUtils.isBlank(siparis.getSiparisVerenKisi())){
 			nullFields.add("siparisVerenFirma ya da siparisVerenKisi");
 		};
-		if(StringUtils.isBlank(siparis.getTedarikEdenFirma())||StringUtils.isBlank(siparis.getTedarikEdenKisi())){
+		if(StringUtils.isBlank(siparis.getTedarikEdenFirma())&& StringUtils.isBlank(siparis.getTedarikEdenKisi())){
 			nullFields.add("tedarikEdenFirma ya da tedarikEdenKisi");
 		};
 		
