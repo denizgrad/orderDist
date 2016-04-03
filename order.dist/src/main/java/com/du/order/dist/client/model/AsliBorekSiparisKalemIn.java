@@ -1,26 +1,8 @@
-package com.du.order.dist.model.entity;
+package com.du.order.dist.client.model;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import com.du.order.dist.model.base.BaseModel;
-@Entity
-@Table(name="DU_ORDER_DETAIL")
-public class OrderDetail extends BaseModel{
-
-	@ManyToOne(cascade=CascadeType.DETACH)
-	private Order order;
-	
-	public Order getOrder() {
-		return order;
-	}
-	public void setOrder(Order order) {
-		this.order = order;
-	}
+public class AsliBorekSiparisKalemIn {
 	private String siparisKalemAdi;
 	private String urunAdi;
 	private BigDecimal adet;
@@ -28,7 +10,6 @@ public class OrderDetail extends BaseModel{
 	private BigDecimal araToplam;
 	private BigDecimal indirim;
 	private BigDecimal kalemGenelToplam;
-	
 	public String getSiparisKalemAdi() {
 		return siparisKalemAdi;
 	}
@@ -71,6 +52,5 @@ public class OrderDetail extends BaseModel{
 	public void setKalemGenelToplam(BigDecimal kalemGenelToplam) {
 		this.kalemGenelToplam = kalemGenelToplam;
 	}
-	
 	
 }

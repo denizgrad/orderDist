@@ -1,26 +1,32 @@
-package com.du.order.dist.model.entity;
+package com.du.order.dist.model.util.transfer;
 
 import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
-import com.du.order.dist.model.base.BaseModel;
-@Entity
-@Table(name="DU_ORDER_DETAIL")
-public class OrderDetail extends BaseModel{
+import com.du.order.dist.model.entity.Order;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-	@ManyToOne(cascade=CascadeType.DETACH)
+/**
+ * 
+ * @author User
+ *
+ *	Sipariş Kalem Objesi
+	SiparişKalem Adı
+	Sipariş(Siparişe lookup sipariş kalemin hangi siparişin altında olduğunu belirtiyor)
+	Ürün(CustomProduct lookup sipariş kalemde sipariş verilen ürün)
+	Adet
+	Birim Fiyat
+	Ara Toplam(Birim fiyat ile adetin çarpımından oluşuyor)
+	İndirim(TL olacak)
+	Kalem Fiyat(Ara toplamın indirimli hali. Siparişin hesaplanmasında kullanılacak değer)
+ */
+public class SiparisKalemIn {
+	@ManyToOne(cascade= CascadeType.DETACH)
+	@JsonBackReference
 	private Order order;
 	
-	public Order getOrder() {
-		return order;
-	}
-	public void setOrder(Order order) {
-		this.order = order;
-	}
 	private String siparisKalemAdi;
 	private String urunAdi;
 	private BigDecimal adet;
@@ -29,6 +35,12 @@ public class OrderDetail extends BaseModel{
 	private BigDecimal indirim;
 	private BigDecimal kalemGenelToplam;
 	
+	public Order getOrder() {
+		return order;
+	}
+	public void setOrder(Order order) {
+		this.order = order;
+	}
 	public String getSiparisKalemAdi() {
 		return siparisKalemAdi;
 	}

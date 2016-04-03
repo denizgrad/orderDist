@@ -4,13 +4,13 @@ public abstract class AIn {
 
 	private String userName;
 	private String password;
-	private String remoteId;
+	private String sfId;
 	
-	public String getRemoteId() {
-		return remoteId;
+	public String getSfId() {
+		return sfId;
 	}
-	public void setRemoteId(String remoteId) {
-		this.remoteId = remoteId;
+	public void setSfId(String sfId) {
+		this.sfId = sfId;
 	}
 	public String getUserName() {
 		return userName;

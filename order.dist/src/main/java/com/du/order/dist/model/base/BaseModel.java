@@ -2,6 +2,7 @@ package com.du.order.dist.model.base;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class BaseModel {
 	private Date lastUpdated;
 	private Date created;
+	@Column(unique = true)
 	private String remoteId;
 	@Id
 	@GeneratedValue(generator="system-uuid")

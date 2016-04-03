@@ -16,7 +16,7 @@ public class ResourceMessage implements IMessageSource{
             return bean.getMessage(key, null, Locale.getDefault());
         }
         catch (Exception e) {
-            return "Unresolved key: " + key;
+            return key;
         }
 	}
 
