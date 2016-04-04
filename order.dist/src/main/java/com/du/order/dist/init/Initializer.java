@@ -39,7 +39,6 @@ public class Initializer implements WebApplicationInitializer {
         servletContext.addListener(new ContextLoaderListener(rootContext));
         servletContext.setInitParameter("defaultHtmlEscape", "true");
         servletContext.setInitParameter("encoding", "UTF-8");
-        servletContext.setInitParameter("log4j-config-location", "WEB-INF/log4j.properties");
 
         FilterRegistration.Dynamic fr = servletContext.addFilter("encodingFilter",new CharacterEncodingFilter());
         fr.setInitParameter("encoding", "UTF-8");

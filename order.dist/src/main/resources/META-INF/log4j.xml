@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  Log4j Configuration                                                  -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+
+<!-- $Id: log4j.xml,v 1.27 2014/06/17 12:38:42 mehmets Exp $ -->
+
+<!--
+	| For more configuration infromation and examples see the Jakarta Log4j
+	| owebsite: http://jakarta.apache.org/log4j
+-->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+	<!-- ================================= -->
+	<!-- Preserve messages in a local file -->
+	<!-- ================================= -->
+
+	<!-- An appender which writes to file -->
+	<appender name="FILE"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="D:/Logs/Log4jOrderDist.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="Threshold" value="INFO"/>
+		<param name="Encoding" value="UTF-8"/> 		 
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d [%-5p] [%c{1}] %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- ============================== -->
+	<!-- Append messages to the console -->
+	<!-- ============================== -->
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<param name="Threshold" value="INFO" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c{1}] %m%n" />
+		</layout>
+	</appender>
+
+
+	 
+	<!-- ======================= -->
+	<!-- Setup the Root category -->
+	<!-- ======================= -->
+ 	<logger name="org.quartz">
+ 		<level value="info"></level>
+ 	</logger>
+ 	<logger name="com.mchange">
+ 		<level value="info"></level>
+ 	</logger>
+ 	<logger name="org.hibernate.type.descriptor.sql.BasicBinder">
+ 		<level value="TRACE"></level>
+ 		<appender-ref ref="CONSOLE"/>
+ 	</logger>
+ 	<logger name="org.aspectj.weaver">
+ 		<level value="INFO"></level>
+ 	</logger>
+ 	<logger name="com.sun.xml.ws">
+ 		<level value="fine"></level>
+ 	</logger>
+ 	<logger name="com.cs.csin.service.utility">
+ 		<level value="INFO"></level>
+ 	</logger> 	
+ 	
+ 	
+ 	
+	<logger name="net.sf.ehcache">
+ 		<level value="off"></level>
+ 	</logger>
+ 	<logger name="org.hibernate">
+ 		<level value="INFO"></level>
+ 	</logger>
+ 	<logger name="org.springframework">
+ 		<level value="INFO"></level>
+ 	</logger>
+	<logger name="org.apache.commons.beanutils">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="com.docmosis.util.ClassLoaderUtilities">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="com.cs.web.model">
+		<level value="debug"></level>
+		<appender-ref ref="CONSOLE"/>
+	</logger>
+ 	
+	<!-- ================ -->
+	<!-- Limit categories -->
+	<!-- ================ -->
+	
+	<root>
+		<priority value="DEBUG" />
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
+	</root>
+</log4j:configuration>

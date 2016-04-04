@@ -10,7 +10,7 @@ import com.du.order.dist.model.entity.OrderDetail;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail,Integer>{
 
     @Modifying
-    @Query("DELETE FROM OrderDetail p WHERE p.order = :oidOrder")
+    @Query("DELETE FROM OrderDetail p WHERE p.order.oid = :oidOrder")
 	public void deleteChildrenByOid(@Param("oidOrder")String oidOrder);
 
 }

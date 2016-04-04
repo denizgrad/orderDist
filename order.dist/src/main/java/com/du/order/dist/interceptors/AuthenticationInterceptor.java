@@ -17,14 +17,13 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
- 
 		logger.debug("Interceptor: Pre-handle");
  
 		// Avoid a redirect loop for some urls
 		if( !request.getRequestURI().equals("/order.dist/") &&
 		    !request.getRequestURI().equals("/order.dist/login") &&
 		    !request.getRequestURI().equals("/order.dist/login.failed") &&
-			!request.getRequestURI().equals("/order.dist/logout.do") &&
+			!request.getRequestURI().equals("/order.dist/logout") &&
 			!request.getRequestURI().equals("/order.dist/v1/siparis/islem/createSiparis") &&
 			!request.getRequestURI().equals("/order.dist/v1/siparis/islem/updateSiparis") 
 			)
@@ -37,11 +36,6 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		   } else {
 			   ServiceProvider.setCurrentUserName(userData.getUsername());
 		   }
-	  } else if (request.getRequestURI().equals("/order.dist/logout.do")){
-		  logger.info("User logging out: "+ServiceProvider.getCurrentUserName() );
-		  request.getSession().removeAttribute("LOGGEDIN_USER");
-		  ServiceProvider.setCurrentUserName(null);
-		  response.sendRedirect("/");
 	  }
 	  return true;
 	}

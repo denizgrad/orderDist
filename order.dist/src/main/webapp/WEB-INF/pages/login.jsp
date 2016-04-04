@@ -1,10 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Sample Spring Interceptor</title>
+<title>Aslı Börek Sipariş Dağıtım</title>
 <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen" title="default" />
 <link rel="stylesheet" href="jquery-ui-1.9.2/css/smoothness/jquery-ui-1.9.2.custom.min.css" type="text/css" media="screen" title="default" />
 <script src="jquery-ui-1.9.2/js/jquery-1.8.3.js" type="text/javascript"></script>
@@ -34,7 +35,7 @@
 					<div id="message-red">
 					<table border="0" width="100%" cellpadding="0" cellspacing="0">
 					<tr>
-						<td class="red-left">Wrong username or password !</td>
+						<td class="red-left">Kullanıcı Adı yada Parola hatalı!</td>
 						<td class="red-right"><a class="close-red"><img src="images/table/icon_close_red.gif"   alt="" /></a></td>
 					</tr>
 					</table>
@@ -45,16 +46,16 @@
 	<form:form action="login" method="post"  modelAttribute="loginAttribute">
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<th>Username</th>
+			<th>Kullanıcı Adı</th>
 			<td><form:input type="text"  class="login-inp" path="username" /></td>
 		</tr>
 		<tr>
-			<th>Password</th>
+			<th>Parola</th>
 			<td><form:input type="password" value=""  onfocus="this.value=''" class="login-inp" path="password"/></td>
 		</tr>
 		<tr>
 			<th></th>
-			<td valign="top"><input type="checkbox" class="checkbox-size" id="login-check" /><label for="login-check">Remember me</label></td>
+			<td valign="top"><input type="checkbox" class="checkbox-size" id="login-check" /><label for="login-check">Hatırla</label></td>
 		</tr>
 		<tr>
 			<th></th>
