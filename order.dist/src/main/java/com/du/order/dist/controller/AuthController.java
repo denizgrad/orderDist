@@ -54,7 +54,7 @@ public class AuthController {
 	 * The POST method to submit login credentials.
 	 * @throws Exception 
 	 */
-	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(Model model, LoginForm loginform, Locale locale, HttpServletRequest request) throws Exception {
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG,locale);

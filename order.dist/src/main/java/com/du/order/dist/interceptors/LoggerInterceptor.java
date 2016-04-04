@@ -16,12 +16,13 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
         long startTime = System.currentTimeMillis();
+        
         logger.info("Request URL::" + request.getRequestURL().toString()
                 + ":: Start Time=" + System.currentTimeMillis()
                 + " ::Request.Ip::" + request.getRemoteAddr()
         );
+        
         request.setAttribute("startTime", startTime);
-
         return true;
     }
 
