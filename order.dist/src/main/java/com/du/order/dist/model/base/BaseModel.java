@@ -8,10 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 @MappedSuperclass
 public class BaseModel {
 	private Date lastUpdated;
+	@CreatedDate
 	private Date created;
 	@Column(unique = true)
 	private String remoteId;

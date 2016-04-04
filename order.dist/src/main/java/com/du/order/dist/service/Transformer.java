@@ -14,9 +14,11 @@ import com.du.order.dist.interfaces.ITransformer;
 import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.entity.OrderDetail;
 import com.du.order.dist.model.util.OrderError;
+import com.du.order.dist.model.util.SystemError;
 import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
 import com.du.order.dist.model.util.transfer.SiparisKalemIn;
 import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
+import com.du.order.dist.repository.OrderDetailRepository;
 import com.du.order.dist.repository.OrderRepository;
 
 @Component
@@ -25,6 +27,8 @@ public class Transformer implements ITransformer{
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     OrderRepository repo;
+    @Autowired
+    OrderDetailRepository repoDetail;
 	@Override
 	public Order transform(CreateGenelSiparisIn objectIn) throws Exception {
 		Order order = new Order();
@@ -40,6 +44,7 @@ public class Transformer implements ITransformer{
 				Utility.copyPrimitiveProperties(sk, product, false);
 				productList.add(product);
 			}
+			order.setOrderDetailList(productList);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw e;
@@ -50,17 +55,21 @@ public class Transformer implements ITransformer{
 	@Override
 	public Order transform(UpdateGenelSiparisIn objectIn) throws Exception{
 		Order order = repo.getByRemoteId(objectIn.getSfId());
+		if(order == null){
+			throw new SystemError("Bu sfId ile daha önce bir kayıt girilmemiş");
+		}
 		try {
 			Utility.copyPrimitiveProperties(objectIn, order, false);
 			List<OrderDetail> productList = new ArrayList<>();
 			
-			deleteAllProducts(repo.getByRemoteId(objectIn.getSfId()).getOid());
+//			deleteAllProducts(repo.getByRemoteId(objectIn.getSfId()).getOid());
 			
 			for(SiparisKalemIn sk : objectIn.getSiparisKalemList()){
 				OrderDetail product = new OrderDetail();
 				Utility.copyPrimitiveProperties(sk, product, false);
 				productList.add(product);
 			}
+			order.setOrderDetailList(productList);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw e;
@@ -69,7 +78,7 @@ public class Transformer implements ITransformer{
 	}
 
 	private void deleteAllProducts(String oidOrder) {
-		repo.deleteChildrenByOid(oidOrder);
+		repoDetail.deleteChildrenByOid(oidOrder);
 	}
 
 }

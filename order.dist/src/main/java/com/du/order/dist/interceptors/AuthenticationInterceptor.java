@@ -13,18 +13,21 @@ import com.du.order.dist.service.ServiceProvider;
 
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 	Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
+
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
  
 		logger.debug("Interceptor: Pre-handle");
  
 		// Avoid a redirect loop for some urls
-		if( !request.getRequestURI().equals("/") &&
-		    !request.getRequestURI().equals("/login") &&
-		    !request.getRequestURI().equals("/login.failed") &&
-			!request.getRequestURI().equals("/logout.do") &&
-			!request.getRequestURI().equals("/createSiparis") &&
-			!request.getRequestURI().equals("/updateSiparis"))
+		if( !request.getRequestURI().equals("/order.dist/") &&
+		    !request.getRequestURI().equals("/order.dist/login") &&
+		    !request.getRequestURI().equals("/order.dist/login.failed") &&
+			!request.getRequestURI().equals("/order.dist/logout.do") &&
+			!request.getRequestURI().equals("/order.dist/v1/siparis/islem/createSiparis") &&
+			!request.getRequestURI().equals("/order.dist/v1/siparis/islem/updateSiparis") 
+			)
 		  {
 			  LoginForm userData = (LoginForm) request.getSession().getAttribute("LOGGEDIN_USER");
 			 
@@ -34,7 +37,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		   } else {
 			   ServiceProvider.setCurrentUserName(userData.getUsername());
 		   }
-	  } else if (request.getRequestURI().equals("/logout.do")){
+	  } else if (request.getRequestURI().equals("/order.dist/logout.do")){
 		  logger.info("User logging out: "+ServiceProvider.getCurrentUserName() );
 		  request.getSession().removeAttribute("LOGGEDIN_USER");
 		  ServiceProvider.setCurrentUserName(null);

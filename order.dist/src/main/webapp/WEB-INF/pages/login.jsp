@@ -42,7 +42,7 @@
 		<!--  end message-red -->
 	</c:if>
 	
-	<form:form action="login.do" method="post"  modelAttribute="loginAttribute">
+	<form:form action="login" method="post"  modelAttribute="loginAttribute">
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
 			<th>Username</th>

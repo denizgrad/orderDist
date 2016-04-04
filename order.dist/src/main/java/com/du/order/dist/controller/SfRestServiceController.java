@@ -29,6 +29,7 @@ import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.util.AuthenticationError;
 import com.du.order.dist.model.util.PairModel;
 import com.du.order.dist.model.util.Response;
+import com.du.order.dist.model.util.SystemError;
 import com.du.order.dist.model.util.ValidationError;
 import com.du.order.dist.model.util.transfer.AIn;
 import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
@@ -40,7 +41,7 @@ import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
 @RestController
 @RequestMapping("/v1/siparis/islem")
 @Transactional
-public class RestServiceController {
+public class SfRestServiceController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     private static String comboPackagePrefix = "com.du.order.dist.model.util.combo.";
@@ -56,29 +57,6 @@ public class RestServiceController {
     
     @Autowired
     private IOrderService orderService;
-
-    @SuppressWarnings("unchecked")
-	@ResponseBody
-    @RequestMapping(
-              value = "/fillCombo/{comboName}"
-            , produces = "application/json"
-            , method = RequestMethod.POST)
-    public ResponseEntity<List<PairModel>> test(@PathVariable("comboName") String umut) {
-    	Class<? extends Enum<?>> comboEnum = null;
-    	List<PairModel> retList = new ArrayList<>();
-    	try {
-			comboEnum = (Class<? extends Enum<?>>) Class.forName(comboPackagePrefix + umut);
-		} catch (ClassNotFoundException e) {
-			logger.error("Requested Combo class not found!");
-		}
-		if(NamedEnum.class.isAssignableFrom(comboEnum)){
-			for (Enum<?> e : comboEnum.getEnumConstants()) {
-				retList.add(new PairModel(((NamedEnum)e).getName())); 
-			}
-		}
-    	return new ResponseEntity<>(retList , HttpStatus.OK);
-    }
-    
     
     
    	@ResponseBody
@@ -104,6 +82,11 @@ public class RestServiceController {
         }
         catch (ValidationError ex){
         	resp = new Response(false, HttpStatus.OK.value(), Utility.validationErrorToString(ex));
+            logger.error(ex.getMessage());
+            return new ResponseEntity<>(resp,HttpStatus.OK);
+        }
+        catch (SystemError ex){
+        	resp = new Response(false, HttpStatus.OK.value(), ex.getMessage() );
             logger.error(ex.getMessage());
             return new ResponseEntity<>(resp,HttpStatus.OK);
         }
@@ -138,6 +121,11 @@ public class RestServiceController {
         }
         catch (ValidationError ex){
         	resp = new Response(false, HttpStatus.OK.value(), Utility.validationErrorToString(ex) );
+            logger.error(ex.getMessage());
+            return new ResponseEntity<>(resp,HttpStatus.OK);
+        }
+        catch (SystemError ex){
+        	resp = new Response(false, HttpStatus.OK.value(), ex.getMessage() );
             logger.error(ex.getMessage());
             return new ResponseEntity<>(resp,HttpStatus.OK);
         }

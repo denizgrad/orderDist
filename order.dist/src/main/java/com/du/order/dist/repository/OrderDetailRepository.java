@@ -5,15 +5,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.du.order.dist.model.entity.Order;
+import com.du.order.dist.model.entity.OrderDetail;
 
-public interface OrderRepository extends JpaRepository<Order,String>{
-	
-    @Query("SELECT o FROM Order o WHERE o.remoteId = :remoteId")
-    public Order getByRemoteId(@Param("remoteId") String remoteId);
-    
-    @Query("SELECT o FROM Order o WHERE o.oid = :oid")
-    public Order getByOid(@Param("oid") String oid);
+public interface OrderDetailRepository extends JpaRepository<OrderDetail,Integer>{
 
     @Modifying
     @Query("DELETE FROM OrderDetail p WHERE p.order = :oidOrder")
