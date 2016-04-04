@@ -11,6 +11,7 @@ import com.du.order.dist.interfaces.IOrderService;
 import com.du.order.dist.interfaces.ITransformer;
 import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.entity.OrderDetail;
+import com.du.order.dist.repository.OrderDetailRepository;
 import com.du.order.dist.repository.OrderRepository;
 
 @Component
@@ -18,6 +19,9 @@ import com.du.order.dist.repository.OrderRepository;
 public class OrderService implements IOrderService{
 	@Resource
 	OrderRepository repo;
+	
+	@Resource
+	OrderDetailRepository repoDetail;
 	
 	@Autowired
 	ITransformer transformer;
@@ -32,7 +36,7 @@ public class OrderService implements IOrderService{
 	public void update(Order order) throws Exception {
 		Order dbOrder = repo.getByRemoteId(order.getRemoteId());
 		Utility.copyPrimitiveProperties(order, dbOrder, false);
-		repo.deleteChildrenByOid(dbOrder.getOid());
+		repoDetail.deleteChildrenByOid(dbOrder.getOid());
 		dbOrder.setOrderDetailList(order.getOrderDetailList());
 		setChildrenParent(dbOrder);
 		repo.save(dbOrder);
@@ -42,6 +46,7 @@ public class OrderService implements IOrderService{
 		if(!order.getOrderDetailList().isEmpty()){
 			for (OrderDetail od : order.getOrderDetailList()) {
 				od.setOrder(order);
+				od.setRemoteId(order.getRemoteId());
 			}
 		}
 	}

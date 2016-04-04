@@ -15,7 +15,7 @@ import com.du.order.dist.model.base.BaseModel;
 @Table(name="DU_ORDER")
 public class Order extends BaseModel{
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade= CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade= CascadeType.ALL)
     private List<OrderDetail>  orderDetailList;
 	
 	private String  barcodeNumber;

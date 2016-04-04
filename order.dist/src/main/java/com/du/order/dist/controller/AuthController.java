@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.du.order.dist.model.util.LoginForm;
+import com.du.order.dist.service.ServiceProvider;
 
 @Controller
 public class AuthController {
@@ -36,6 +38,20 @@ public class AuthController {
 	@RequestMapping(value = "/teslimat", method = RequestMethod.GET)
 	  public String teslimat() {
 	    return "teslimat";
+	  }
+	@RequestMapping(value = "/popupBarcode", method = RequestMethod.GET)
+	  public String popupBarcode() {
+	    return "popupBarcode";
+	  }
+	
+	@RequestMapping(value = "/popupStatusUpdate", method = RequestMethod.GET)
+	  public String popupStatusUpdate() {
+	    return "popupStatusUpdate";
+	  }
+	
+	@RequestMapping(value = "/popupSiparisDetayi", method = RequestMethod.GET)
+	  public String popupSiparisDetayi() {
+	    return "popupSiparisDetayi";
 	  }
 	/**
 	 * Simply selects the login view to render by returning its name.
@@ -92,5 +108,12 @@ public class AuthController {
 		model.addAttribute("error", true);
 		model.addAttribute("loginAttribute", loginForm);
 		return "login";
+	}
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	public String loginFailed(HttpServletRequest request,HttpServletResponse response) {
+		logger.info("User logging out: "+ServiceProvider.getCurrentUserName() );
+		  request.getSession().removeAttribute("LOGGEDIN_USER");
+		  ServiceProvider.setCurrentUserName(null);
+		  return "redirect:/";
 	}
 }
