@@ -6,7 +6,7 @@
     "tedarikEdenFirma": "PROSELY",
     "tedarikEdenKisi": "Bird Jackson",
     "siparisTarihi": "Tuesday, May 26, 2015 1:16 AM",
-    "teslimTarihi": "Sunday, May 24, 2015 8:49 AM",
+    "teslimTarihi": "Monday, April 4, 2016 8:49 PM",
     "araToplam": "$3,491.60",
     "kdv": 18,
     "indirim": "$1,742.12",
@@ -15,7 +15,8 @@
     "siparisAciklama": "ut",
     "adresAciklama": "anim",
     "talepEdilenTeslimTarihi": "Thursday, July 30, 2015 8:15 AM",
-    "siparisDurumu": 5
+    "siparisDurumu": 5,
+    "Locked": "True"
   },
   {
     "oid": "56fd4faa9f4be54e7d22f2a4",
@@ -51,7 +52,7 @@
     "siparisAciklama": "qui",
     "adresAciklama": "magna",
     "talepEdilenTeslimTarihi": "Thursday, June 18, 2015 10:10 AM",
-    "siparisDurumu": 5
+    "siparisDurumu": 1
   },
   {
     "oid": "56fd4fab4665de481cc7378c",

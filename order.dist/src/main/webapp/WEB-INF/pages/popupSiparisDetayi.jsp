@@ -1,34 +1,12 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<script src="js/lib/angular/angular.min.js"></script>
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<script src="js/lib/bootstrap/bootstrap.min.js" type="text/javascript"></script>
-<!-- <link rel="stylesheet" href="css/ng-table.min.css"> -->
-<!-- <script src="js/lib/angular/ng-table.min.js"></script> -->
-
-<link rel="styleSheet" href="js/lib/angular/ui-grid/ui-grid-stable.min.css"/>
-<script src="js/lib/angular/ui-grid/ui-grid-stable.min.js"></script>
-
-<!-- <script src="js/lib/angular/smart-table/smart-table.module.js"></script> -->
-<!-- <script src="js/lib/angular/smart-table/stTable.js"></script> -->
-
-
-<script src="js/app/controllers/teslimat.controller.js"></script>
-
-<meta content="text/html; charset=UTF-8">
-
-<title>Sipariş Teslim Et</title>
-</head>
-<body ng-app="teslimatModule">
-
-	<div ng-controller="teslimatCtrl">
-		<h2>Teslimat</h2>
+<div class="modal-header">
+	<h3 class="modal-title">Barkod</h3>
+</div>
+<div class="modal-body">
+	<div>
+		
+				<h2>Teslimat</h2>
 		
 		
 		<form name="form" ng-submit="teslimEt(form)" role="form">
@@ -194,7 +172,11 @@
 			</div>
 			
 		</div>
-	</div>
 		
-</body>
-</html>
+		
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" type="button" ng-click="getSiparisDetay()">Barkod Oluştur</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

@@ -53,6 +53,20 @@ public class AuthController {
 	  public String popupSiparisDetayi() {
 	    return "popupSiparisDetayi";
 	  }
+	@RequestMapping(value = "/popupBarcode", method = RequestMethod.GET)
+	  public String popupBarcode() {
+	    return "popupBarcode";
+	  }
+	
+	@RequestMapping(value = "/popupStatusUpdate", method = RequestMethod.GET)
+	  public String popupStatusUpdate() {
+	    return "popupStatusUpdate";
+	  }
+	
+	@RequestMapping(value = "/popupSiparisDetayi", method = RequestMethod.GET)
+	  public String popupSiparisDetayi() {
+	    return "popupSiparisDetayi";
+	  }
 	/**
 	 * Simply selects the login view to render by returning its name.
 	 */
