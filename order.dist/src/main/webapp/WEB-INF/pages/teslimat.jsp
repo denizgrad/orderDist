@@ -190,7 +190,7 @@
 
 
 			<div class="detayTable">
-				<div ui-grid="gridOptions" class="siparisDetay"></div>
+				<div ui-grid="teslimatGridOptions" class="siparisDetay"></div>
 			</div>
 			
 		</div>
