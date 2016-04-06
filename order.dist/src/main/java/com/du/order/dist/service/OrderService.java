@@ -1,5 +1,7 @@
 package com.du.order.dist.service;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ public class OrderService implements IOrderService{
 	@Override
 	public void create(Order order) {
 		setChildrenParent(order);
+		order.setCreated(new Date());
 		repo.save(order);
 	}
 	
@@ -39,6 +42,7 @@ public class OrderService implements IOrderService{
 		repoDetail.deleteChildrenByOid(dbOrder.getOid());
 		dbOrder.setOrderDetailList(order.getOrderDetailList());
 		setChildrenParent(dbOrder);
+		dbOrder.setCreated(new Date());
 		repo.save(dbOrder);
 	}
 
