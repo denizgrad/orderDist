@@ -1,33 +1,25 @@
-var sipApp = angular.module("siparisModule", ["ui.grid"/* , "smart-table" */]);
+var sipApp = angular.module("siparisModule", ["ui.grid", 'ngAnimate', 'ui.bootstrap']);
 
-sipApp.controller("siparisCtrl", function($scope, $http) {
+sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 
-	debugger;
-		getSiparisStatus();	
-	
-//	var statusData = [];
+	getSiparisList();	
 
 	function getSiparisStatus() {
-		debugger;
+		
 		// TODO service name ve post
-//		alert("init out");
 		$http.get('js/app/services/getSiparisStatus.json').success(function(response) {
 					debugger;
-//					alert("init in");
-//					statusData = response;
 					$scope.statusData = response.data;
 					$scope.selectedStatus = response.selectedData;
 					getSiparisList();
 					
-//					$scope.statusData.selectedOption = null;
-
 				}).error(function(error) {
-			debugger;
 
 		})
 	}
 	$scope.gridOptions = {
 			enableGridMenu: true,
+			rowTemplate: rowTemplate( 'row' ),
 		    columnDefs: [
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
 		                 { field: 'siparisVerenFirma', displayName: "Sipariş Veren Firma", visible: true},
@@ -46,26 +38,65 @@ sipApp.controller("siparisCtrl", function($scope, $http) {
 		                 { field: 'talepEdilenTeslimTarihi', displayName: "Talep Edilen Teslim Tarihi", visible: true},
 		                 { field: 'siparisDurumu', displayName: "Sipariş Durumu", visible: true},
 		                 { field: 'getDetay', displayName: "", visible: true, enableHiding: false, enableSorting: false, enableColumnMenu:false,
-		                	 cellTemplate:
-		                		 '<div class="btn-group">'+
-
-		                		 '<button type="button" class="btn btn-default" style=" margin-left: 2px;" ng-click="grid.appScope.detayGoruntule(row.entity)">'+
-		                		 	'<span class="glyphicon glyphicon-eye-open" ></span>'+
-		                		 '</button>'+
-		                		 '<button type="button" class="btn btn-default" ng-click="grid.appScope.durumGuncelle(row.entity)">'+
-		                		 	'<span class="glyphicon glyphicon-pencil" ></span>'+
-		                		 '</button>'+
-		                		 '<button type="button" class="btn btn-default" style=" margin-right:2px; " ng-click="grid.appScope.barkodOlustur(row.entity)">'+
-		                		 	'<span class="glyphicon glyphicon-barcode" ></span>'+
-		                		 '</button>'+
-		                		 '</div>'
+		                	 cellTemplate: arrangeButtonGroup('row')
 		                		 
 		                 }
 		               // cellFilter: 'date:"yyyy-MM-dd"'
 		    ], 
-		    data : []
+		    data : [],
+		    onRegisterApi: function(gridApi){
+		        grid = gridApi;
+		    }
 		    
 	}
+	
+
+	function rowTemplate(row) {
+		return '<div ng-class="{ \'grey\':grid.appScope.rowFormatter( row ) }" ng-dblclick="grid.appScope.openPopupSiparisDetayi(row.entity)">'
+		+ '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell></div>'
+		+ '</div>';
+	}
+	
+	function arrangeButtonGroup(row) {
+		return '<div class="btn-group">'+
+
+		 '<button type="button" class="btn btn-default" style=" margin-left: 2px;" ng-click="grid.appScope.openPopupSiparisDetayi(row.entity)">'+
+		 	'<span class="glyphicon glyphicon-eye-open" ></span>'+
+		 '</button>'+
+		 '<button type="button" class="btn btn-default" ng-click="grid.appScope.openPopupDurumGuncelle(row.entity)">'+
+		 	'<span class="glyphicon glyphicon-pencil" ></span>'+
+		 '</button>'+
+		 '<button type="button" class="btn btn-default" style=" margin-right:2px; " ng-click="grid.appScope.openPopupBarkodOlustur(row.entity)">'+
+		 	'<span class="glyphicon glyphicon-barcode" ></span>'+
+		 '</button>'+
+		 '</div>';
+	}
+	$scope.rowFormatter = function(row) {
+		var warn = false;
+		
+		var now = new Date();
+		var delivery = new Date(row.entity.talepEdilenTeslimTarihi); 
+		
+		var diff = (delivery - now)/1000;
+		if(diff < 0){
+			warn = true;
+		}
+	    diff = Math.abs(Math.floor(diff));
+	    
+	    var days = Math.floor(diff/(24*60*60));
+	    var leftSec = diff - days * 24*60*60;
+	    
+	    var hrs = Math.floor(leftSec/(60*60));
+	    var leftSec = leftSec - hrs * 60*60;
+	      
+	    var min = Math.floor(leftSec/(60));
+	    var leftSec = leftSec - min * 60;
+	    debugger;
+	    if((days <= 0 && hrs <= 4) || (row.entity.siparisDurumu == 1)){
+	    	warn = true;
+	    }
+		return warn;
+	};
 	
 	function getSiparisList() {
 		$http.get('js/app/services/getSiparisList.json').success(
@@ -90,35 +121,98 @@ sipApp.controller("siparisCtrl", function($scope, $http) {
 //						}
 //					});
 				}).error(function(error) {
-			debugger;
 
 		})
 	}
 	
-	$scope.durumGuncelle = function durumGuncelle(siparis) {
+	$scope.openPopupSiparisDetayi = function openPopupSiparisDetayi(row) {
 		
-		$http.get('js/app/services/updateSiparis.json').success(
-				function(response) {
-//					debugger;
-//					$scope.siparisList = response.siparisList;
-//
-//					$scope.siparisTable = new NgTableParams({}, {
-//						total : response.siparisList.length,
-//						getData : function($defer, params) {
-//							debugger;
-//							return $defer.resolve($scope.siparisList);
-//						}
-//					});
-				}).error(function(error) {
-			debugger;
+		debugger;
+		var oid = row.oid;
+		if(oid === null || "" == oid){
+			console.log("siparisOid bos");
+		}else {
+			var modalInstance = $uibModal.open({
+			      animation: true,
+			      templateUrl: 'popupSiparisDetayi.html',
+			      controller: 'siparisDetayiInstanceCtrl',
+			      size: 'lg',
+			      resolve: {
+			    	  // açılmadan once parametre geçirir
+			    	 siparisOid : function(){
 
-		})
+			    		  return oid;
+			    	  } 
+			      }
+			    });
 
+			    modalInstance.result.then(function () {
+			    	// success
+
+			    }, function () {
+			    	// error
+			      
+			    });
+		}
+	    
+		    
+	}
+	
+	$scope.openPopupDurumGuncelle = function openPopupDurumGuncelle(row) {
+		
+		debugger;
+		// TODO null chceck
+		var status = row.siparisDurumu;
+	    var modalInstance = $uibModal.open({
+		      animation: true,
+		      templateUrl: 'popupStatusUpdate.html',
+		      controller: 'updateStatusInstanceCtrl',
+		      size: 'lg',
+		      resolve: {
+		    	  // açılmadan once
+		    	  
+		    	  status : function(){
+
+		    		  return status;
+		    	  }
+		      }
+		    });
+
+		    modalInstance.result.then(function () {
+		    	// success
+
+		    }, function () {
+		    	// error
+		      
+		    });
+		    
+	}
+	$scope.openPopupBarkodOlustur = function openPopupBarkodOlustur(siparis) {
+		debugger;
+	    var modalInstance = $uibModal.open({
+		      animation: true,
+		      templateUrl: 'popupBarcode.html',
+		      controller: 'barcodeInstanceCtrl',
+		      size: 'lg',
+		      resolve: {
+		    	  // açılmadan once
+		    	  
+		      }
+		    });
+
+		    modalInstance.result.then(function () {
+		    	// success
+
+		    }, function () {
+		    	// error
+		      
+		    });
 		
 	}
-	$scope.barkodOlustur = function barkodOlustur(siparis) {
-		alert("barkod oluştur");
-	}
+	
+
+
+		  
 
 	/*
 	 * $http.get('js/app/services/getTeslimatStatus.js').success(
@@ -131,214 +225,182 @@ sipApp.controller("siparisCtrl", function($scope, $http) {
 	 */
 });
 
+sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstance, $http, siparisOid) {
 
-sipApp.controller('popupCtrl', function ($scope, $http) {
-    $scope.showModal = false;
-//    $scope.buttonClicked = "";
-    $scope.detayGoruntule = function(siparis){
-    	debugger;
-    	
-    			$http.get('js/app/services/getSiparis.json').success(
-    					function(response) {
-    						debugger;
-    						
-    						$scope.oid = response.oid;
-    						$scope.siparisVerenFirma = response.siparisVerenFirma;
-    						$scope.siparisVerenKisi = response.siparisVerenKisi;
-    						$scope.tedarikEdenFirma = response.tedarikEdenFirma;
-    						$scope.tedarikEdenKisi = response.tedarikEdenKisi;
-    						$scope.siparisTarihi = response.siparisTarihi;
-    						$scope.teslimTarihi = response.teslimTarihi;
-    						$scope.araToplam = response.araToplam;
-    						$scope.kdv = response.kdv;
-    						$scope.indirim = response.indirim;
-    						$scope.genelToplam = response.genelToplam;
-    						$scope.adres = response.adres;
-    						$scope.siparisAciklama = response.siparisAciklama;
-    						$scope.adresAciklama = response.adresAciklama;
-    						$scope.talepEdilenTeslimTarihi = response.talepEdilenTeslimTarihi;
-    						$scope.siparisDurumu = response.siparisDurumu;
-    						
-    						$scope.siparisDetayCollection = response.siparisDetay;
-    						
-    					}).error(function(error) {
-    				debugger;
+	getSiparisDetay(siparisOid);
+	
+	$scope.ok = function() {
+		$uibModalInstance.close();
+	};
 
-    			});
-    	// scope artık directive in içerisi
-//        $scope.buttonClicked = btnClicked;
-        $scope.showModal = !$scope.showModal;
+	$scope.cancel = function() {
+		$uibModalInstance.dismiss('cancel');
+	};
+	
+	$scope.teslimatGridOptions = {
+			//enableSorting: true,
+			enableGridMenu: true,
+		    columnDefs: [
+		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
+		                 { field: 'siparisOid', displayName: "siparisOid", visible: false, enableHiding: false},
+		                 { field: 'siparisKalemAdi', displayName: "Ürün Adi", visible: true},
+		                 { field: 'adet', displayName: "Miktar", visible: true},
+		                 { field: 'birimFiyat', displayName: "Birim Fiyat", visible: true},
+		                 { field: 'araToplam', displayName: "Ara Toplam", visible: true},
+		                 { field: 'indirim', displayName: "İndirim", visible: true},
+		                 { field: 'kalemFiyat', displayName: "Ürün Fiyatı", visible: true}
+		    ], 
+		    data : []
+		    
+	}
+
+	function getSiparisDetay(siparisOid) {
+		debugger;
+		if(siparisOid === null || "" == siparisOid){
+			console.log("siparisOid bos");
+		}else {
+			
+			$http.get('js/app/services/getSiparis.json').success(
+					function(response) {
+						debugger;
+						
+						$scope.oid = response.oid;
+						$scope.siparisVerenFirma = response.siparisVerenFirma;
+						$scope.siparisVerenKisi = response.siparisVerenKisi;
+						$scope.tedarikEdenFirma = response.tedarikEdenFirma;
+						$scope.tedarikEdenKisi = response.tedarikEdenKisi;
+						$scope.siparisTarihi = response.siparisTarihi;
+						$scope.teslimTarihi = response.teslimTarihi;
+						$scope.araToplam = response.araToplam;
+						$scope.kdv = response.kdv;
+						$scope.indirim = response.indirim;
+						$scope.genelToplam = response.genelToplam;
+						$scope.adres = response.adres;
+						$scope.siparisAciklama = response.siparisAciklama;
+						$scope.adresAciklama = response.adresAciklama;
+						$scope.talepEdilenTeslimTarihi = response.talepEdilenTeslimTarihi;
+						$scope.siparisDurumu = response.siparisDurumu;
+						
+						$scope.teslimatGridOptions.data = response.siparisDetay;
+						
+					}).error(function(error) {
+				debugger;
+
+			});
+		}
+	}
+});
+
+
+sipApp.controller('updateStatusInstanceCtrl', function($scope, $http, $uibModalInstance, status, statusRepoService) {
+debugger;
+
+	$scope.ok = function() {
+		$uibModalInstance.close();
+	};
+
+	$scope.cancel = function() {
+		$uibModalInstance.dismiss('cancel');
+	};
+	
+	var onFetchError = function(message) {
+		$scope.error = "Error Fetching Users. Message:" + message;
+	};
+
+	var onFetchCompleted = function(data) {
+		$scope.statusData = data;
+		$scope.statusData.selectedOption = status + "";
+		
+	};
+
+	var getStatus = function() {
+		statusRepoService.get().then(onFetchCompleted, onFetchError);
+	};
+
+	getStatus();     
+	     
+	
+	
+/*
+ * 
+ * $http({ method: 'GET', url: '/Admin/GetTestAccounts', data: { applicationId:
+ * 3 } }).success(function (result) { $scope.testAccounts = result; });
+ */
+	$scope.durumGuncelle = function durumGuncelle(statu) {
+debugger;
+// TODO nullcheck
+
+		$http.get('js/app/services/updateSiparis.json').success(
+		function(response) {
+			debugger;
+//			$scope.siparisList = response.siparisList;
+//
+//			$scope.siparisTable = new NgTableParams({}, {
+//				total : response.siparisList.length,
+//				getData : function($defer, params) {
+//					debugger;
+//					return $defer.resolve($scope.siparisList);
+//				}
+//			});
+		}).error(function(error) {
+	debugger;
+
+})
+
+
+	}
+	
+});
+
+sipApp.controller('barcodeInstanceCtrl', function($scope, $uibModalInstance) {
+
+	$scope.ok = function() {
+		$uibModalInstance.close();
+	};
+
+	$scope.cancel = function() {
+		$uibModalInstance.dismiss('cancel');
+	};
+
+	$scope.barkodOlustur = function barkodOlustur(barcode) {
+
+		// TODO http call 
+		// TODO null check
+		$("#order-barcode").barcode({
+			code : barcode,
+			crc : false
+		}, "int25", {
+			barWidth : 2,
+			barHeight : 30
+		});
+
+	}
+	$scope.yazdir = function yazdir() {
+		
+		var newWindow = window.open();
+	    newWindow.document.write(document.getElementById("order-barcode-container").innerHTML);
+	    newWindow.print();
+	}
+	
+});
+
+
+//------------------------ COMBOBOX SERVICE ------------------------
+
+
+var statusRepoService = function($http){
+    
+    var getStatus = function(){
+          return $http.get("js/app/services/getSiparisStatus.json")
+                      .then(function(response){
+                         return response.data.data; 
+                      });
     };
-  });
 
-sipApp.directive('modal', function () {
     return {
-      template: '<div class="modal fade">' + 
-          '<div class="modal-dialog">' + 
-            '<div class="modal-content">' + 
-              '<div class="modal-header">' + 
-              '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + 
-                 'Sipariş Detayı'+
-              '</div>' + 
-              '<div class="modal-body">' +
-		
-		      		'<div class="sipars">' +
-		      		'	<h3>Sipariş Bilgileri</h3>' +
-		      		'	<input type="hidden" name="oid" ng-value="oid" />' +
-		      		'	<div class="row">' +
-		      		'		<div class="col-md-4 column ui-sortable">' +
-		      		'			<div class="box box-element" style="display: block;">' +
-		      		'				<div class="view">' +
-		      		'						<div class="form-group row">' +
-		      		'						  <label class="col-md-5 control-label" for="siparisVerenFirma">Siparişi Veren Firma</label>' +  
-		      		'						  <div class="col-md-7">' +
-		      		'						  	<span id="siparisVerenFirma" class="form-control input-md"> {{siparisVerenFirma}}</span>' +
-		      		'						  </div>' +
-		      		'						</div>' +
-		      		'						<div class="form-group row">' +
-		      		'						  <label class="col-md-5 control-label" for="siparisTarihi">Sipariş Tarihi</label>' +  
-		      		'						  <div class="col-md-7">' +
-		      		'						  <span id="siparisTarihi" class="form-control input-md">{{siparisTarihi}}</span>' +
-		      		'						  </div>' +
-		      		'						</div>' +
-		      		'						<div class="form-group row">' +
-		      		'						  <label class="col-md-5 control-label" for="siparisAciklamasi">Sipariş Açıklaması</label>' +  
-		      		'						  <div class="col-md-7">' +
-		      		'						  <textArea id="siparisAciklamasi" class="form-control input-md" >{{siparisAciklama}}</textArea>' +
-		      		'						  </div>' +
-		      		'						</div>' +
-		      		'				</div>' +
-		      		'			</div>' +
-		      		'		</div>' +
-		      		'		<div class="col-md-4 column ui-sortable">' +
-		      		'			<div class="box box-element" style="display: block;">' +
-		      						
-		      		'				<div class="view">' +
-		      		
-		      		'					<div class="form-group row">' +
-		      		'					  <label class="col-md-5 control-label" for="siparisVerenKisi">Siparişi Veren Kişi</label>' +  
-		      		'					  <div class="col-md-7">' +
-		      		'					  <span id="siparisVerenKisi" class="form-control input-md">{{siparisVerenKisi}}</span>' +
-		      							    
-		      		'					  </div>' +
-		      		'					</div>' +
-		      							
-		      		'					<div class="form-group row">' +
-		      		'					  <label class="col-md-5 control-label" for="talepEdilenTeslimTarihi">Talep Edilen Teslim Tarihi</label>' +  
-		      		'					  <div class="col-md-7">' +
-		      		'					  <span id="talepEdilenTeslimTarihi" class="form-control input-md">{{talepEdilenTeslimTarihi}}</span>' +
-		      							    
-		      		'					  </div>' +
-		      		'					</div>' +
-		      						
-		      		'				</div>' +
-		      		'			</div>' +
-		      		'		</div>' +
-		      		'	</div>' +
-		      		'	<div class="row">' +
-		      		'		<div class="col-md-4 column ui-sortable">' +
-		      		'			<div class="box box-element" style="display: block;">' +
-		      		'				<div class="view">' +
-		      		'					<div class="form-group">' +
-		      		'						<label class="col-md-5 control-label" for="adres">Adres</label>' +
-		      		'						<div class="col-md-7">' +
-		      		'							<textArea class="form-control" id="adres" >{{adres}}</textArea>' +
-		      		'						</div>' +
-		      		'					</div>' +
-		      		'				</div>' +
-		      		'			</div>' +
-		      		'		</div>' +
-		      		'		<div class="col-md-4 column ui-sortable">' +
-		      		'			<div class="box box-element" style="display: block;">' +
-		      		'				<div class="view">' +
-		      		'					<div class="form-group">' +
-		      		'						<label class="col-md-5 control-label" for="adresAciklamasi">Adres Açıklaması</label>' +
-		      		'						<div class="col-md-7">' +
-		      		'							<textArea class="form-control" id="adresAciklamasi" >{{adresAciklamasi}}</textArea>' +
-		      		'						</div>' +
-		      		'					</div>' +
-		      		'				</div>' +
-		      		'			</div>' +
-		      		'		</div>' +
-		      		'	</div>' +
-		
-		      		'	<div class="row">' +
-		      		'		<div class="col-md-4 column ui-sortable">' +
-		      		'			<div class="box box-element" style="display: block;">' +
-		      		'				<div class="view">' +
-		      		'					<div class="form-group">' +
-		      		'						<label class="col-md-5 control-label" for="genelToplam">Genel Toplam</label>' +
-		      		'						<div class="col-md-7">' +
-		      		'							<span class="form-control" id="genelToplam" >{{genelToplam}}</span>' +
-		      		'						</div>' +
-		      		'					</div>' +
-		      		'				</div>' +
-		      		'			</div>' +
-		      		'		</div>' +
-		      		'	</div>' +
-		
-		      		'	<hr>' +
-		
-		      		'	<div class = "siparisDetay">' +
-		      		'		<table st-table="rowCollection" class="table table-striped">' +
-		      		'			<thead>' +
-		      		'			<tr>' +
-		      		'					<th ng-hide="true">oid</th>' +
-		      		'					<th ng-hide="true">siparisOid</th>' +
-		      		'					<th>Sipariş Kalem Adı</th>' +
-		      		'					<th>Adet</th>' +
-		      		'					<th>Birim Fiyat</th>' +
-		      		'					<th>Ara Toplam</th>' +
-		      		'					<th>İndirim</th>' +
-		      		'					<th>Kalem Fiyat</th>' +
-		
-		      		'				</tr>' +
-		      		'			</thead>' +
-		      		'			<tbody>' +
-		      		'			<tr ng-repeat="siparis in siparisDetayCollection">' +
-		      						
-		      		'				<td ng-hide="true">{{siparis.oid}}</td>' +
-		      		'				<td ng-hide="true">{{siparis.siparisOid}}</td>' +
-		      		'				<td>{{siparis.siparisKalemAdi}}</td>' +
-		      		'				<td>{{siparis.adet}}</td>' +
-		      		'				<td>{{siparis.birimFiyat}}</td>' +
-		      		'				<td>{{siparis.araToplam}}</td>' +
-		      		'				<td>{{siparis.indirim}}</td>' +
-		      		'				<td>{{siparis.kalemFiyat}}</td>' +
-		      		'			</tr>' +
-		      					
-		      		'			</tbody>' +
-		      		'		</table>' +	
-		      		'	</div>' +
-		      			
-		      		'</div>' +	              
-              '</div>' + 
-            '</div>' + 
-          '</div>' + 
-        '</div>',
-      restrict: 'E',
-      transclude: true,
-      replace:true,
-      scope:true,
-      link: function postLink(scope, element, attrs) {
-          scope.$watch(attrs.visible, function(value){
-          if(value == true)
-            $(element).modal('show');
-          else
-            $(element).modal('hide');
-        });
-
-        $(element).on('shown.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = true;
-          });
-        });
-
-        $(element).on('hidden.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = false;
-          });
-        });
-      }
+        get: getStatus
     };
-  });
+      
+  };
+  sipApp.factory("statusRepoService", statusRepoService);
+  

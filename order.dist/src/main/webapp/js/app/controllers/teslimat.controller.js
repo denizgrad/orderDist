@@ -46,7 +46,7 @@ tesApp.controller("teslimatCtrl", function($scope, $http) {
 		}
 
 	}
-	$scope.gridOptions = {
+	$scope.teslimatGridOptions = {
 			//enableSorting: true,
 			enableGridMenu: true,
 		    columnDefs: [
@@ -76,9 +76,6 @@ tesApp.controller("teslimatCtrl", function($scope, $http) {
 			$http.get('js/app/services/getSiparis.json').success(
 					function(response) {
 						debugger;
-						$scope.siparisAdres = response.adres;
-						$scope.siparisToplamTutar = response.toplamTutar;
-						
 						
 						$scope.oid = response.oid;
 						$scope.siparisVerenFirma = response.siparisVerenFirma;
@@ -97,10 +94,7 @@ tesApp.controller("teslimatCtrl", function($scope, $http) {
 						$scope.talepEdilenTeslimTarihi = response.talepEdilenTeslimTarihi;
 						$scope.siparisDurumu = response.siparisDurumu;
 						
-						
-						$scope.gridOptions.data = response.siparisDetay;
-						
-//						removeFromGridMenu(angular.element(document.getElementById("uiGridTable")), 7);
+						$scope.teslimatGridOptions.data = response.siparisDetay;
 						
 						debugger;
 						
