@@ -20,6 +20,9 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 	$scope.gridOptions = {
 			enableGridMenu: true,
 			rowTemplate: rowTemplate( 'row' ),
+			enableHorizontalScrollbar : 2,
+			enableVerticalScrollbar : 2,
+			enableColumnResizing: true,
 		    columnDefs: [
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
 		                 { field: 'siparisVerenFirma', displayName: "Sipariş Veren Firma", visible: true},
@@ -99,7 +102,8 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 	};
 	
 	function getSiparisList() {
-		$http.get('js/app/services/getSiparisList.json').success(
+//		$http.get('js/app/services/getSiparisList.json').success(
+		$http.get('v1/siparis/islem/getOrderList').success(
 				function(response) {
 					debugger;
 //					$scope.siparisCollection = response;
@@ -259,8 +263,7 @@ sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstanc
 		if(siparisOid === null || "" == siparisOid){
 			console.log("siparisOid bos");
 		}else {
-			
-			$http.get('js/app/services/getSiparis.json').success(
+			$http.get('v1/siparis/islem/getOrderByOid', {oid : siparisOid}).success(
 					function(response) {
 						debugger;
 						

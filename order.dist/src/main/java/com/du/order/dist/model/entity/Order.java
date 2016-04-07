@@ -11,20 +11,21 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.du.order.dist.model.base.BaseModel;
-@Entity
-@Table(name="DU_ORDER")
-public class Order extends BaseModel{
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade= CascadeType.ALL)
-    private List<OrderDetail>  orderDetailList;
-	
-	private String  barcodeNumber;
+@Entity
+@Table(name = "DU_ORDER")
+public class Order extends BaseModel {
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
+	private List<OrderDetail> orderDetailList;
+
+	private String barcodeNumber;
 	private String siparisAdi;
 	private String siparisVerenFirma;
 	private String siparisVerenKisi;
 	private String tedarikEdenKisi;
 	private String tedarikEdenFirma;
-	private Date  siparisOlusmaTarihi;
+	private Date siparisOlusmaTarihi;
 	/**
 	 * //yapılan
 	 */
@@ -48,11 +49,11 @@ public class Order extends BaseModel{
 		("Yola Çıktı")
 		("Teslim Edildi")
 		("İptal Edildi")
-	 *	</pre>
+	 * </pre>
 	 */
 	private String siparisDurum = "Sipariş Oluşturuldu";
-	
-    //getters setters
+
+	// getters setters
 
 	public String getBarcodeNumber() {
 		return barcodeNumber;
@@ -190,6 +191,4 @@ public class Order extends BaseModel{
 		this.orderDetailList = orderDetailList;
 	}
 
-
-    
 }

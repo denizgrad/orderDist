@@ -1,5 +1,8 @@
 package com.du.order.dist.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,42 @@ public class OrderService implements IOrderService{
 		setChildrenParent(dbOrder);
 		repo.save(dbOrder);
 	}
+	
+	@Override
+	public List<Order> getOrderList() {
+		
+		List<Order> list = repo.getListByBranchOid();
+		
+		for (Order order : list) {
+			order.setOrderDetailList(new ArrayList<OrderDetail>());
+		}
+		return list;
+	}
+	
+	@Override
+	public Order getOrderByOid(String oid) {
+		// TODO get child
+		Order dbOrder = repo.getByOid(oid);
+		return dbOrder;
+	}
+	
+	@Override
+	public Order getOrderByBarcode(String oid) {
+		Order dbOrder = repo.getByBarcode(oid);
+		return dbOrder;
+	}
+	
+	
+	@Override
+	public void updateOrderStatus(String oid, String status) {
+//		Order dbOrder = repo.getByOid(oid);
+//		Utility.copyPrimitiveProperties(order, dbOrder, false);
+//		repoDetail.deleteChildrenByOid(dbOrder.getOid());
+//		dbOrder.setOrderDetailList(order.getOrderDetailList());
+//		setChildrenParent(dbOrder);
+//		repo.save(dbOrder);
+	}
+	
 
 	private void setChildrenParent(Order order){
 		if(!order.getOrderDetailList().isEmpty()){
@@ -50,4 +89,9 @@ public class OrderService implements IOrderService{
 			}
 		}
 	}
+	
+
+	
+	
+	
 }
