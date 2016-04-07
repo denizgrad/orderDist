@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.du.order.dist.interfaces.ISalesForceClient;
 import com.du.order.dist.model.util.LoginForm;
 import com.du.order.dist.service.ServiceProvider;
 
@@ -65,7 +66,8 @@ public class AuthController {
 		model.addAttribute("loginAttribute", loginform);
 		return "login";
 	}
-	
+	@Autowired
+	ISalesForceClient sfClient;
 	/**
 	 * The POST method to submit login credentials.
 	 * @throws Exception 
@@ -85,7 +87,8 @@ public class AuthController {
 		// A simple authentication manager
 		if(username != null && password != null){
 			
-			if( username.equals(env.getProperty("admin.username")) &&	password.equals(env.getProperty("admin.password")) ){
+			if( (username.equals(env.getProperty("admin.username")) &&	password.equals(env.getProperty("admin.password")))
+					|| (sfClient.controlCredentials(username, password))){
 				// Set a session attribute to check authentication then redirect to the welcome uri; 
 				request.getSession().setAttribute("LOGGEDIN_USER", loginform);
 				return "redirect:/siparis";
@@ -114,6 +117,6 @@ public class AuthController {
 		logger.info("User logging out: "+ServiceProvider.getCurrentUserName() );
 		  request.getSession().removeAttribute("LOGGEDIN_USER");
 		  ServiceProvider.setCurrentUserName(null);
-		  return "redirect:/";
+		  return "login";
 	}
 }
