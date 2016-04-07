@@ -16,6 +16,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 				}).error(function(error) {
 
 		})
+		
 	}
 	$scope.gridOptions = {
 			enableGridMenu: true,
@@ -98,12 +99,13 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 	    if((days <= 0 && hrs <= 4) || (row.entity.siparisDurumu == 1)){
 	    	warn = true;
 	    }
+	    // TODO teslim edilmedi ise
 		return warn;
 	};
 	
 	function getSiparisList() {
 //		$http.get('js/app/services/getSiparisList.json').success(
-		$http.get('v1/siparis/islem/getOrderList').success(
+		$http.post('v1/siparis/islem/getOrderList', {"orgOid": "123456789" }).success(
 				function(response) {
 					debugger;
 //					$scope.siparisCollection = response;
@@ -127,6 +129,14 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 				}).error(function(error) {
 
 		})
+		
+//		$http.post('v1/siparis/islem/yarat', {
+//			"key" : "asd",
+//			"value" : "asd"
+//		}).success(function(response) {
+//			debugger;
+//
+//		});
 	}
 	
 	$scope.openPopupSiparisDetayi = function openPopupSiparisDetayi(row) {

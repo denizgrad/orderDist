@@ -3,8 +3,6 @@ package com.du.order.dist.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.text.Utilities;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,40 +139,38 @@ public class SfRestServiceController {
 	// ----------------------------
 
 	/**
-     * @endpoint /public/fillCombo/{comboName}
-     * @param umut
-     * @return
-     */
-    @SuppressWarnings("unchecked")
+	 * @endpoint /public/fillCombo/{comboName}
+	 * @param umut
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	@ResponseBody
-    @RequestMapping(
-              value = "/fillCombo/{comboName}"
-            , produces = "application/json"
-            , method = RequestMethod.POST)
-    public ResponseEntity<List<PairModel>> test(@PathVariable("comboName") String umut) {
-    	Class<? extends Enum<?>> comboEnum = null;
-    	List<PairModel> retList = new ArrayList<>();
-    	try {
+	@RequestMapping(value = "/fillCombo/{comboName}", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<List<PairModel>> test(@PathVariable("comboName") String umut) {
+		Class<? extends Enum<?>> comboEnum = null;
+		List<PairModel> retList = new ArrayList<>();
+		try {
 			comboEnum = (Class<? extends Enum<?>>) Class.forName(comboPackagePrefix + umut);
 		} catch (ClassNotFoundException e) {
 			logger.error("Requested Combo class not found!");
 		}
-		if(NamedEnum.class.isAssignableFrom(comboEnum)){
+		if (NamedEnum.class.isAssignableFrom(comboEnum)) {
 			for (Enum<?> e : comboEnum.getEnumConstants()) {
-				retList.add(new PairModel(((NamedEnum)e).getName())); 
+				retList.add(new PairModel(((NamedEnum) e).getName()));
 			}
 		}
-    	return new ResponseEntity<>(retList , HttpStatus.OK);
-    }
-    
+		return new ResponseEntity<>(retList, HttpStatus.OK);
+	}
+
 	// TODO handle
 
 	@ResponseBody
-	@RequestMapping(value = "/getOrderList", produces = "application/json", method = RequestMethod.GET)
-	public ResponseEntity<List<Order>> getOrderList() {
+	@RequestMapping(value = "/getOrderList/{orgOid}", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<List<Order>> getOrderList(@PathVariable("orgOid") String orgOid) {
 		List<Order> retList = new ArrayList<>();
+		// TODO null check
 		try {
-			retList = orderService.getOrderList("orgOid");
+			retList = orderService.getOrderList(orgOid);
 		} catch (Exception e) {
 			logger.error("can not fetch list of order");
 		}

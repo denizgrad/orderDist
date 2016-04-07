@@ -31,7 +31,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			  LoginForm userData = (LoginForm) request.getSession().getAttribute("LOGGEDIN_USER");
 			 
 		   if(userData == null)		   {
-		    response.sendRedirect("/");
+		    response.sendRedirect("/order.dist/");
 		    return false;
 		   } else {
 			   ServiceProvider.setCurrentUserName(userData.getUsername());
