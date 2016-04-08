@@ -33,6 +33,7 @@ import com.du.order.dist.model.util.transfer.AIn;
 import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
 import com.du.order.dist.model.util.transfer.GenelSiparisIn;
 import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
+import com.du.order.dist.service.ServiceProvider;
 
 @RestController
 @RequestMapping("/v1/siparis/islem")
@@ -156,7 +157,7 @@ public class SfRestServiceController {
 		}
 		if (NamedEnum.class.isAssignableFrom(comboEnum)) {
 			for (Enum<?> e : comboEnum.getEnumConstants()) {
-				retList.add(new PairModel(((NamedEnum) e).getName()));
+				retList.add(new PairModel(((NamedEnum) e).getKey(), String.valueOf(((NamedEnum) e).getValue())));
 			}
 		}
 		return new ResponseEntity<>(retList, HttpStatus.OK);
@@ -165,12 +166,12 @@ public class SfRestServiceController {
 	// TODO handle
 
 	@ResponseBody
-	@RequestMapping(value = "/getOrderList/{orgOid}", produces = "application/json", method = RequestMethod.POST)
-	public ResponseEntity<List<Order>> getOrderList(@PathVariable("orgOid") String orgOid) {
+	@RequestMapping(value = "/getOrderList", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<List<Order>> getOrderList() {
 		List<Order> retList = new ArrayList<>();
 		// TODO null check
 		try {
-			retList = orderService.getOrderList(orgOid);
+			retList = orderService.getOrderList(ServiceProvider.getCurrentUserName());
 		} catch (Exception e) {
 			logger.error("can not fetch list of order");
 		}
@@ -180,12 +181,12 @@ public class SfRestServiceController {
 	// {oid} @PathVariable("oid") String oid
 	// TODO parameter pass
 	@ResponseBody
-	@RequestMapping(value = "/getOrderByOid", produces = "application/json", method = RequestMethod.GET)
-	public ResponseEntity<Order> getOrderByOid() {
+	@RequestMapping(value = "/getOrderByOid/{siparisOid}", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<Order> getOrderByOid(@PathVariable("siparisOid") String siparisOid) {
 		Order dbOrder = new Order();
 		try {
 			// dbOrder = orderService.getOrderByOid(oid);
-			dbOrder = orderService.getOrderByOid("asdf1234");
+			dbOrder = orderService.getOrderByOid(siparisOid);
 		} catch (Exception e) {
 			logger.error("can not fetch order by id");
 		}
@@ -195,7 +196,7 @@ public class SfRestServiceController {
 	// {oid} @PathVariable("oid") String oid
 	// TODO parameter pass
 	@ResponseBody
-	@RequestMapping(value = "/getOrderByBarcode/{barcode}", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "/getOrderByBarcode/{barcode}", produces = "application/json", method = RequestMethod.POST)
 	public ResponseEntity<Order> getOrderByBarcode(@PathVariable("barcode") String barcode) {
 		Order dbOrder = new Order();
 		try {
@@ -205,5 +206,50 @@ public class SfRestServiceController {
 		}
 		return new ResponseEntity<>(dbOrder, HttpStatus.OK);
 	}
+	
+	// {oid} @PathVariable("oid") String oid
+	// TODO parameter pass
+	@ResponseBody
+	@RequestMapping(value = "/updateOrderStatus/{oid}-{status}", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<String> updateOrderStatus(@PathVariable("oid") String oid, @PathVariable("status") String status) {
+		
+		try {
+			orderService.updateOrderStatus(oid, status);
+			
+		} catch (Exception e) {
+			logger.error("can not update order status");
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
+	// {oid} @PathVariable("oid") String oid
+	// TODO parameter pass
+	@ResponseBody
+	@RequestMapping(value = "/updateOrderBarcode/{oid}-{barcode}", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<String> updateOrderBarcode(@PathVariable("oid") String oid, @PathVariable("barcode") String barcode) {
+		
+		try {
+			orderService.updateOrderBarcode(oid, barcode);
+			
+		} catch (Exception e) {
+			logger.error("can not update order barcode");
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
+	// {oid} @PathVariable("oid") String oid
+	// TODO parameter pass
+	@ResponseBody
+	@RequestMapping(value = "/deliverOrder/{oid}", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<String> deliverOrder(@PathVariable("oid") String oid) {
+		
+		try {
+			orderService.deliverOrder(oid);
+			
+		} catch (Exception e) {
+			logger.error("can not update order barcode");
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

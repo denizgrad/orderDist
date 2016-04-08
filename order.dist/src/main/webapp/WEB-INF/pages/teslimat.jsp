@@ -64,7 +64,7 @@
 						<div class="form-group">
 							<label class="col-md-5 control-label" for="status">Sipariş Durumu</label>  
 							<div class="col-md-7">
-								<select name="status" id="status" ng-model="statusData.selectedOption" ng-disabled="true" class="form-control input-md">
+								<select name="status" id="status" ng-model="siparisDurum" ng-disabled="true" class="form-control input-md">
 									<option ng-repeat="option in statusData" value="{{option.value}}">{{option.key}}</option>
 								</select>
 							</div>
@@ -76,7 +76,7 @@
 				<div class="box box-element" style="display: block;">
 					<div class="view">
 						<div class="form-group">
-							<label class="col-md-5 control-label" for="siparisAciklamasi">Siparişi Teslim Et</label>  
+							<label class="col-md-5 control-label" >Siparişi Teslim Et</label>  
 							<div class="col-md-7">
 								<div class="form-actions">
 									<button type="submit" class="btn btn-primary btn-default" ng-disabled="form.$invalid || vm.dataLoading"  >Teslim Et</button>
@@ -104,9 +104,9 @@
 								  </div>
 								</div>
 								<div class="form-group row">
-								  <label class="col-md-5 control-label" for="siparisTarihi">Sipariş Tarihi</label>  
+								  <label class="col-md-5 control-label" for="siparisOlusmaTarihi">Sipariş Tarihi</label>  
 								  <div class="col-md-7">
-								  <span id="siparisTarihi" class="form-control input-md">{{siparisTarihi}}</span>
+								  <span id="siparisOlusmaTarihi" class="form-control input-md">{{siparisOlusmaTarihi  | date:'dd-MM-yyyy hh:mm'}}</span>
 								  </div>
 								</div>
 								<div class="form-group row">
@@ -132,9 +132,9 @@
 							</div>
 							
 							<div class="form-group row">
-							  <label class="col-md-5 control-label" for="talepEdilenTeslimTarihi">Talep Edilen Teslim Tarihi</label>  
+							  <label class="col-md-5 control-label" for="siparisTalepTeslimTarihi">Talep Edilen Teslim Tarihi</label>  
 							  <div class="col-md-7">
-							  <span id="talepEdilenTeslimTarihi" class="form-control input-md">{{talepEdilenTeslimTarihi}}</span>
+							  <span id="siparisTalepTeslimTarihi" class="form-control input-md">{{siparisTalepTeslimTarihi | date:'dd-MM-yyyy hh:mm'}}</span>
 							    
 							  </div>
 							</div>
@@ -160,9 +160,9 @@
 					<div class="box box-element" style="display: block;">
 						<div class="view">
 							<div class="form-group">
-								<label class="col-md-5 control-label" for="adresAciklamasi">Adres Açıklaması</label>
+								<label class="col-md-5 control-label" for="adresAciklama">Adres Açıklaması</label>
 								<div class="col-md-7">
-									<textArea class="form-control" id="adresAciklamasi" >{{adresAciklamasi}}</textArea>
+									<textArea class="form-control" id="adresAciklama" >{{adresAciklama}}</textArea>
 								</div>
 							</div>
 						</div>
@@ -177,7 +177,7 @@
 							<div class="form-group">
 								<label class="col-md-5 control-label" for="genelToplam">Genel Toplam</label>
 								<div class="col-md-7">
-									<span class="form-control" id="genelToplam" >{{genelToplam}}</span>
+									<span class="form-control" id="genelToplam" >{{genelToplam | currency}}</span>
 								</div>
 							</div>
 						</div>
