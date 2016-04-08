@@ -34,11 +34,11 @@
 			<artifactId>spring-aop</artifactId>
 			<version>${spring.version}</version>
 			<exclusions>
-            <exclusion>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-            </exclusion>
-        </exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -187,11 +187,11 @@
 			<artifactId>force-wsc</artifactId>
 			<version>36.2.0</version>
 			<exclusions>
-            <exclusion>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-            </exclusion>
-        </exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -238,12 +238,15 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-
-			<!-- Tomcat plugin <plugin> <groupId>org.apache.tomcat.maven</groupId> 
-				<artifactId>tomcat7-maven-plugin</artifactId> <version>2.2</version> <configuration> 
-				<url>http://46.101.221.179:8080/manager/html</url> <path>/${project.build.finalName}</path> 
-				<server>tomcat</server> </configuration> </plugin> -->
-
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
 		</plugins>
 
 		<finalName>order.dist</finalName>

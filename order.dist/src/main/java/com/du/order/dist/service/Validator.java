@@ -55,6 +55,9 @@ public class Validator implements IValidator{
 				if(StringUtils.isBlank(kalem.getSiparisKalemAdi())){
 					nullFields.add( sira +". kalem için siparisKalemAdi");
 				};
+				if(StringUtils.isBlank(kalem.getUrunId())){
+					nullFields.add( sira +". kalem için urunId");
+				};
 				if(StringUtils.isBlank(kalem.getUrunAdi())){
 					nullFields.add( sira +". kalem için urunAdi");
 				};

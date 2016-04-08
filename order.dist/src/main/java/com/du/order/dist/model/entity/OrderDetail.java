@@ -19,11 +19,20 @@ public class OrderDetail extends BaseModel {
 	private Order order;
 	private String siparisKalemAdi;
 	private String urunAdi;
+	private String urunId;
 	private BigDecimal adet;
 	private BigDecimal birimFiyati;
 	private BigDecimal araToplam;
 	private BigDecimal indirim;
 	private BigDecimal kalemGenelToplam;
+
+	public String getUrunId() {
+		return urunId;
+	}
+
+	public void setUrunId(String urunId) {
+		this.urunId = urunId;
+	}
 
 	public Order getOrder() {
 		return order;

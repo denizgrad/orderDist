@@ -105,8 +105,6 @@ public class SalesForceClient implements ISalesForceClient {
 			remoteOrder.setKDV__c(order.getIndirim().doubleValue());
 			remoteOrder.setIndirim__c(order.getIndirim().doubleValue());
 			remoteOrder.setGenel_Toplam__c(order.getGenelToplam().doubleValue());
-//			remoteOrder.setConnectionReceivedId(order.getOid());
-//			remoteOrder.setConnectionSentId(order.getRemoteId());
 
 			QueryResult siparisKalemWrapper = new QueryResult();
 			Sipari_Kalem__c[] siparisKalemList = new Sipari_Kalem__c[order.getOrderDetailList().size()];
@@ -124,8 +122,7 @@ public class SalesForceClient implements ISalesForceClient {
 
 				sk.setIndirim__c(od.getIndirim().doubleValue());
 				sk.setKalem_Fiyat__c(od.getKalemGenelToplam().doubleValue());
-				sk.setConnectionReceivedId(od.getOid());
-				sk.setConnectionSentId(od.getRemoteId());
+				sk.setSiparis__c(order.getRemoteId());
 				int i = 0;
 				siparisKalemList[i] = sk;
 				i++;
