@@ -8,19 +8,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.du.order.dist.model.base.BaseModel;
-@Entity
-@Table(name="DU_ORDER_DETAIL")
-public class OrderDetail extends BaseModel{
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-	@ManyToOne(cascade=CascadeType.DETACH)
+@Entity
+@Table(name = "DU_ORDER_DETAIL")
+public class OrderDetail extends BaseModel {
+
+	@ManyToOne(cascade = CascadeType.DETACH)
+	@JsonBackReference
 	private Order order;
-	
-	public Order getOrder() {
-		return order;
-	}
-	public void setOrder(Order order) {
-		this.order = order;
-	}
 	private String siparisKalemAdi;
 	private String urunAdi;
 	private BigDecimal adet;
@@ -28,49 +24,69 @@ public class OrderDetail extends BaseModel{
 	private BigDecimal araToplam;
 	private BigDecimal indirim;
 	private BigDecimal kalemGenelToplam;
-	
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
 	public String getSiparisKalemAdi() {
 		return siparisKalemAdi;
 	}
+
 	public void setSiparisKalemAdi(String siparisKalemAdi) {
 		this.siparisKalemAdi = siparisKalemAdi;
 	}
+
 	public String getUrunAdi() {
 		return urunAdi;
 	}
+
 	public void setUrunAdi(String urunAdi) {
 		this.urunAdi = urunAdi;
 	}
+
 	public BigDecimal getAdet() {
 		return adet;
 	}
+
 	public void setAdet(BigDecimal adet) {
 		this.adet = adet;
 	}
+
 	public BigDecimal getBirimFiyati() {
 		return birimFiyati;
 	}
+
 	public void setBirimFiyati(BigDecimal birimFiyati) {
 		this.birimFiyati = birimFiyati;
 	}
+
 	public BigDecimal getAraToplam() {
 		return araToplam;
 	}
+
 	public void setAraToplam(BigDecimal araToplam) {
 		this.araToplam = araToplam;
 	}
+
 	public BigDecimal getIndirim() {
 		return indirim;
 	}
+
 	public void setIndirim(BigDecimal indirim) {
 		this.indirim = indirim;
 	}
+
 	public BigDecimal getKalemGenelToplam() {
 		return kalemGenelToplam;
 	}
+
 	public void setKalemGenelToplam(BigDecimal kalemGenelToplam) {
 		this.kalemGenelToplam = kalemGenelToplam;
 	}
-	
-	
+
 }

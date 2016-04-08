@@ -40,6 +40,8 @@ public class Order extends BaseModel {
 	private BigDecimal genelToplam;
 	private String adres;
 	private String adresAciklama;
+	private String siparisAciklama;
+
 	/**
 	 * <pre>
 	  	("Sipariş Oluşturuldu")
@@ -189,6 +191,14 @@ public class Order extends BaseModel {
 
 	public void setOrderDetailList(List<OrderDetail> orderDetailList) {
 		this.orderDetailList = orderDetailList;
+	}
+
+	public String getSiparisAciklama() {
+		return siparisAciklama;
+	}
+
+	public void setSiparisAciklama(String siparisAciklama) {
+		this.siparisAciklama = siparisAciklama;
 	}
 
 }
