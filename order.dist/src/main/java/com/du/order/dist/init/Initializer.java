@@ -29,12 +29,8 @@ public class Initializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
 
         logger.info("onStartup");
-        // Create the root appcontext
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(AppConfig.class);
-        // since we registered RootConfig instead of passing it to the constructor
-        //rootContext.refresh();
-
         // Manage the lifecycle of the root appcontext
         servletContext.addListener(new ContextLoaderListener(rootContext));
         servletContext.setInitParameter("defaultHtmlEscape", "true");
@@ -50,6 +46,7 @@ public class Initializer implements WebApplicationInitializer {
         encodingFilter.setInitParameter("encoding", "UTF-8");
 
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
+
         mvcContext.register(WebMvcConfig.class);
 
         // The main Spring MVC servlet.

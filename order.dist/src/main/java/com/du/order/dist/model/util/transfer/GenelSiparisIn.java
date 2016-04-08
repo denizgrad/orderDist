@@ -30,6 +30,15 @@ public class GenelSiparisIn extends AIn{
 	private BigDecimal genelToplam;
 	private String adres;
 	private String adresAciklama;
+	private String siparisAciklama;
+	
+	public String getSiparisAciklama() {
+		return siparisAciklama;
+	}
+
+	public void setSiparisAciklama(String siparisAciklama) {
+		this.siparisAciklama = siparisAciklama;
+	}
 	/**
 	 * <pre>
 	  	("Sipariş Oluşturuldu")

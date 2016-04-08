@@ -105,7 +105,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 	
 	function getSiparisList() {
 //		$http.get('js/app/services/getSiparisList.json').success(
-		$http.post('v1/siparis/islem/getOrderList', {"orgOid": "123456789" }).success(
+		$http.post('v1/siparis/islem/getOrderList/123456789').success(
 				function(response) {
 					debugger;
 //					$scope.siparisCollection = response;
