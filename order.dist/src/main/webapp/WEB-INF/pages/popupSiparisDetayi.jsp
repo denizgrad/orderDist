@@ -18,15 +18,15 @@
 								  </div>
 								</div>
 								<div class="form-group row">
-								  <label class="col-md-5 control-label" for="siparisTarihi">Sipariş Tarihi</label>  
+								  <label class="col-md-5 control-label" for="siparisOlusmaTarihi">Sipariş Tarihi</label>  
 								  <div class="col-md-7">
-								  <span id="siparisTarihi" class="form-control input-md">{{siparisTarihi}}</span>
+								  <span id="siparisOlusmaTarihi" class="form-control input-md">{{siparisOlusmaTarihi}}</span>
 								  </div>
 								</div>
 								<div class="form-group row">
-								  <label class="col-md-5 control-label" for="siparisAciklamasi">Sipariş Açıklaması</label>  
+								  <label class="col-md-5 control-label" for="siparisAciklama">Sipariş Açıklaması</label>  
 								  <div class="col-md-7">
-								  <textArea id="siparisAciklamasi" class="form-control input-md" >{{siparisAciklama}}</textArea>
+								  <textArea id="siparisAciklama" class="form-control input-md" ng-disabled = "true">{{siparisAciklama}}</textArea>
 								  </div>
 								</div>
 						</div>
@@ -46,9 +46,9 @@
 							</div>
 							
 							<div class="form-group row">
-							  <label class="col-md-5 control-label" for="talepEdilenTeslimTarihi">Talep Edilen Teslim Tarihi</label>  
+							  <label class="col-md-5 control-label" for="siparisTalepTeslimTarihi">Talep Edilen Teslim Tarihi</label>  
 							  <div class="col-md-7">
-							  <span id="talepEdilenTeslimTarihi" class="form-control input-md">{{talepEdilenTeslimTarihi}}</span>
+							  <span id="siparisTalepTeslimTarihi" class="form-control input-md">{{siparisTalepTeslimTarihi}}</span>
 							    
 							  </div>
 							</div>
@@ -64,7 +64,7 @@
 							<div class="form-group">
 								<label class="col-md-5 control-label" for="adres">Adres</label>
 								<div class="col-md-7">
-									<textArea class="form-control" id="adres" >{{adres}}</textArea>
+									<textArea class="form-control" id="adres" ng-disabled = "true">{{adres}}</textArea>
 								</div>
 							</div>
 						</div>
@@ -74,9 +74,9 @@
 					<div class="box box-element" style="display: block;">
 						<div class="view">
 							<div class="form-group">
-								<label class="col-md-5 control-label" for="adresAciklamasi">Adres Açıklaması</label>
+								<label class="col-md-5 control-label" for="adresAciklama">Adres Açıklaması</label>
 								<div class="col-md-7">
-									<textArea class="form-control" id="adresAciklamasi" >{{adresAciklamasi}}</textArea>
+									<textArea class="form-control" id="adresAciklama" ng-disabled = "true">{{adresAciklama}}</textArea>
 								</div>
 							</div>
 						</div>

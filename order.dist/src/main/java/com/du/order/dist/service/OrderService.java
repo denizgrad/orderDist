@@ -15,6 +15,7 @@ import com.du.order.dist.interfaces.IOrderService;
 import com.du.order.dist.interfaces.ITransformer;
 import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.entity.OrderDetail;
+import com.du.order.dist.model.util.combo.OrderStatus;
 import com.du.order.dist.repository.OrderDetailRepository;
 import com.du.order.dist.repository.OrderRepository;
 
@@ -48,7 +49,6 @@ public class OrderService implements IOrderService {
 		repo.save(dbOrder);
 	}
 
-
 	@Override
 	public Order getOrderByOid(String oid) {
 		// TODO get child
@@ -64,12 +64,20 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public void updateOrderStatus(String oid, String status) {
-		// Order dbOrder = repo.getByOid(oid);
-		// Utility.copyPrimitiveProperties(order, dbOrder, false);
-		// repoDetail.deleteChildrenByOid(dbOrder.getOid());
-		// dbOrder.setOrderDetailList(order.getOrderDetailList());
-		// setChildrenParent(dbOrder);
-		// repo.save(dbOrder);
+
+		Order dbOrder = repo.getByOid(oid);
+		dbOrder.setSiparisDurum(status);
+		repo.save(dbOrder);
+
+	}
+
+	@Override
+	public void updateOrderBarcode(String oid, String barcode) {
+
+		Order dbOrder = repo.getByOid(oid);
+		dbOrder.setBarcodeNumber(barcode);
+		repo.save(dbOrder);
+
 	}
 
 	private void setChildrenParent(Order order) {
@@ -92,8 +100,10 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public void updateBarcode(String oid, String barcode) {
-		// TODO Auto-generated method stub
-		
+	public void deliverOrder(String oid) {
+
+		updateOrderStatus(oid, String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()));
+
 	}
+
 }

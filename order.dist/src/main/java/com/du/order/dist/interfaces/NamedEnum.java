@@ -2,5 +2,7 @@ package com.du.order.dist.interfaces;
 
 public interface NamedEnum {
 
-	public String getName();
+	public String getKey();
+
+	public int getValue();
 }

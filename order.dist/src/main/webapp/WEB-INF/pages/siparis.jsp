@@ -26,17 +26,23 @@
 	
     
 </head>
-<body ng-app="siparisModule" >
+<body ng-app="siparisModule">
 
-	<div ng-controller="siparisCtrl">
-		<div class="siparisTable" class="container">
-			
-			<div>
-				<div ui-grid="gridOptions" class="grid"></div>
+	<header>	</header>
+	
+
+		<div ng-controller="siparisCtrl">
+			<div class="siparisTable" class="container">
+				
+				<div>
+					<div ui-grid="gridOptions" class="grid"></div>
+				</div>
+				
 			</div>
-			
 		</div>
-	</div>
+	
+<footer>
+</footer>
 
 </body>
 </html>

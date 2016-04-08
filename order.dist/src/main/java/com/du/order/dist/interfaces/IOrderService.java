@@ -18,6 +18,8 @@ public interface IOrderService {
 
 	public Order getOrderByBarcode(String barcode);
 
-	public void updateBarcode(String oid, String barcode);
+	public void updateOrderBarcode(String oid, String barcode);
+
+	public void deliverOrder(String oid);
 
 }

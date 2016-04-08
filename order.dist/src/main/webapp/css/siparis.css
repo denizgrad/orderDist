@@ -2,3 +2,20 @@
 {
   background-color:red;
 }
+
+header {
+	background-image: url("../images/Borek.png");
+	background-repeat:no-repeat;
+	width: 100%;
+/* 	max-width:1200px; */
+	height: 130px;
+/* 	max-height: 130px; */
+}
+.siparisTable {
+/* 	visibility: hidden; */
+/* margin-top: 130px */
+}
+.ui-grid-header-cell {
+	background-color :#DA1111;
+	border-color : #000000
+}

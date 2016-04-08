@@ -1,23 +1,28 @@
 var sipApp = angular.module("siparisModule", ["ui.grid", 'ngAnimate', 'ui.bootstrap']);
 
-sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
+sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log, statusRepoService) {
 
-	getSiparisList();	
+	setInterval(function(){ getSiparisList(); }, 1000*60*2);
+	
+	var onFetchError = function(message) {
+		$scope.error = "Error Fetching Order statuses. Message:" + message;
+	};
 
-	function getSiparisStatus() {
+	var onFetchCompleted = function(data) {
+		$scope.statusData = data;
+		$scope.statusData.selectedOption = "";
+		getSiparisList();
 		
-		// TODO service name ve post
-		$http.get('js/app/services/getSiparisStatus.json').success(function(response) {
-					debugger;
-					$scope.statusData = response.data;
-					$scope.selectedStatus = response.selectedData;
-					getSiparisList();
-					
-				}).error(function(error) {
+	};
 
-		})
-		
-	}
+	var getStatus = function() {
+		statusRepoService.get().then(onFetchCompleted, onFetchError);
+	};
+
+	getStatus();     
+	
+	
+
 	$scope.gridOptions = {
 			enableGridMenu: true,
 			rowTemplate: rowTemplate( 'row' ),
@@ -26,26 +31,26 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 			enableColumnResizing: true,
 		    columnDefs: [
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
+		                 { field: 'siparisAdi', displayName: "Sipariş Adı", visible: false},
 		                 { field: 'siparisVerenFirma', displayName: "Sipariş Veren Firma", visible: true},
 		                 { field: 'siparisVerenKisi', displayName: "Sipariş Veren Kişi", visible: true},
 		                 { field: 'tedarikEdenFirma', displayName: "Tedarik Eden Firma", visible: false},
 		                 { field: 'tedarikEdenKisi', displayName: "Tedarik Eden Kişi", visible: false},
-		                 { field: 'siparisTarihi', displayName: "Sipariş Tarihi", visible: true},
-		                 { field: 'teslimTarihi', displayName: "Teslim Tarihi", visible: true},
-		                 { field: 'araToplam', displayName: "Ara Toplam", visible: false},
+		                 { field: 'siparisOlusmaTarihi', displayName: "Sipariş Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy hh:mm\''},
+		                 { field: 'siparisTeslimTarihi', displayName: "Teslim Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy hh:mm\'' },
+		                 { field: 'araToplam', displayName: "Ara Toplam", visible: false, cellFilter: 'currency'},
 		                 { field: 'kdv', displayName: "KDV", visible: false},
-		                 { field: 'indirim', displayName: "İndirim", visible: false},
-		                 { field: 'genelToplam', displayName: "Genel Toplam", visible: true},
+		                 { field: 'indirim', displayName: "İndirim", visible: false, cellFilter: 'currency'},
+		                 { field: 'genelToplam', displayName: "Genel Toplam", visible: true, cellFilter: 'currency'},
 		                 { field: 'adres', displayName: "Adres", visible: false},
 		                 { field: 'siparisAciklama', displayName: "Sipariş Açıkama", visible: true},
 		                 { field: 'adresAciklama', displayName: "Adres Açıkama", visible: false},
-		                 { field: 'talepEdilenTeslimTarihi', displayName: "Talep Edilen Teslim Tarihi", visible: true},
-		                 { field: 'siparisDurumu', displayName: "Sipariş Durumu", visible: true},
-		                 { field: 'getDetay', displayName: "", visible: true, enableHiding: false, enableSorting: false, enableColumnMenu:false,
-		                	 cellTemplate: arrangeButtonGroup('row')
+		                 { field: 'siparisTalepTeslimTarihi', displayName: "Talep Edilen Teslim Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy hh:mm\''},
+		                 { field: 'siparisDurum', displayName: "Sipariş Durumu", visible: true, cellTemplate: arrangeCombobox('row')},
+		                 { field: 'btnGroup', displayName: "", visible: true, enableHiding: false, enableSorting: false, enableColumnMenu:false,
+		                	 cellTemplate: arrangeButtonGroup('row'), minWidth : "150", width:"150"
 		                		 
 		                 }
-		               // cellFilter: 'date:"yyyy-MM-dd"'
 		    ], 
 		    data : [],
 		    onRegisterApi: function(gridApi){
@@ -53,7 +58,15 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 		    }
 		    
 	}
+	function arrangeCombobox(row) {
+
+		return '<div>'
+					+'<select ng-disabled = "true" ng-model = "row.entity.siparisDurum" style = "width:100%; height:32px">'
+					+	'<option ng-repeat = "option in grid.appScope.statusData" value="{{option.value}}">{{option.key}}</option>'
+					+'</select>'
+				+'</div>'
 	
+	}
 
 	function rowTemplate(row) {
 		return '<div ng-class="{ \'grey\':grid.appScope.rowFormatter( row ) }" ng-dblclick="grid.appScope.openPopupSiparisDetayi(row.entity)">'
@@ -64,13 +77,13 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 	function arrangeButtonGroup(row) {
 		return '<div class="btn-group">'+
 
-		 '<button type="button" class="btn btn-default" style=" margin-left: 2px;" ng-click="grid.appScope.openPopupSiparisDetayi(row.entity)">'+
+		 '<button type="button" class="btn btn-default" style=" height : 32px; margin-left: 2px;" ng-click="grid.appScope.openPopupSiparisDetayi(row.entity)">'+
 		 	'<span class="glyphicon glyphicon-eye-open" ></span>'+
 		 '</button>'+
-		 '<button type="button" class="btn btn-default" ng-click="grid.appScope.openPopupDurumGuncelle(row.entity)">'+
+		 '<button type="button" class="btn btn-default" style = "height : 32px;" ng-click="grid.appScope.openPopupDurumGuncelle(row.entity)">'+
 		 	'<span class="glyphicon glyphicon-pencil" ></span>'+
 		 '</button>'+
-		 '<button type="button" class="btn btn-default" style=" margin-right:2px; " ng-click="grid.appScope.openPopupBarkodOlustur(row.entity)">'+
+		 '<button type="button" class="btn btn-default" style=" height : 32px; margin-right:2px; " ng-click="grid.appScope.openPopupBarkodOlustur(row.entity)">'+
 		 	'<span class="glyphicon glyphicon-barcode" ></span>'+
 		 '</button>'+
 		 '</div>';
@@ -79,10 +92,10 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 		var warn = false;
 		
 		var now = new Date();
-		var delivery = new Date(row.entity.talepEdilenTeslimTarihi); 
+		var delivery = new Date(row.entity.siparisTalepTeslimTarihi); 
 		
 		var diff = (delivery - now)/1000;
-		if(diff < 0){
+		if((row.entity.siparisDurum != 6 && row.entity.siparisDurum != 7) && diff < 0){
 			warn = true;
 		}
 	    diff = Math.abs(Math.floor(diff));
@@ -95,21 +108,19 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 	      
 	    var min = Math.floor(leftSec/(60));
 	    var leftSec = leftSec - min * 60;
-	    debugger;
-	    if((days <= 0 && hrs <= 4) || (row.entity.siparisDurumu == 1)){
+	    
+	    if(((days <= 0 && hrs <= 4) || (row.entity.siparisDurum == 1))){
 	    	warn = true;
 	    }
-	    // TODO teslim edilmedi ise
 		return warn;
 	};
 	
 	function getSiparisList() {
-//		$http.get('js/app/services/getSiparisList.json').success(
-		$http.post('v1/siparis/islem/getOrderList', {"orgOid": "123456789" }).success(
+
+		$http.post('v1/siparis/islem/getOrderList').success(
 				function(response) {
-					debugger;
-//					$scope.siparisCollection = response;
-//					$scope.siparisList = response.siparisList;
+//					debugger;
+
 					var len = response.length;
 					if(len == 0){
 						len = 1;
@@ -118,25 +129,10 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 					$scope.gridOptions.data = response;
 					
 					
-//
-//					$scope.siparisTable = new NgTableParams({}, {
-//						total : response.siparisList.length,
-//						getData : function($defer, params) {
-//							debugger;
-//							return $defer.resolve($scope.siparisList);
-//						}
-//					});
 				}).error(function(error) {
 
 		})
 		
-//		$http.post('v1/siparis/islem/yarat', {
-//			"key" : "asd",
-//			"value" : "asd"
-//		}).success(function(response) {
-//			debugger;
-//
-//		});
 	}
 	
 	$scope.openPopupSiparisDetayi = function openPopupSiparisDetayi(row) {
@@ -176,17 +172,20 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 		
 		debugger;
 		// TODO null chceck
-		var status = row.siparisDurumu;
+		var oid = row.oid;
+		var status = row.siparisDurum;
+		
 	    var modalInstance = $uibModal.open({
 		      animation: true,
 		      templateUrl: 'popupStatusUpdate.html',
 		      controller: 'updateStatusInstanceCtrl',
-		      size: 'lg',
+		      size: 'sm',
 		      resolve: {
 		    	  // açılmadan once
-		    	  
-		    	  status : function(){
-
+		    	  rowOid: function(){
+		    		  return oid;  
+		    	  },
+		    	  rowStatu: function(){
 		    		  return status;
 		    	  }
 		      }
@@ -201,16 +200,19 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 		    });
 		    
 	}
-	$scope.openPopupBarkodOlustur = function openPopupBarkodOlustur(siparis) {
+	$scope.openPopupBarkodOlustur = function openPopupBarkodOlustur(entities) {
 		debugger;
+		var oid = entities.oid;
 	    var modalInstance = $uibModal.open({
 		      animation: true,
 		      templateUrl: 'popupBarcode.html',
 		      controller: 'barcodeInstanceCtrl',
-		      size: 'lg',
+		      size: 'md',
 		      resolve: {
 		    	  // açılmadan once
-		    	  
+		    	  oid : function(){
+		    		  return oid;
+		    	  }
 		      }
 		    });
 
@@ -223,20 +225,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $log) {
 		    });
 		
 	}
-	
 
-
-		  
-
-	/*
-	 * $http.get('js/app/services/getTeslimatStatus.js').success(
-	 * function(response) { debugger; $scope.statusData = response;
-	 * $scope.statusData.selectedOption = response[0].value;
-	 * 
-	 * }).error(function(error) { debugger;
-	 * 
-	 * }); debugger;
-	 */
 });
 
 sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstance, $http, siparisOid) {
@@ -256,13 +245,14 @@ sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstanc
 			enableGridMenu: true,
 		    columnDefs: [
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
-		                 { field: 'siparisOid', displayName: "siparisOid", visible: false, enableHiding: false},
+//		                 { field: 'siparisOid', displayName: "siparisOid", visible: false, enableHiding: false},
 		                 { field: 'siparisKalemAdi', displayName: "Ürün Adi", visible: true},
-		                 { field: 'adet', displayName: "Miktar", visible: true},
-		                 { field: 'birimFiyat', displayName: "Birim Fiyat", visible: true},
-		                 { field: 'araToplam', displayName: "Ara Toplam", visible: true},
-		                 { field: 'indirim', displayName: "İndirim", visible: true},
-		                 { field: 'kalemFiyat', displayName: "Ürün Fiyatı", visible: true}
+		                 { field: 'adet', displayName: "Adet", visible: true},
+		                 { field: 'birimFiyati', displayName: "Birim Fiyat", visible: true, cellFilter: 'currency'},
+		                 { field: 'araToplam', displayName: "Ara Toplam", visible: true, cellFilter: 'currency'},
+		                 { field: 'indirim', displayName: "İndirim", visible: true, cellFilter: 'currency'},
+		                 { field: 'kalemGenelToplam', displayName: "Ürün Fiyatı", visible: true, cellFilter: 'currency'},
+		                 { field: 'urunAdi', displayName: "Ürün Adı", visible: false}
 		    ], 
 		    data : []
 		    
@@ -273,17 +263,19 @@ sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstanc
 		if(siparisOid === null || "" == siparisOid){
 			console.log("siparisOid bos");
 		}else {
-			$http.get('v1/siparis/islem/getOrderByOid', {oid : siparisOid}).success(
+			$http.post('v1/siparis/islem/getOrderByOid/' + siparisOid).success(
 					function(response) {
 						debugger;
 						
 						$scope.oid = response.oid;
+						$scope.barcodeNumber = response.barcodeNumber;
+						$scope.siparisAdi = response.siparisAdi;
 						$scope.siparisVerenFirma = response.siparisVerenFirma;
 						$scope.siparisVerenKisi = response.siparisVerenKisi;
 						$scope.tedarikEdenFirma = response.tedarikEdenFirma;
 						$scope.tedarikEdenKisi = response.tedarikEdenKisi;
-						$scope.siparisTarihi = response.siparisTarihi;
-						$scope.teslimTarihi = response.teslimTarihi;
+						$scope.siparisOlusmaTarihi = response.siparisOlusmaTarihi;
+						$scope.siparisTeslimTarihi = response.siparisTeslimTarihi;
 						$scope.araToplam = response.araToplam;
 						$scope.kdv = response.kdv;
 						$scope.indirim = response.indirim;
@@ -291,10 +283,10 @@ sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstanc
 						$scope.adres = response.adres;
 						$scope.siparisAciklama = response.siparisAciklama;
 						$scope.adresAciklama = response.adresAciklama;
-						$scope.talepEdilenTeslimTarihi = response.talepEdilenTeslimTarihi;
-						$scope.siparisDurumu = response.siparisDurumu;
+						$scope.siparisTalepTeslimTarihi = response.siparisTalepTeslimTarihi;
+						$scope.siparisDurum = response.siparisDurum;
 						
-						$scope.teslimatGridOptions.data = response.siparisDetay;
+						$scope.teslimatGridOptions.data = response.orderDetailList;
 						
 					}).error(function(error) {
 				debugger;
@@ -305,7 +297,7 @@ sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstanc
 });
 
 
-sipApp.controller('updateStatusInstanceCtrl', function($scope, $http, $uibModalInstance, status, statusRepoService) {
+sipApp.controller('updateStatusInstanceCtrl', function($scope, $http, $window, $uibModalInstance, rowOid, rowStatu, statusRepoService) {
 debugger;
 
 	$scope.ok = function() {
@@ -322,7 +314,7 @@ debugger;
 
 	var onFetchCompleted = function(data) {
 		$scope.statusData = data;
-		$scope.statusData.selectedOption = status + "";
+		$scope.statusData.selectedOption = rowStatu + "";
 		
 	};
 
@@ -333,40 +325,24 @@ debugger;
 	getStatus();     
 	     
 	
-	
-/*
- * 
- * $http({ method: 'GET', url: '/Admin/GetTestAccounts', data: { applicationId:
- * 3 } }).success(function (result) { $scope.testAccounts = result; });
- */
 	$scope.durumGuncelle = function durumGuncelle(statu) {
-debugger;
-// TODO nullcheck
-
-		$http.get('js/app/services/updateSiparis.json').success(
+		debugger;
+		
+		$http.post('v1/siparis/islem/updateOrderStatus/' + rowOid + '-' + statu).success(
 		function(response) {
-			debugger;
-//			$scope.siparisList = response.siparisList;
-//
-//			$scope.siparisTable = new NgTableParams({}, {
-//				total : response.siparisList.length,
-//				getData : function($defer, params) {
-//					debugger;
-//					return $defer.resolve($scope.siparisList);
-//				}
-//			});
+			$uibModalInstance.close();
+			$window.location.reload();
+			
+			
 		}).error(function(error) {
-	debugger;
+			debugger;
 
-})
-
-
+		})
 	}
-	
 });
 
-sipApp.controller('barcodeInstanceCtrl', function($scope, $uibModalInstance) {
-
+sipApp.controller('barcodeInstanceCtrl', function($scope, $http, $uibModalInstance, oid) {
+	getOrder(oid);
 	$scope.ok = function() {
 		$uibModalInstance.close();
 	};
@@ -393,22 +369,62 @@ sipApp.controller('barcodeInstanceCtrl', function($scope, $uibModalInstance) {
 		var newWindow = window.open();
 	    newWindow.document.write(document.getElementById("order-barcode-container").innerHTML);
 	    newWindow.print();
+	    
+	}
+	$scope.barkodEslestir = function barkodEslestir(barcode){
+		
+		$http.post('v1/siparis/islem/updateOrderBarcode/' + oid + '-' + barcode).success(
+				function(response) {
+					
+				}).error(function(error) {
+					debugger;
+
+				})
+	}
+	
+	function getOrder(oid) {
+		debugger;
+		if(oid === null || "" == oid){
+			console.log("oid bos");
+		}else {
+			$http.post('v1/siparis/islem/getOrderByOid/' + oid).success(
+					function(response) {
+						debugger;
+						if(null !== response.barcode && "" !== response.barcodeNumber){
+							$scope.barcode = response.barcodeNumber;	
+						}
+					}).error(function(error) {
+				debugger;
+
+			});
+		}
 	}
 	
 });
 
-
-//------------------------ COMBOBOX SERVICE ------------------------
+// ------------------------ FILTER ------------------------
+sipApp.filter('currency', function () {
+    return function (input) {
+    	var str = "";
+    	if(null != input && "" != input){
+    		str = input + " TL"; 
+    	}
+      //Do your formatting here.
+      return str;
+    };
+});
+// ------------------------ COMBOBOX SERVICE ------------------------
 
 
 var statusRepoService = function($http){
     
-    var getStatus = function(){
-          return $http.get("js/app/services/getSiparisStatus.json")
-                      .then(function(response){
-                         return response.data.data; 
-                      });
-    };
+	var getStatus = function() {
+		return $http.post("v1/siparis/islem/fillCombo/OrderStatus").then(
+				function(response) {
+//					debugger;
+					return response.data;
+				});
+	};
 
     return {
         get: getStatus
