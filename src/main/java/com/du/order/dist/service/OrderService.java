@@ -1,11 +1,14 @@
 package com.du.order.dist.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +38,19 @@ public class OrderService implements IOrderService {
 	public void create(Order order) {
 		setChildrenParent(order);
 		order.setCreated(new Date());
+		String barcodeNumber = generateBarcode(order);
+		order.setBarcodeNumber(barcodeNumber);
 		repo.save(order);
+	}
+
+	private String generateBarcode(Order order) {
+		String remoteIdCopy = order.getRemoteId();
+		if(StringUtils.isNotBlank(order.getRemoteId())){
+			while(remoteIdCopy.length() < 8){
+				remoteIdCopy = remoteIdCopy +"x";
+			}
+		}
+		return String.valueOf(remoteIdCopy.hashCode());
 	}
 
 	@Override
