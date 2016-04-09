@@ -4,9 +4,18 @@
 }
 
 header {
-	background-image: url("../images/Borek.png");
+/* 	background-color: #000000 */
+background-image: url("../images/header.png");
 	background-repeat:no-repeat;
-	width: 100%;
+	width: 1200px;
+/* 	max-width:1200px; */
+	height: 130px;
+/* 	max-height: 130px; */
+}
+header div .logo {
+	background-image: url("../images/header.png");
+	background-repeat:no-repeat;
+	width: 1200px;
 /* 	max-width:1200px; */
 	height: 130px;
 /* 	max-height: 130px; */

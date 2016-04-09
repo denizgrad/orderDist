@@ -7,6 +7,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +89,9 @@ public class AuthController {
 		if(username != null && password != null){
 			
 			if( (username.equals(env.getProperty("admin.username")) &&	password.equals(env.getProperty("admin.password")))
-					|| (sfClient.controlCredentials(username, password))){
+					|| (StringUtils.isNotBlank(sfClient.controlCredentials(username, password)))){
 				// Set a session attribute to check authentication then redirect to the welcome uri; 
+				loginform.setUserId(sfClient.controlCredentials(username, password));
 				request.getSession().setAttribute("LOGGEDIN_USER", loginform);
 				return "redirect:/siparis";
 			}else{

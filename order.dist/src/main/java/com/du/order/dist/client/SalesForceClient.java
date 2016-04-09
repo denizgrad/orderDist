@@ -36,7 +36,7 @@ public class SalesForceClient implements ISalesForceClient {
 	static EnterpriseConnection connection;
 
 	@Override
-	public boolean controlCredentials(String userName, String password) {
+	public String controlCredentials(String userName, String password) {
 		try {
 
 			ConnectorConfig config = new ConnectorConfig();

@@ -28,9 +28,9 @@
 </head>
 <body ng-app="siparisModule">
 
-	<header>	</header>
+	<header> </header>
 	
-
+<!-- <div class = "logo"></div>	 -->
 		<div ng-controller="siparisCtrl">
 			<div class="siparisTable" class="container">
 				

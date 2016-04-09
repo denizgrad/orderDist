@@ -34,7 +34,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		    response.sendRedirect("/order.dist/");
 		    return false;
 		   } else {
-			   ServiceProvider.setCurrentUserName(userData.getUsername());
+			   ServiceProvider.setCurrentUserName(userData.getUserId());
 		   }
 	  }
 	  return true;
