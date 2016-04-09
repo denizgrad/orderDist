@@ -1,30 +1,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
+	<head>
+	
+		<meta content="text/html; charset=UTF-8">
+		<title>Sipariş Teslim Et</title>
+		
+		<script src="js/lib/angular/1.5.3/angular.min.js"></script>
+		<link href="css/lib/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="js/lib/bootstrap/3.3.6/bootstrap.min.js" ></script>
+		
+		<link rel="styleSheet" href="css/lib/angular/ui-grid/ui-grid-stable.min.css"/>
+		<script type="text/javascript" src="js/lib/angular/ui-grid/ui-grid-stable.min.js"></script>
+		
+		<script src="js/app/controllers/teslimat.controller.js"></script>
 
-<script src="js/lib/angular/angular.min.js"></script>
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<script src="js/lib/bootstrap/bootstrap.min.js" type="text/javascript"></script>
-<!-- <link rel="stylesheet" href="css/ng-table.min.css"> -->
-<!-- <script src="js/lib/angular/ng-table.min.js"></script> -->
-
-<link rel="styleSheet" href="js/lib/angular/ui-grid/ui-grid-stable.min.css"/>
-<script src="js/lib/angular/ui-grid/ui-grid-stable.min.js"></script>
-
-<!-- <script src="js/lib/angular/smart-table/smart-table.module.js"></script> -->
-<!-- <script src="js/lib/angular/smart-table/stTable.js"></script> -->
-
-
-<script src="js/app/controllers/teslimat.controller.js"></script>
-
-<meta content="text/html; charset=UTF-8">
-
-<title>Sipariş Teslim Et</title>
-</head>
+	</head>
 <body ng-app="teslimatModule">
 
 	<div ng-controller="teslimatCtrl">
@@ -42,8 +35,7 @@
 								<input type="text" name="barkod" ng-model="barkod" required ng-blur="getSiparis(form)" ng-class="{
 	                                'has-error':  form.barkod.$invalid  && form.barkod.$dirty,
 	                                'has-success':form.barkod.$valid  &&  form.barkod.$dirty}"
-									ng-pattern="/^[0-9]*$/" ng-minlength={{barLen}}
-									maxlength={{barLen}} class="form-control input-md"/>
+									ng-pattern="/^[0-9]*$/" class="form-control input-md"/>
 								<div ng-show="form.barkod.$error.required && form.barkod.$dirty">
 									<span class="help-block">Lütfen barkod numarası giriniz.</span>
 								</div>
