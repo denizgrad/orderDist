@@ -28,7 +28,7 @@
 </head>
 <body ng-app="siparisModule">
 
-	<header> </header>
+	<header> <div> <div class = "logo"></div> </div></header>
 	
 <!-- <div class = "logo"></div>	 -->
 		<div ng-controller="siparisCtrl">
