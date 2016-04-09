@@ -16,11 +16,6 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         System.out.println(" *** ContextListener.contextInitialized");
-        ServletContext context = servletContextEvent.getServletContext();
-        String log4jConfigFile = context.getInitParameter("log4j-config-location");
-        String fullPath = context.getRealPath("") + File.separator + log4jConfigFile;
-         
-        PropertyConfigurator.configure(fullPath);
     }
 
     @Override
