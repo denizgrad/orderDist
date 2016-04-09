@@ -51,12 +51,12 @@ public class SalesForceClient implements ISalesForceClient {
 
 			LoginResult lr = connection.login(userName, password);
 			if (StringUtils.isNotBlank(lr.getUserId())) {
-				return true;
+				return lr.getUserId();
 			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
 		}
-		return false;
+		return null;
 	}
 
 	@Override
