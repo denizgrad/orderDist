@@ -8,8 +8,7 @@
 		<input type="text" name="barkod" ng-model="barcode" required ng-class="{
 	                                'has-error':  barkod.$invalid  && barkod.$dirty,
 	                                'has-success':barkod.$valid  &&  barkod.$dirty}"
-									ng-pattern="/^[0-9]*$/" ng-minlength=10
-									maxlength=10 class="form-control input-md"/>
+									ng-pattern="/^[0-9]*$/" class="form-control input-md"/>
 	</div>
 	<div id = "order-barcode-container">
 		<div id = "order-barcode"></div>
