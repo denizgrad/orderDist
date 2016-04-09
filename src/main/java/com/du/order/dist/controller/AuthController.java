@@ -7,6 +7,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,12 +88,15 @@ public class AuthController {
 		
 		// A simple authentication manager
 		if(username != null && password != null){
-			
+			String[] userCreds = sfClient.controlCredentials(username, password);
 			if( (username.equals(env.getProperty("admin.username")) &&	password.equals(env.getProperty("admin.password")))
-					|| (StringUtils.isNotBlank(sfClient.controlCredentials(username, password)))){
-				// Set a session attribute to check authentication then redirect to the welcome uri; 
-				loginform.setUserId(sfClient.controlCredentials(username, password));
+					|| (ArrayUtils.isNotEmpty(userCreds))){
+				loginform.setUserId(userCreds[0]);
+				loginform.setRoleId(userCreds[1]);
 				request.getSession().setAttribute("LOGGEDIN_USER", loginform);
+				if(loginform.getRoleId().equals("1")){
+					return "redirect:/teslimat";
+				}
 				return "redirect:/siparis";
 			}else{
 				return "redirect:/login.failed";
