@@ -36,7 +36,7 @@ public class SalesForceClient implements ISalesForceClient {
 	static EnterpriseConnection connection;
 
 	@Override
-	public String controlCredentials(String userName, String password) {
+	public String[] controlCredentials(String userName, String password) {
 		try {
 
 			ConnectorConfig config = new ConnectorConfig();
@@ -51,7 +51,7 @@ public class SalesForceClient implements ISalesForceClient {
 
 			LoginResult lr = connection.login(userName, password);
 			if (StringUtils.isNotBlank(lr.getUserId())) {
-				return lr.getUserId();
+				return new String []{lr.getUserId(),lr.getUserInfo().getRoleId()};
 			}
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());

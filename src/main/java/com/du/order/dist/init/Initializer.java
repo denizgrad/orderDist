@@ -17,6 +17,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.util.Log4jConfigListener;
 
 import com.du.order.dist.config.AppConfig;
 import com.du.order.dist.config.WebMvcConfig;
@@ -27,7 +28,6 @@ public class Initializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-
         logger.info("onStartup");
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(AppConfig.class);
@@ -35,7 +35,11 @@ public class Initializer implements WebApplicationInitializer {
         servletContext.addListener(new ContextLoaderListener(rootContext));
         servletContext.setInitParameter("defaultHtmlEscape", "true");
         servletContext.setInitParameter("encoding", "UTF-8");
+        
+        servletContext.setInitParameter("log4j-config-location", "/WEB-INF/log4j.properties");
 
+        servletContext.addListener(Log4jConfigListener.class);
+        
         FilterRegistration.Dynamic fr = servletContext.addFilter("encodingFilter",new CharacterEncodingFilter());
         fr.setInitParameter("encoding", "UTF-8");
         fr.setInitParameter("forceEncoding", "true");
