@@ -57,7 +57,6 @@ tesApp.controller("teslimatCtrl", function($scope, $http, $window, statusRepoSer
 		                 { field: 'kalemGenelToplam', displayName: "Ürün Fiyatı", visible: true, cellFilter: 'currency'},
 		                 { field: 'urunAdi', displayName: "Ürün Adı", visible: true}
 		    ], 
-//		    i18n: i18nService.setCurrentLang('tr'),
 		    data : []
 		    
 	}
@@ -67,30 +66,34 @@ tesApp.controller("teslimatCtrl", function($scope, $http, $window, statusRepoSer
 		if (form.$valid) {
 			$http.post('v1/siparis/islem/getOrderByBarcode/' + form.barkod.$viewValue).success(
 					function(response) {
-						
-						$scope.oid = response.oid;
-						$scope.barkod = response.barcodeNumber;
-						$scope.siparisAdi = response.siparisAdi;
-						$scope.siparisVerenFirma = response.siparisVerenFirma;
-						$scope.siparisVerenKisi = response.siparisVerenKisi;
-						$scope.tedarikEdenFirma = response.tedarikEdenFirma;
-						$scope.tedarikEdenKisi = response.tedarikEdenKisi;
-						$scope.siparisOlusmaTarihi = response.siparisOlusmaTarihi;
-						$scope.siparisTeslimTarihi = response.siparisTeslimTarihi;
-						$scope.araToplam = response.araToplam;
-						$scope.kdv = response.kdv;
-						$scope.indirim = response.indirim;
-						$scope.genelToplam = response.genelToplam;
-						$scope.adres = response.adres;
-						$scope.siparisAciklama = response.siparisAciklama;
-						$scope.adresAciklama = response.adresAciklama;
-						$scope.siparisTalepTeslimTarihi = response.siparisTalepTeslimTarihi;
-						$scope.siparisDurum = response.siparisDurum;
-						
-						$scope.teslimatGridOptions.data = response.orderDetailList;
-						
+						if("" !== response && null !== response){
+							
+							$scope.oid = response.oid;
+							$scope.barkod = response.barcodeNumber;
+							$scope.siparisAdi = response.siparisAdi;
+							$scope.siparisVerenFirma = response.siparisVerenFirma;
+							$scope.siparisVerenKisi = response.siparisVerenKisi;
+							$scope.tedarikEdenFirma = response.tedarikEdenFirma;
+							$scope.tedarikEdenKisi = response.tedarikEdenKisi;
+							$scope.siparisOlusmaTarihi = response.siparisOlusmaTarihi;
+							$scope.siparisTeslimTarihi = response.siparisTeslimTarihi;
+							$scope.araToplam = response.araToplam;
+							$scope.kdv = response.kdv;
+							$scope.indirim = response.indirim;
+							$scope.genelToplam = response.genelToplam;
+							$scope.adres = response.adres;
+							$scope.siparisAciklama = response.siparisAciklama;
+							$scope.adresAciklama = response.adresAciklama;
+							$scope.siparisTalepTeslimTarihi = response.siparisTalepTeslimTarihi;
+							$scope.siparisDurum = response.siparisDurum;
+							
+							$scope.teslimatGridOptions.data = response.orderDetailList;
+						}
+						else {
+							alert("Kayıt bulunamadı!");
+						}
 					}).error(function(error) {
-
+						alert("Kayıt getirilirken hata oluştu. Lütfen tekrar deneyiniz!");
 			});
 		}
 	}
