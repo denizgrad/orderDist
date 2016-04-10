@@ -16,11 +16,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	@Query("SELECT o FROM Order o WHERE o.oid = :oid")
 	public Order getByOid(@Param("oid") String oid);
 
-	// TODO org oid ekle veya sube
-	@Query("SELECT o FROM Order o")
-	public List<Order> getListByBranchOid();
+	// TODO order class ında org oid yi iliştir
+	@Query("SELECT o FROM Order o WHERE o.orgOid= :orgOid")
+	public List<Order> getListByBranchOid(@Param("orgOid") String orgOid);
 
-	// TODO org oid ekle veya sube
 	@Query("SELECT o FROM Order o WHERE o.barcodeNumber = :barcode")
 	public Order getByBarcode(@Param("barcode") String barcode);
 	

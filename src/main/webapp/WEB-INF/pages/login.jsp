@@ -12,7 +12,7 @@
 		
 	</head>
 <body>
-
+	<div class = "logo"></div>
 	<form:form action="login" method="post" class="form-signin" modelAttribute="loginAttribute">
 		<div class="wrapper">
 			<h2 class="form-signin-heading">Giriş</h2>
@@ -34,7 +34,7 @@
 			</c:if>
 			<form:input type="text" class="form-control" path="username" placeholder="Kullanıcı Adı" required="true" autofocus="true" />
 			<form:input type="password" class="form-control" path="password" placeholder="Parola" required="true" />
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Giriş Yap</button>
+			<button class="btn btn-lg btn-primary btn-block girisButton" type="submit">Giriş Yap</button>
 		</div>
 	</form:form>
 

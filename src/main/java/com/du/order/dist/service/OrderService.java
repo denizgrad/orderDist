@@ -1,7 +1,5 @@
 package com.du.order.dist.service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +64,6 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public Order getOrderByOid(String oid) {
-		// TODO get child
 		Order dbOrder = repo.getByOid(oid);
 		return dbOrder;
 	}
@@ -106,7 +103,7 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public List<Order> getOrderList(String orgOid) {
-		List<Order> list = repo.getListByBranchOid();
+		List<Order> list = repo.getListByBranchOid(orgOid);
 
 		for (Order order : list) {
 			order.setOrderDetailList(new ArrayList<OrderDetail>());

@@ -18,8 +18,8 @@
 		<script type="text/javascript" src="js/lib/bootstrap/3.3.6/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/lib/jquery/jquery-barcode.js"></script>
 	
-		<link rel="styleSheet" href="css/lib/angular/ui-grid/ui-grid-stable.min.css"/>
-		<script type="text/javascript" src="js/lib/angular/ui-grid/ui-grid-stable.min.js"></script>
+		<link rel="styleSheet" href="css/lib/angular/ui-grid/3.1.1/ui-grid.min.css"/>
+		<script type="text/javascript" src="js/lib/angular/ui-grid/3.1.1/ui-grid.min.js"></script>
 	
 		<link rel="styleSheet" href="css/siparis.css"/>
 		<script type="text/javascript" src="js/app/controllers/siparis.controller.js"></script>
@@ -28,21 +28,13 @@
 	</head>
 <body ng-app="siparisModule">
 
-	<header> <div> <div class = "logo"></div> </div></header>
+	<div class = "logo"></div>
 	
-<!-- <div class = "logo"></div>	 -->
-		<div ng-controller="siparisCtrl">
-			<div class="siparisTable" class="container">
-				
-				<div>
-					<div ui-grid="gridOptions" class="grid"></div>
-				</div>
-				
-			</div>
+	<div ng-controller="siparisCtrl" class = "siparis-block">
+		<div ui-i18n="{{lang}}" class = "tableDiv">
+			<div ui-grid="gridOptions" class="siparisList"></div>
 		</div>
+	</div>
 	
-<footer>
-</footer>
-
 </body>
 </html>

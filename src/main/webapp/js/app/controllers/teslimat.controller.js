@@ -1,7 +1,10 @@
 var tesApp = angular.module("teslimatModule", [ "ui.grid"]);
 
-tesApp.controller("teslimatCtrl", function($scope, $http,$window , statusRepoService) {
-
+tesApp.controller("teslimatCtrl", function($scope, $http, $window, statusRepoService, i18nService) {
+	 
+	$scope.langs = i18nService.getAllLangs();
+	$scope.lang = 'tr';
+	  
 	var onFetchError = function(message) {
 		$scope.error = "referans datalar getirilemedi. Message:" + message;
 	};
@@ -25,14 +28,12 @@ tesApp.controller("teslimatCtrl", function($scope, $http,$window , statusRepoSer
 	$scope.teslimEt = function teslimEdildi(form) {
 
 		if (form.$valid) {
-			// TODO teslim et de çcalışıcak olan servisi yaz
 			var oid = $scope.oid;
 			$http.post('v1/siparis/islem/deliverOrder/' + oid).success(
 					function(response) {
 						
 						$window.location.reload();
 					}).error(function(error) {
-				
 
 			});
 			
@@ -41,21 +42,22 @@ tesApp.controller("teslimatCtrl", function($scope, $http,$window , statusRepoSer
 		}
 
 	}
-	
+
 	$scope.teslimatGridOptions = {
 			//enableSorting: true,
 			enableGridMenu: true,
 		    columnDefs: [
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
 //		                 { field: 'siparisOid', displayName: "siparisOid", visible: false, enableHiding: false},
-		                 { field: 'siparisKalemAdi', displayName: "Ürün Adi", visible: true},
+		                 { field: 'siparisKalemAdi', displayName: "Kalem Adi", visible: true},
 		                 { field: 'adet', displayName: "Adet", visible: true},
 		                 { field: 'birimFiyati', displayName: "Birim Fiyat", visible: true, cellFilter: 'currency'},
 		                 { field: 'araToplam', displayName: "Ara Toplam", visible: true, cellFilter: 'currency'},
 		                 { field: 'indirim', displayName: "İndirim", visible: true, cellFilter: 'currency'},
 		                 { field: 'kalemGenelToplam', displayName: "Ürün Fiyatı", visible: true, cellFilter: 'currency'},
-		                 { field: 'urunAdi', displayName: "Ürün Adı", visible: false}
+		                 { field: 'urunAdi', displayName: "Ürün Adı", visible: true}
 		    ], 
+//		    i18n: i18nService.setCurrentLang('tr'),
 		    data : []
 		    
 	}
@@ -94,6 +96,8 @@ tesApp.controller("teslimatCtrl", function($scope, $http,$window , statusRepoSer
 	}
 	
 });
+
+
 //------------------------ FILTER ------------------------
 tesApp.filter('currency', function () {
     return function (input) {

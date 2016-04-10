@@ -1,0 +1,59 @@
+.teslimat-block {
+	display: block;
+    margin-left: 7%;
+    margin-right: 7%;
+}
+
+div.logo {
+	background-image: url("../images/logo.png");
+	height:150px;
+}
+
+label {
+	font-size: smaller;
+	font-weight: 100;	
+	vertical-align: middle;
+    line-height: 30px;
+    color: #2e1e1f;
+}
+body {
+	font-family: helvetica;
+	background-image: url("../images/background.png");
+	
+}
+.tableDiv {
+	margin-bottom: 7%;
+	margin-left: 7%;
+	margin-right: 7%;
+}
+
+legend.title {
+	color : #2e1e1f;
+    border-bottom: 1px solid #2e1e1f;
+}
+.sendButton, .sendButton:focus, .sendButton:hover, .sendButton[disabled]:hover{
+	background-color: #e55a01;
+    border-color: #e55a01;
+}
+.siparisDetay{
+    color: #2e1e1f;
+}
+.ui-grid-header-cell {
+	background-color :#f3c149;
+	border-color : #2e1e1f;
+}
+.ui-grid-menu-button .ui-grid-menu .ui-grid-menu-mid {
+    overflow: hidden;
+    border: 1px solid #d4d4d4;
+}
+.ui-grid-menu-button {
+	
+    position: absolute;
+    right: 0;
+    top: 0;
+	background-color :#f3c149;
+	border-left-color: #2e1e1f;
+    cursor: pointer;
+    height: 31px;
+    font-weight: normal;
+}
