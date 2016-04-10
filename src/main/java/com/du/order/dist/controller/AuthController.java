@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,36 +25,39 @@ import com.du.order.dist.service.ServiceProvider;
 public class AuthController {
 	@Autowired
 	Environment env;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-	
+
 	/**
 	 * The request mapper for welcome page
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/siparis", method = RequestMethod.GET)
-	  public String siparis() {
-	    return "siparis";
-	  }
-	
+	public String siparis() {
+		return "siparis";
+	}
+
 	@RequestMapping(value = "/teslimat", method = RequestMethod.GET)
-	  public String teslimat() {
-	    return "teslimat";
-	  }
+	public String teslimat() {
+		return "teslimat";
+	}
+
 	@RequestMapping(value = "/popupBarcode", method = RequestMethod.GET)
-	  public String popupBarcode() {
-	    return "popupBarcode";
-	  }
-	
+	public String popupBarcode() {
+		return "popupBarcode";
+	}
+
 	@RequestMapping(value = "/popupStatusUpdate", method = RequestMethod.GET)
-	  public String popupStatusUpdate() {
-	    return "popupStatusUpdate";
-	  }
-	
+	public String popupStatusUpdate() {
+		return "popupStatusUpdate";
+	}
+
 	@RequestMapping(value = "/popupSiparisDetayi", method = RequestMethod.GET)
-	  public String popupSiparisDetayi() {
-	    return "popupSiparisDetayi";
-	  }
+	public String popupSiparisDetayi() {
+		return "popupSiparisDetayi";
+	}
+
 	/**
 	 * Simply selects the login view to render by returning its name.
 	 */
@@ -68,65 +70,76 @@ public class AuthController {
 		model.addAttribute("loginAttribute", loginform);
 		return "login";
 	}
+
 	@Autowired
 	ISalesForceClient sfClient;
+
 	/**
 	 * The POST method to submit login credentials.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(Model model, LoginForm loginform, Locale locale, HttpServletRequest request) throws Exception {
 		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG,locale);
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		String formattedDate = dateFormat.format(date);
-		
+
 		String username = loginform.getUsername();
 		String password = loginform.getPassword();
-	
-		
-		logger.info("Login attempt for username "+ username+" at: "+formattedDate);
-		
+
+		logger.info("Login attempt for username " + username + " at: " + formattedDate);
+
 		// A simple authentication manager
-		if(username != null && password != null){
+		if (username != null && password != null) {
 			String[] userCreds = sfClient.controlCredentials(username, password);
-			if( (username.equals(env.getProperty("admin.username")) &&	password.equals(env.getProperty("admin.password")))
-					|| (ArrayUtils.isNotEmpty(userCreds))){
-				loginform.setUserId(userCreds[0]);
-				loginform.setRoleId(userCreds[1]);
+			if ((username.equals(env.getProperty("admin.username"))
+					&& password.equals(env.getProperty("admin.password"))) || (ArrayUtils.isNotEmpty(userCreds))) {
+				// TODO sf den gelince düzelicek
+				// loginform.setUserId(userCreds[0]);
+				// loginform.setRoleId(userCreds[1]);
+
+				loginform.setRoleId("");
+				// -----
+
 				request.getSession().setAttribute("LOGGEDIN_USER", loginform);
-				logger.info(String.format("logging success username: %s, userId: %s, roleId : %s", loginform.getUsername(), loginform.getUserId(),loginform.getRoleId()));
-				if(loginform.getRoleId().equals("1")){
+				logger.info(String.format("logging success username: %s, userId: %s, roleId : %s",
+						loginform.getUsername(), loginform.getUserId(), loginform.getRoleId()));
+
+				if (loginform.getRoleId().equals("1")) {
 					logger.info("redirect: teslimat");
 					return "redirect:/teslimat";
 				}
 				logger.info("redirect: siparis");
 				return "redirect:/siparis";
-			}else{
+			} else {
 				logger.error("logging failded.");
 				return "redirect:/login.failed";
 			}
-		}else{
+		} else {
 			return "redirect:/login.failed";
 		}
 	}
-		
+
 	/**
 	 * The login failed controller
+	 * 
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/login.failed", method = RequestMethod.GET)
+	@RequestMapping(value = "/login.failed", method = RequestMethod.GET)
 	public String loginFailed(Model model, LoginForm loginForm) {
 		logger.debug("Showing the login failed page");
 		model.addAttribute("error", true);
 		model.addAttribute("loginAttribute", loginForm);
 		return "login";
 	}
-	@RequestMapping(value="/logout", method = RequestMethod.GET)
-	public String loginFailed(HttpServletRequest request,HttpServletResponse response) {
-		logger.info("User logging out: "+ServiceProvider.getCurrentUserName() );
-		  request.getSession().removeAttribute("LOGGEDIN_USER");
-		  ServiceProvider.setCurrentUserName(null);
-		  return "login";
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String loginFailed(HttpServletRequest request, HttpServletResponse response) {
+		logger.info("User logging out: " + ServiceProvider.getCurrentUserName());
+		request.getSession().removeAttribute("LOGGEDIN_USER");
+		ServiceProvider.setCurrentUserName(null);
+		return "login";
 	}
 }

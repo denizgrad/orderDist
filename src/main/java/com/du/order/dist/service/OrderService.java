@@ -107,16 +107,26 @@ public class OrderService implements IOrderService {
 		}
 	}
 
+//	@Override
+//	public List<Order> getOrderList(String orgOid) {
+//		List<Order> list = repo.getListByBranchOid(orgOid);
+//
+//		for (Order order : list) {
+//			order.setOrderDetailList(new ArrayList<OrderDetail>());
+//		}
+//		return list;
+//	}
+	
+	// TODO fix it
 	@Override
 	public List<Order> getOrderList(String orgOid) {
-		List<Order> list = repo.getListByBranchOid(orgOid);
+		List<Order> list = repo.getListByBranchOid();
 
 		for (Order order : list) {
 			order.setOrderDetailList(new ArrayList<OrderDetail>());
 		}
 		return list;
 	}
-
 	@Override
 	public void deliverOrder(String oid) {
 
