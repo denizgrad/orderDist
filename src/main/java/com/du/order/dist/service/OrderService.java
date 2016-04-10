@@ -9,11 +9,14 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.du.order.dist.Utility;
+import com.du.order.dist.controller.AuthController;
 import com.du.order.dist.interfaces.IOrderService;
 import com.du.order.dist.interfaces.ITransformer;
 import com.du.order.dist.model.entity.Order;
@@ -34,6 +37,7 @@ public class OrderService implements IOrderService {
 	@Autowired
 	ITransformer transformer;
 
+	private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 	@Override
 	public void create(Order order) {
 		setChildrenParent(order);
@@ -41,6 +45,7 @@ public class OrderService implements IOrderService {
 		String barcodeNumber = generateBarcode(order);
 		order.setBarcodeNumber(barcodeNumber);
 		repo.save(order);
+		logger.info("order saved");
 	}
 
 	private String generateBarcode(Order order) {
@@ -62,6 +67,7 @@ public class OrderService implements IOrderService {
 		setChildrenParent(dbOrder);
 		dbOrder.setCreated(new Date());
 		repo.save(dbOrder);
+		logger.info("order updated");
 	}
 
 	@Override

@@ -1,14 +1,10 @@
 package com.du.order.dist.listener;
 
-import java.io.File;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import org.apache.log4j.PropertyConfigurator;
 
 @WebListener
 public class ContextListener implements ServletContextListener, HttpSessionListener {

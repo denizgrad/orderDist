@@ -25,6 +25,7 @@ import com.du.order.dist.interfaces.IValidator;
 import com.du.order.dist.interfaces.NamedEnum;
 import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.util.AuthenticationError;
+import com.du.order.dist.model.util.OrderError;
 import com.du.order.dist.model.util.PairModel;
 import com.du.order.dist.model.util.Response;
 import com.du.order.dist.model.util.SystemError;
@@ -68,15 +69,15 @@ public class SfRestServiceController {
 			orderService.create(order);
 		} catch (AuthenticationError ex) {
 			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("authentication.exception"));
-			logger.error(ex.getMessage());
+			logger.error(ex.getMessage() + resourceMessage.getMessage("authentication.exception"));
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		} catch (ValidationError ex) {
 			resp = new Response(false, HttpStatus.OK.value(), Utility.validationErrorToString(ex));
-			logger.error(ex.getMessage());
+			logger.error(Utility.validationErrorToString(ex));
 			return new ResponseEntity<>(resp, HttpStatus.OK);
-		} catch (SystemError ex) {
-			resp = new Response(false, HttpStatus.OK.value(), ex.getMessage());
-			logger.error(ex.getMessage());
+		} catch (OrderError ex) {
+			resp = new Response(false, HttpStatus.OK.value(), ex.getDescription());
+			logger.error(ex.getDescription());
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		} catch (Exception ex) {
 			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("service.exception"));
@@ -98,19 +99,22 @@ public class SfRestServiceController {
 			Order order = transformer.transform(objectIn);
 			orderService.update(order);
 		} catch (AuthenticationError ex) {
-			resp = new Response(false, HttpStatus.OK.value(), "Kullanıcı adı yada parola yanlış");
-			logger.error(ex.getMessage());
+			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("authentication.exception"));
+			logger.error(ex.getMessage() + resourceMessage.getMessage("authentication.exception"));
+			logger.error(ex.toString());
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		} catch (ValidationError ex) {
 			resp = new Response(false, HttpStatus.OK.value(), Utility.validationErrorToString(ex));
-			logger.error(ex.getMessage());
+			logger.error(Utility.validationErrorToString(ex));
+			logger.error(ex.toString());
 			return new ResponseEntity<>(resp, HttpStatus.OK);
-		} catch (SystemError ex) {
-			resp = new Response(false, HttpStatus.OK.value(), ex.getMessage());
-			logger.error(ex.getMessage());
+		} catch (OrderError ex) {
+			resp = new Response(false, HttpStatus.OK.value(), ex.getDescription());
+			logger.error(ex.getDescription());
+			logger.error(ex.toString());
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		} catch (Exception ex) {
-			resp = new Response(false, HttpStatus.OK.value(), "Sistem Hatası");
+			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("service.exception"));
 			logger.error(ex.getMessage());
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		}

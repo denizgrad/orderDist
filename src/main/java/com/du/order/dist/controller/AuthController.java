@@ -94,11 +94,15 @@ public class AuthController {
 				loginform.setUserId(userCreds[0]);
 				loginform.setRoleId(userCreds[1]);
 				request.getSession().setAttribute("LOGGEDIN_USER", loginform);
+				logger.info(String.format("logging success username: %s, userId: %s, roleId : %s", loginform.getUsername(), loginform.getUserId(),loginform.getRoleId()));
 				if(loginform.getRoleId().equals("1")){
+					logger.info("redirect: teslimat");
 					return "redirect:/teslimat";
 				}
+				logger.info("redirect: siparis");
 				return "redirect:/siparis";
 			}else{
+				logger.error("logging failded.");
 				return "redirect:/login.failed";
 			}
 		}else{
