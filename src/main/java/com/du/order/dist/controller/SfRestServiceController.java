@@ -82,6 +82,7 @@ public class SfRestServiceController {
 		} catch (Exception ex) {
 			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("service.exception"));
 			logger.error(ex.getMessage());
+			logger.error(ex.toString());
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(resp, HttpStatus.OK);
@@ -116,6 +117,7 @@ public class SfRestServiceController {
 		} catch (Exception ex) {
 			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("service.exception"));
 			logger.error(ex.getMessage());
+			logger.error(ex.toString());
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(resp, HttpStatus.OK);
