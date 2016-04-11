@@ -85,6 +85,9 @@ public class OrderService implements IOrderService {
 
 		Order dbOrder = repo.getByOid(oid);
 		dbOrder.setSiparisDurum(status);
+		if(status.equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))){
+			dbOrder.setSiparisTeslimTarihi(new Date());
+		}
 		repo.save(dbOrder);
 
 	}

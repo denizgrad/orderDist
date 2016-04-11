@@ -30,9 +30,8 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoSe
 	$scope.gridOptions = {
 			enableGridMenu: true,
 			rowTemplate: rowTemplate( 'row' ),
-			enableHorizontalScrollbar : 2,
-			enableVerticalScrollbar : 2,
-			enableColumnResizing: true,
+			enableHorizontalScrollbar : 0,
+			enableVerticalScrollbar : 1,
 		    columnDefs: [
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
 		                 { field: 'siparisAdi', displayName: "Sipariş Adı", visible: false},
@@ -52,7 +51,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoSe
 		                 { field: 'siparisTalepTeslimTarihi', displayName: "Talep Edilen Teslim Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy hh:mm\''},
 		                 { field: 'siparisDurum', displayName: "Sipariş Durumu", visible: true, cellTemplate: arrangeCombobox('row')},
 		                 { field: 'btnGroup', displayName: "", visible: true, enableHiding: false, enableSorting: false, enableColumnMenu:false,
-		                	 cellTemplate: arrangeButtonGroup('row'), minWidth : "150", width:"150"
+		                	 cellTemplate: arrangeButtonGroup('row'), minWidth : "150", width:"150",
 		                		 
 		                 }
 		    ], 
@@ -208,7 +207,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoSe
 		    
 	}
 	$scope.openPopupBarkodOlustur = function openPopupBarkodOlustur(entities) {
-		
+		debugger;
 		var oid = entities.oid;
 		if(oid === null || "" == oid){
 			console.log("siparis bilgisi bos");
@@ -360,8 +359,7 @@ sipApp.controller('barcodeInstanceCtrl', function($scope, $http, $uibModalInstan
 
 	$scope.barkodOlustur = function barkodOlustur(barcode) {
 
-		var oid = entities.oid;
-		if(oid === null || "" == oid){
+		if(barcode === null || "" == barcode){
 			console.log("barkod bilgisi bos");
 		}else {
 			$("#order-barcode").barcode({
