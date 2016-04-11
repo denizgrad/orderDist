@@ -105,7 +105,8 @@ public class SalesForceClient implements ISalesForceClient {
 			remoteOrder.setKDV__c(order.getIndirim().doubleValue());
 			remoteOrder.setIndirim__c(order.getIndirim().doubleValue());
 			remoteOrder.setGenel_Toplam__c(order.getGenelToplam().doubleValue());
-
+			remoteOrder.setOwnerId(env.getRequiredProperty("salesforce.ownerId"));
+			
 			QueryResult siparisKalemWrapper = new QueryResult();
 			Sipari_Kalem__c[] siparisKalemList = new Sipari_Kalem__c[order.getOrderDetailList().size()];
 			for (OrderDetail od : order.getOrderDetailList()) {

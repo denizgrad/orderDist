@@ -12,11 +12,11 @@
 	</appender>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>/aslibLog/asliBorek.log</file>
+		<file>/home/aslib/asliBorek.log</file>
 		<append>true</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- rollover daily -->
-			<fileNamePattern>${DEV_HOME}/archived/log.%d{yyyy-MM-dd}.%i.log
+			<fileNamePattern>/home/aslib/archived/log.%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
