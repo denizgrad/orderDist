@@ -18,12 +18,12 @@
             </appender>
 
            <!--   project default level -->
-    <logger name="com.softnec" level="WARN" />
+    <logger name="com.du.order.dist" level="DEBUG" />
 
     <!--log4jdbc -->
     <logger name="jdbc.sqltiming" level="WARN"/>
 
-    <root level="WARN">
+    <root level="DEBUG">
         <appender-ref ref="console" />
         <appender-ref ref="restLogger" />
     </root>
