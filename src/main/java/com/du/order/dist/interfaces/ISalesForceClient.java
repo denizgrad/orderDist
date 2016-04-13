@@ -6,12 +6,6 @@ public interface ISalesForceClient {
 
 	public Order updateStatus(Order shipment);
 
-	/**
-	 * 
-	 * @param userName
-	 * @param password
-	 * @return sırasıyla userID ve roleID döner
-	 */
-	public String[] controlCredentials(String userName, String password);
+	public String returnAccountId(String userName, String password);
 
 }

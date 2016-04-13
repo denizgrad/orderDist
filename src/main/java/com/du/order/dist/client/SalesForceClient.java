@@ -1,6 +1,8 @@
 package com.du.order.dist.client;
 
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -15,16 +17,15 @@ import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.entity.OrderDetail;
 import com.sforce.soap.enterprise.Connector;
 import com.sforce.soap.enterprise.EnterpriseConnection;
-import com.sforce.soap.enterprise.LoginResult;
 import com.sforce.soap.enterprise.QueryResult;
-import com.sforce.soap.enterprise.sobject.ASiparis__c;
-import com.sforce.soap.enterprise.sobject.Sipari_Kalem__c;
-import com.sforce.ws.ConnectorConfig;
 import com.sforce.soap.enterprise.SaveResult;
+import com.sforce.soap.enterprise.sobject.ASiparis__c;
+import com.sforce.soap.enterprise.sobject.Contact;
+import com.sforce.soap.enterprise.sobject.SObject;
+import com.sforce.soap.enterprise.sobject.Sipari_Kalem__c;
+import com.sforce.ws.ConnectionException;
+import com.sforce.ws.ConnectorConfig;
 
-/**
- * Created by darkwave on 27/01/16.
- */
 @Component
 public class SalesForceClient implements ISalesForceClient {
 
@@ -36,7 +37,8 @@ public class SalesForceClient implements ISalesForceClient {
 	static EnterpriseConnection connection;
 
 	@Override
-	public String[] controlCredentials(String userName, String password) {
+	public String returnAccountId(String userName, String password) {
+		String accountId = null;
 		try {
 
 			ConnectorConfig config = new ConnectorConfig();
@@ -49,16 +51,60 @@ public class SalesForceClient implements ISalesForceClient {
 			logger.info("Username: " + config.getUsername());
 			logger.info("SessionId: " + config.getSessionId());
 
-			LoginResult lr = connection.login(userName, password);
-			if (StringUtils.isNotBlank(lr.getUserId())) {
-				return new String []{lr.getUserId(),lr.getUserInfo().getRoleId()};
-			}
+			accountId = queryContact(userName, password);
+			
 		} catch (Exception ex) {
 			logger.error(ex.getMessage());
+		}
+		if(StringUtils.isNotBlank(accountId)){
+			return accountId;
 		}
 		return null;
 	}
 
+	public String queryContact(String username, String password) {
+		   QueryResult qResult = null;
+		   Contact retCon = null;
+		   try {
+		      String soqlQuery = "SELECT AccountId, FirstName, LastName FROM Contact";
+		      String whereClause = String.format(" WHERE (Contact_Username__c = '%s')AND(Contact_Password__c = '%s')", username, password);
+		      qResult = connection.query(soqlQuery + whereClause);
+		      boolean done = false;
+		      if (qResult.getSize() > 0) {
+		         System.out.println("Logged-in user can see a total of "
+		            + qResult.getSize() + " contact records.");
+		         while (!done) {
+		            SObject[] records = qResult.getRecords();
+		            for (int i = 0; i < records.length; ++i) {
+		               Contact con = (Contact) records[i];
+		               retCon = con;
+		               String fName = con.getFirstName();
+		               String lName = con.getLastName();
+		               if (fName == null) {
+		                  System.out.println("Contact " + (i + 1) + ": " + lName);
+		               } else {
+		                  System.out.println("Contact " + (i + 1) + ": " + fName
+		                        + " " + lName);
+		               }
+		            }
+		            if (qResult.isDone()) {
+		               done = true;
+		            } else {
+		               qResult = connection.queryMore(qResult.getQueryLocator());
+		            }
+		         }
+		      } else {
+		         System.out.println("No records found.");
+		      }
+		      System.out.println("\nQuery succesfully executed.");
+		   } catch (ConnectionException ce) {
+		      ce.printStackTrace();
+		   }
+		   
+		   if(retCon != null){
+			   return retCon.getAccountId();
+		   } else { return null; }
+		}
 	@Override
 	public Order updateStatus(Order order) {
 		try {
@@ -80,7 +126,7 @@ public class SalesForceClient implements ISalesForceClient {
 
 			ASiparis__c remoteOrder = new ASiparis__c();
 			remoteOrder.setId(order.getRemoteId());
-			remoteOrder.setSiparis_Durum__c(order.getSiparisDurum());
+			remoteOrder.setSiparis_Durum__c(order.getSiparisDurum());/*
 			remoteOrder.setAdres__c(order.getAdres());
 			remoteOrder.setAdres_Aciklama__c(order.getAdresAciklama());
 
@@ -104,9 +150,9 @@ public class SalesForceClient implements ISalesForceClient {
 
 			remoteOrder.setKDV__c(order.getIndirim().doubleValue());
 			remoteOrder.setIndirim__c(order.getIndirim().doubleValue());
-			remoteOrder.setGenel_Toplam__c(order.getGenelToplam().doubleValue());
+			remoteOrder.setGenel_Toplam__c(order.getGenelToplam().doubleValue());*/
 			remoteOrder.setOwnerId(env.getRequiredProperty("salesforce.ownerId"));
-			
+			/*
 			QueryResult siparisKalemWrapper = new QueryResult();
 			Sipari_Kalem__c[] siparisKalemList = new Sipari_Kalem__c[order.getOrderDetailList().size()];
 			for (OrderDetail od : order.getOrderDetailList()) {
@@ -130,7 +176,7 @@ public class SalesForceClient implements ISalesForceClient {
 			}
 			siparisKalemWrapper.setRecords(siparisKalemList);
 			remoteOrder.setSiparisKalem__r(siparisKalemWrapper);
-
+*/
 			remoteOrderList[0] = remoteOrder;
 
 			SaveResult[] svArr = connection.update(remoteOrderList);

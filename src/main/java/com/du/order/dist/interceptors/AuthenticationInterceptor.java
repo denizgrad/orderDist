@@ -5,15 +5,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.du.order.dist.model.util.LoginForm;
+import com.du.order.dist.service.IInfoProvider;
 import com.du.order.dist.service.ServiceProvider;
 
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 	Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
-
+@Autowired
+IInfoProvider info;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
@@ -35,6 +38,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 		    return false;
 		   } else {
 			   ServiceProvider.setCurrentUserName(userData.getUserId());
+			   info.setAccId(userData.getUserId());
 		   }
 	  }
 	  return true;
