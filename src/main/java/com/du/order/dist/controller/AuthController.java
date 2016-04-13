@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,24 +93,13 @@ public class AuthController {
 
 		// A simple authentication manager
 		if (username != null && password != null) {
-			String[] userCreds = sfClient.controlCredentials(username, password);
-			if ((username.equals(env.getProperty("admin.username"))
-					&& password.equals(env.getProperty("admin.password"))) || (ArrayUtils.isNotEmpty(userCreds))) {
-				// TODO sf den gelince düzelicek
-				// loginform.setUserId(userCreds[0]);
-				// loginform.setRoleId(userCreds[1]);
-
-				loginform.setRoleId("");
-				// -----
-
+			String accId = sfClient.returnAccountId(username, password);
+			if ((username.equals(env.getProperty("admin.username"))	&& password.equals(env.getProperty("admin.password")))
+					|| (StringUtils.isNotBlank(accId))) { // sfaccount ıd 
+				loginform.setUserId(accId);
 				request.getSession().setAttribute("LOGGEDIN_USER", loginform);
-				logger.info(String.format("logging success username: %s, userId: %s, roleId : %s",
-						loginform.getUsername(), loginform.getUserId(), loginform.getRoleId()));
-
-				if (loginform.getRoleId().equals("1")) {
-					logger.info("redirect: teslimat");
-					return "redirect:/teslimat";
-				}
+				logger.info(String.format("logging success username: %s, userId: %s",
+				loginform.getUsername(), loginform.getUserId()));
 				logger.info("redirect: siparis");
 				return "redirect:/siparis";
 			} else {

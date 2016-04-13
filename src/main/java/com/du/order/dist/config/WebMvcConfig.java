@@ -35,7 +35,7 @@ import com.du.order.dist.service.ResourceMessage;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = {"com.du.order.dist.service" , "com.du.order.dist.controller"})
+@ComponentScan(basePackages = {"com.du.order.dist.service" , "com.du.order.dist.controller" , "com.du.order.dist.client"})
 @EnableTransactionManagement
 @EnableJpaRepositories("com.du.order.dist.repository")
 @PropertySource("classpath:META-INF/${env:dev}/app.properties")
