@@ -11,21 +11,21 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        System.out.println(" *** ContextListener.contextInitialized");
+        System.out.println("ASLI BOREK ORDER DISTRIBUTION ContextListener.contextInitialized");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        System.out.println(" *** ContextListener.contextDestroyed");
+        System.out.println("ASLI BOREK ORDER DISTRIBUTION ContextListener.contextDestroyed");
     }
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
-        System.out.println(" *** ContextListener.sessionCreated");
+        System.out.println("ASLI BOREK ORDER DISTRIBUTION ContextListener.sessionCreated");
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        System.out.println(" *** ContextListener.sessionDestroyed");
+        System.out.println("ASLI BOREK ORDER DISTRIBUTION ContextListener.sessionDestroyed");
     }
    }

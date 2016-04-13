@@ -17,10 +17,10 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.util.Log4jConfigListener;
 
 import com.du.order.dist.config.AppConfig;
 import com.du.order.dist.config.WebMvcConfig;
+import com.du.order.dist.log.LoggingFilter;
 
 public class Initializer implements WebApplicationInitializer {
 
@@ -45,6 +45,9 @@ public class Initializer implements WebApplicationInitializer {
         encodingFilter.addMappingForUrlPatterns(null, false, "/*");
         encodingFilter.setInitParameter("encoding", "UTF-8");
 
+        javax.servlet.FilterRegistration.Dynamic corsFilter = servletContext.addFilter("logfilter", LoggingFilter.class);
+        corsFilter.addMappingForUrlPatterns(null, true, "/*");
+        
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
 
         mvcContext.register(WebMvcConfig.class);

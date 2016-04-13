@@ -6,11 +6,11 @@
         </encoder>
     </appender>
  
-            <appender name="restLogger" class="com.softnec.interceptors.RestServiceInterceptor">
-                <file>logs/aslib-data.log</file>
+            <appender name="asliBorekLogger" class="com.du.order.dist.interceptors.LoggerInterceptor">
+                <file>logs/asliborek-data.log</file>
                 <append>true</append>
                 <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                    <fileNamePattern>/logs/restLogger.%d{yyyy-MM-dd}.log</fileNamePattern>
+                    <fileNamePattern>/logs/asliBorekLogger.%d{yyyy-MM-dd}.log</fileNamePattern>
                 </rollingPolicy>
                 <encoder>
                     <pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -18,13 +18,13 @@
             </appender>
 
            <!--   project default level -->
-    <logger name="com.softnec" level="WARN" />
+    <logger name="com.du" level="INFO" />
 
     <!--log4jdbc -->
-    <logger name="jdbc.sqltiming" level="WARN"/>
+    <logger name="jdbc.sqltiming" level="INFO"/>
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="console" />
-        <appender-ref ref="restLogger" />
+        <appender-ref ref="asliBorekLogger" />
     </root>
 </configuration>

@@ -3,7 +3,9 @@ package com.du.order.dist.config;
 import java.util.Properties;
 
 import javax.sql.DataSource;
-
+import javax.servlet.Filter;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.filter.AbstractRequestLoggingFilter;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.ejb.HibernatePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,30 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
 	@Autowired
 	Environment env;
+	
+	@Bean
+	public Filter loggingFilter(){
+	    AbstractRequestLoggingFilter f = new AbstractRequestLoggingFilter() {
+
+	        @Override
+	        protected void beforeRequest(HttpServletRequest request, String message) {
+	            System.out.println(message);
+	        }
+
+	        @Override
+	        protected void afterRequest(HttpServletRequest request, String message) {
+	            System.out.println(message);
+	        }
+	    };
+	    f.setIncludeClientInfo(true);
+	    f.setIncludePayload(true);
+	    f.setIncludeQueryString(true);
+
+	    f.setBeforeMessagePrefix("BEFORE REQUEST  [");
+	    f.setAfterMessagePrefix("AFTER REQUEST    [");
+	    f.setAfterMessageSuffix("]\n");
+	    return f;
+	}
 	
     @Bean(name = "messageSource")
     public ResourceBundleMessageSource getMessageSource() {
