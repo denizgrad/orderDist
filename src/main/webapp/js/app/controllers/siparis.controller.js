@@ -211,7 +211,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 		    
 	}
 	$scope.openPopupBarkodOlustur = function openPopupBarkodOlustur(entities) {
-		debugger;
+		
 		var oid = entities.oid;
 		if(oid === null || "" == oid){
 			console.log("siparis bilgisi bos");
@@ -240,8 +240,8 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 	}
 	
 	$scope.redirectTeslimat = function redirectTeslimat(){
-		debugger;
-		var url = 'teslimat.jsp';
+
+		var url = 'teslimat';
 		window.location.href = url;
 	}
 	
@@ -400,7 +400,7 @@ sipApp.controller('barcodeInstanceCtrl', function($scope, $http, $uibModalInstan
 			console.log("oid bos");
 		}else {
 			$scope.loadingOrder = true;
-			debugger;
+			
 			$http.post('v1/siparis/islem/getOrderByOid/' + oid).success(
 					function(response) {
 						
