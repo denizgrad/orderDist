@@ -128,8 +128,7 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public List<Order> getOrderList(String orgOid) {
-		List<Order> list = repo.getListByBranchOid();
-
+		List<Order> list = repo.getListByBranchOid(orgOid);
 		return list;
 	}
 

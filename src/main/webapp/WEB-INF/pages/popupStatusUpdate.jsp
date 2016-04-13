@@ -3,6 +3,7 @@
 <div class="modal-header" style = "display: flex; justify-content: center;">
 	<h3 class="modal-title">Sipariş Durumu</h3>
 </div>
+
 <div class="modal-body">
 	<div style = "display: flex; justify-content: center;">
 		<select ng-model="statusData.selectedOption" >

@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("session")
+@Scope("prototype")
 public class InfoProvider implements IInfoProvider{
 	
 	private String accID;

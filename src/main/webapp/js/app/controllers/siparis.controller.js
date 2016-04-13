@@ -241,7 +241,8 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 	
 	$scope.redirectTeslimat = function redirectTeslimat(){
 		debugger;
-		$location.path( '../teslimat.jsp' );
+		var url = 'teslimat';
+		window.location.href = url;
 	}
 	
 
@@ -345,15 +346,15 @@ sipApp.controller('updateStatusInstanceCtrl', function($scope, $http, $window, $
 	
 	$scope.durumGuncelle = function durumGuncelle(statu) {
 		
-		$scope.loadingStatus = true;
+		$scope.loadingUpdateStatus = true;
 		$http.post('v1/siparis/islem/updateOrderStatus/' + rowOid + '-' + statu).success(
 		function(response) {
 			$uibModalInstance.close();
 			$window.location.reload();
-			$scope.loadingStatus = false;
+			$scope.loadingUpdateStatus = false;
 			
 		}).error(function(error) {
-			$scope.loadingStatus = false;
+			$scope.loadingUpdateStatus = false;
 		})
 	};
 });
