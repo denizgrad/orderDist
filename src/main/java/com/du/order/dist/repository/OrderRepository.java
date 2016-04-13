@@ -22,8 +22,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 //	public List<Order> getListByBranchOid(@Param("orgOid") String orgOid);
 	// statu kriteri ekle;
 	
-	@Query("SELECT o FROM Order o WHERE (o.siparisDurum != '6' and o.siparisDurum != '7') or (o.siparisTeslimTarihi >= current_date ) ")
-	public List<Order> getListByBranchOid();
+	@Query("SELECT o FROM Order o WHERE ((o.siparisDurum != '6' and o.siparisDurum != '7') or (o.siparisTeslimTarihi >= current_date )) AND ( o.tedarikEdenKisi = :orgOid OR o.tedarikEdenFirma = :orgOid)  ")
+	public List<Order> getListByBranchOid(@Param("orgOid") String orgOid);
 	
 	@Query("SELECT o FROM Order o WHERE o.barcodeNumber = :barcode")
 	public Order getByBarcode(@Param("barcode") String barcode);

@@ -241,7 +241,8 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 	
 	$scope.redirectTeslimat = function redirectTeslimat(){
 		debugger;
-		$location.path( '../teslimat.jsp' );
+		var url = 'teslimat.jsp';
+		window.location.href = url;
 	}
 	
 
