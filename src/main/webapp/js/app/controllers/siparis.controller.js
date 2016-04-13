@@ -40,7 +40,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoSe
 		                 { field: 'tedarikEdenFirma', displayName: "Tedarik Eden Firma", visible: false},
 		                 { field: 'tedarikEdenKisi', displayName: "Tedarik Eden Kişi", visible: false},
 		                 { field: 'siparisOlusmaTarihi', displayName: "Sipariş Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy hh:mm\''},
-		                 { field: 'siparisTeslimTarihi', displayName: "Teslim Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy hh:mm\'' },
+		                 { field: 'siparisTeslimTarihi', displayName: "Teslim Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy hh:mm\''},
 		                 { field: 'araToplam', displayName: "Ara Toplam", visible: false, cellFilter: 'currency'},
 		                 { field: 'kdv', displayName: "KDV", visible: false},
 		                 { field: 'indirim', displayName: "İndirim", visible: false, cellFilter: 'currency'},

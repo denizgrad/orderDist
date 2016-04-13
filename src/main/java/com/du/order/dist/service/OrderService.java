@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.du.order.dist.Utility;
-import com.du.order.dist.controller.AuthController;
 import com.du.order.dist.interfaces.IOrderService;
+import com.du.order.dist.interfaces.ISalesForceClient;
 import com.du.order.dist.interfaces.ITransformer;
 import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.entity.OrderDetail;
@@ -35,7 +35,11 @@ public class OrderService implements IOrderService {
 	@Autowired
 	ITransformer transformer;
 
+	@Autowired
+	ISalesForceClient salesForceClient;
+
 	private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+
 	@Override
 	public void create(Order order) {
 		setChildrenParent(order);
@@ -48,9 +52,9 @@ public class OrderService implements IOrderService {
 
 	private String generateBarcode(Order order) {
 		String remoteIdCopy = order.getRemoteId();
-		if(StringUtils.isNotBlank(order.getRemoteId())){
-			while(remoteIdCopy.length() < 8){
-				remoteIdCopy = remoteIdCopy +"x";
+		if (StringUtils.isNotBlank(order.getRemoteId())) {
+			while (remoteIdCopy.length() < 8) {
+				remoteIdCopy = remoteIdCopy + "x";
 			}
 		}
 		return String.valueOf(remoteIdCopy.hashCode());
@@ -85,11 +89,24 @@ public class OrderService implements IOrderService {
 
 		Order dbOrder = repo.getByOid(oid);
 		dbOrder.setSiparisDurum(status);
-		if(status.equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))){
+		if (status.equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))) {
 			dbOrder.setSiparisTeslimTarihi(new Date());
 		}
+
 		repo.save(dbOrder);
 
+		// Hazirlaniyor Teslimatta Teslim Edildi
+
+		if (dbOrder.getSiparisDurum().equals(String.valueOf(OrderStatus.YOLA_CIKTI.getValue()))) {
+			dbOrder.setSiparisDurum("Teslimatta");
+			salesForceClient.updateStatus(dbOrder);
+		} else if (dbOrder.getSiparisDurum().equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))) {
+			dbOrder.setSiparisDurum("Teslim Edildi");
+			salesForceClient.updateStatus(dbOrder);
+		} else {
+			dbOrder.setSiparisDurum("Hazirlaniyor");
+			salesForceClient.updateStatus(dbOrder);
+		}
 	}
 
 	@Override
@@ -110,16 +127,16 @@ public class OrderService implements IOrderService {
 		}
 	}
 
-//	@Override
-//	public List<Order> getOrderList(String orgOid) {
-//		List<Order> list = repo.getListByBranchOid(orgOid);
-//
-//		for (Order order : list) {
-//			order.setOrderDetailList(new ArrayList<OrderDetail>());
-//		}
-//		return list;
-//	}
-	
+	// @Override
+	// public List<Order> getOrderList(String orgOid) {
+	// List<Order> list = repo.getListByBranchOid(orgOid);
+	//
+	// for (Order order : list) {
+	// order.setOrderDetailList(new ArrayList<OrderDetail>());
+	// }
+	// return list;
+	// }
+
 	// TODO fix it
 	@Override
 	public List<Order> getOrderList(String orgOid) {
@@ -130,6 +147,7 @@ public class OrderService implements IOrderService {
 		}
 		return list;
 	}
+
 	@Override
 	public void deliverOrder(String oid) {
 

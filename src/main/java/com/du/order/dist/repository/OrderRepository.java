@@ -20,8 +20,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	// TODO order class ında org oid yi iliştir
 //	@Query("SELECT o FROM Order o WHERE o.orgOid= :orgOid")
 //	public List<Order> getListByBranchOid(@Param("orgOid") String orgOid);
-	// statu kriteri ekle; tarih eklenebilir;
-//	SELECT * FROM dbo.du_order WHERE (siparisDurum != "6" and siparisDurum != "7") or (siparisTeslimTarihi >= "20160411000000") 
+	// statu kriteri ekle;
 	
 	@Query("SELECT o FROM Order o WHERE (o.siparisDurum != '6' and o.siparisDurum != '7') or (o.siparisTeslimTarihi >= current_date ) ")
 	public List<Order> getListByBranchOid();
