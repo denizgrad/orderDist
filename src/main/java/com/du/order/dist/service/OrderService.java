@@ -1,6 +1,5 @@
 package com.du.order.dist.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -85,7 +84,7 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public void updateOrderStatus(String oid, String status) {
+	public void updateOrderStatus(String oid, String status) throws Exception {
 
 		Order dbOrder = repo.getByOid(oid);
 		dbOrder.setSiparisDurum(status);
@@ -95,18 +94,8 @@ public class OrderService implements IOrderService {
 
 		repo.save(dbOrder);
 
-		// Hazirlaniyor Teslimatta Teslim Edildi
+		sendToSF(dbOrder);
 
-		if (dbOrder.getSiparisDurum().equals(String.valueOf(OrderStatus.YOLA_CIKTI.getValue()))) {
-			dbOrder.setSiparisDurum("Teslimatta");
-			salesForceClient.updateStatus(dbOrder);
-		} else if (dbOrder.getSiparisDurum().equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))) {
-			dbOrder.setSiparisDurum("Teslim Edildi");
-			salesForceClient.updateStatus(dbOrder);
-		} else {
-			dbOrder.setSiparisDurum("Hazirlaniyor");
-			salesForceClient.updateStatus(dbOrder);
-		}
 	}
 
 	@Override
@@ -141,16 +130,35 @@ public class OrderService implements IOrderService {
 	public List<Order> getOrderList(String orgOid) {
 		List<Order> list = repo.getListByBranchOid();
 
-		for (Order order : list) {
-			
-		}
 		return list;
 	}
 
 	@Override
-	public void deliverOrder(String oid) {
+	public void deliverOrder(String oid) throws Exception {
 
 		updateOrderStatus(oid, String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()));
+
+	}
+
+	@Transactional(readOnly = true)
+	private void sendToSF(Order dbOrder) throws Exception {
+		// Hazirlaniyor Teslimatta Teslim Edildi
+
+		Order order = new Order();
+		Utility.copyPrimitiveProperties(dbOrder, order, false);
+		// repoDetail.deleteChildrenByOid(dbOrder.getOid());
+		order.setOrderDetailList(dbOrder.getOrderDetailList());
+
+		if (order.getSiparisDurum().equals(String.valueOf(OrderStatus.YOLA_CIKTI.getValue()))) {
+			order.setSiparisDurum("Teslimatta");
+			salesForceClient.updateStatus(order);
+		} else if (order.getSiparisDurum().equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))) {
+			order.setSiparisDurum("Teslim Edildi");
+			salesForceClient.updateStatus(order);
+		} else {
+			order.setSiparisDurum("Hazirlaniyor");
+			salesForceClient.updateStatus(order);
+		}
 
 	}
 

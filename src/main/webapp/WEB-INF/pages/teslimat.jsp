@@ -26,6 +26,12 @@
 
 	<div ng-controller="teslimatCtrl" class = "teslimat-block">
 
+		<div ng-show = "loadingDeliver || loadingBarcode || loadingStatus" class="loading-container">
+			<div class = "loading-inner-container">
+				<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>Yükleniyor...
+			</div>
+		</div>
+		
 		<form name="form" ng-submit="teslimEt(form)" role="form">
 			<fieldset>
 				<div class="column">

@@ -1,6 +1,6 @@
 var sipApp = angular.module("siparisModule", ["ui.grid", 'ngAnimate', 'ui.bootstrap']);
 
-sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoService, i18nService) {
+sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, statusRepoService, i18nService) {
 	
 	$scope.langs = i18nService.getAllLangs();
 	$scope.lang = 'tr';
@@ -10,16 +10,19 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoSe
 	var onFetchError = function(message) {
 		console.log("error: " +  message);
 		$scope.error = "Sipariş durumları yüklenemedi. Lütfen sayfayı yenileyiniz. ";
+		$scope.loadingStatus = false;
 	};
 
 	var onFetchCompleted = function(data) {
 		$scope.statusData = data;
 		$scope.statusData.selectedOption = "";
 		getSiparisList();
+		$scope.loadingStatus = false;
 		
 	};
 
 	var getStatus = function() {
+		$scope.loadingStatus = true;
 		statusRepoService.get().then(onFetchCompleted, onFetchError);
 	};
 
@@ -36,7 +39,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoSe
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
 		                 { field: 'siparisAdi', displayName: "Sipariş Adı", visible: false},
 		                 { field: 'siparisVerenFirma', displayName: "Sipariş Veren Firma", visible: true},
-		                 { field: 'siparisVerenKisi', displayName: "Sipariş Veren Kişi", visible: true},
+		                 { field: 'siparisVerenKisi', displayName: "Sipariş Veren Kişi", visible: true, height: 30},
 		                 { field: 'tedarikEdenFirma', displayName: "Tedarik Eden Firma", visible: false},
 		                 { field: 'tedarikEdenKisi', displayName: "Tedarik Eden Kişi", visible: false},
 		                 { field: 'siparisOlusmaTarihi', displayName: "Sipariş Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy hh:mm\''},
@@ -119,7 +122,8 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoSe
 	};
 	
 	function getSiparisList() {
-
+		$scope.loadingList = true;
+		
 		$http.post('v1/siparis/islem/getOrderList').success(
 				function(response) {
 
@@ -129,10 +133,10 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoSe
 					}
 					$scope.gridOptions.rowHeight = 40 * len + "px",
 					$scope.gridOptions.data = response;
-					
+					$scope.loadingList = false;
 					
 				}).error(function(error) {
-					
+					$scope.loadingList = false;
 					alert("Siparişler getirilirken hata oluştu. Lütfen daha sonra tekrar deneyiniz.");
 		})
 		
@@ -234,6 +238,12 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, statusRepoSe
 			    });
 		}
 	}
+	
+	$scope.redirectTeslimat = function redirectTeslimat(){
+		debugger;
+		$location.path( '../teslimat.jsp' );
+	}
+	
 
 });
 
@@ -272,6 +282,7 @@ sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstanc
 		if(siparisOid === null || "" == siparisOid){
 			console.log("siparisOid bos");
 		}else {
+			$scope.loadingOrder = true;
 			$http.post('v1/siparis/islem/getOrderByOid/' + siparisOid).success(
 					function(response) {
 						
@@ -295,9 +306,10 @@ sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstanc
 						$scope.siparisDurum = response.siparisDurum;
 						
 						$scope.teslimatGridOptions.data = response.orderDetailList;
+						$scope.loadingOrder = false;
 						
 					}).error(function(error) {
-
+						$scope.loadingOrder = false;
 			});
 		}
 	}
@@ -333,16 +345,17 @@ sipApp.controller('updateStatusInstanceCtrl', function($scope, $http, $window, $
 	
 	$scope.durumGuncelle = function durumGuncelle(statu) {
 		
+		$scope.loadingStatus = true;
 		$http.post('v1/siparis/islem/updateOrderStatus/' + rowOid + '-' + statu).success(
 		function(response) {
 			$uibModalInstance.close();
 			$window.location.reload();
-			
+			$scope.loadingStatus = false;
 			
 		}).error(function(error) {
-
+			$scope.loadingStatus = false;
 		})
-	}
+	};
 });
 
 sipApp.controller('barcodeInstanceCtrl', function($scope, $http, $uibModalInstance, oid) {
@@ -385,6 +398,8 @@ sipApp.controller('barcodeInstanceCtrl', function($scope, $http, $uibModalInstan
 		if(oid === null || "" == oid){
 			console.log("oid bos");
 		}else {
+			$scope.loadingOrder = true;
+			debugger;
 			$http.post('v1/siparis/islem/getOrderByOid/' + oid).success(
 					function(response) {
 						
@@ -392,11 +407,12 @@ sipApp.controller('barcodeInstanceCtrl', function($scope, $http, $uibModalInstan
 							$scope.barcode = response.barcodeNumber;	
 							$scope.barkodOlustur(response.barcodeNumber);
 						}
+						$scope.loadingOrder = false;
 					}).error(function(error) {
-
+						$scope.loadingOrder = false;
 			});
 		}
-	}
+	};
 	
 });
 
@@ -417,6 +433,7 @@ sipApp.filter('currency', function () {
 var statusRepoService = function($http){
     
 	var getStatus = function() {
+		
 		return $http.post("v1/siparis/islem/fillCombo/OrderStatus").then(
 				function(response) {
 

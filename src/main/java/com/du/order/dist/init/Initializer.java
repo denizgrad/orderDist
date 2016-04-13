@@ -46,7 +46,7 @@ public class Initializer implements WebApplicationInitializer {
         encodingFilter.setInitParameter("encoding", "UTF-8");
 
         javax.servlet.FilterRegistration.Dynamic corsFilter = servletContext.addFilter("logfilter", LoggingFilter.class);
-        corsFilter.addMappingForUrlPatterns(null, true, "/*");
+        corsFilter.addMappingForUrlPatterns(null, true, "/*/**/islem/*");
         
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
 

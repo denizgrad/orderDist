@@ -26,11 +26,19 @@
 	
     
 	</head>
-<body ng-app="siparisModule">
+<body ng-app="siparisModule"  >
+
 
 	<div class = "logo"></div>
+
+	<div class = "siparis-block" ng-controller="siparisCtrl" >
+		<button class="btn btn-primary btn-default sendButton" ng-click = "redirectTeslimat()"> Teslimat </button>
+		<div ng-show="loadingList || loadingOrder || loadingStatus" class="loading-container">
+			<div class = "loading-inner-container">
+				<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>Yükleniyor...
+			</div>
+		</div>
 	
-	<div ng-controller="siparisCtrl" class = "siparis-block">
 		<div ui-i18n="{{lang}}" class = "tableDiv">
 			<div ui-grid="gridOptions" class="siparisList"></div>
 		</div>
