@@ -28,7 +28,7 @@ public class Initializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        logger.info("onStartup");
+        System.out.println("onStartup");
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(AppConfig.class);
         // Manage the lifecycle of the root appcontext
@@ -64,7 +64,7 @@ public class Initializer implements WebApplicationInitializer {
 
         if (!mappingConflicts.isEmpty()) {
             for (String s : mappingConflicts) {
-                logger.info("Mapping conflict: " + s);
+                System.out.println("Mapping conflict: " + s);
             }
             throw new IllegalStateException(
                     "'appServlet' cannot be mapped to '/' under Tomcat versions <= 7.0.14");

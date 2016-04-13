@@ -90,7 +90,7 @@ public abstract class Utility {
 					if( pDescCorr != null && ClassUtils.isAssignable(fromObjFieldClass, pDescCorr.getPropertyType())){
 						PropertyUtils.setProperty(toObj, pFrom[i].getName(),fromObjField);
 					} else {
-						logger.info("\"" +pFrom[i].getName()+"\" field isimli özellik aynı diger objeye assignable değil. Manuel olarak set ediniz.");
+						System.out.println("\"" +pFrom[i].getName()+"\" field isimli özellik aynı diger objeye assignable değil. Manuel olarak set ediniz.");
 					}
 				}
 			} catch (Exception e) {
@@ -151,7 +151,7 @@ public static void copyPrimitiveProperties(Object fromObj, Object toObj, boolean
 						}
 						PropertyUtils.setProperty(toObj, pFrom[i].getName(),fromObjField);
 					} else {
-						logger.info("\"" +pFrom[i].getName()+"\" field isimli özellik aynı diger objeye assignable değil. Manuel olarak set ediniz.");
+						System.out.println("\"" +pFrom[i].getName()+"\" field isimli özellik aynı diger objeye assignable değil. Manuel olarak set ediniz.");
 					}
 				}
 			} catch (Exception e) {
@@ -290,7 +290,7 @@ public static void copyPrimitiveProperties(Object fromObj, Object toObj, boolean
 								PropertyUtils.setProperty(toObj, pFrom[i].getName(), fromObjField);}
 							//
 						} else {
-							logger.info("\"" +pFrom[i].getName()+"\" field isimli özellik aynı diger objeye assignable değil. Manuel olarak set ediniz.");
+							System.out.println("\"" +pFrom[i].getName()+"\" field isimli özellik aynı diger objeye assignable değil. Manuel olarak set ediniz.");
 						}
 					}
 				}

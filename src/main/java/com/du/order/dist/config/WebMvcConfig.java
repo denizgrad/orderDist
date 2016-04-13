@@ -50,12 +50,12 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
 	        @Override
 	        protected void beforeRequest(HttpServletRequest request, String message) {
-	            System.out.println(message);
+	            logger.info(message);
 	        }
 
 	        @Override
 	        protected void afterRequest(HttpServletRequest request, String message) {
-	            System.out.println(message);
+	            logger.info(message);
 	        }
 	    };
 	    f.setIncludeClientInfo(true);
