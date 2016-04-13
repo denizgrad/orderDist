@@ -57,7 +57,7 @@ public class OrderService implements IOrderService {
 				remoteIdCopy = remoteIdCopy + "x";
 			}
 		}
-		return String.valueOf(remoteIdCopy.hashCode());
+		return String.valueOf(Math.abs(remoteIdCopy.hashCode()));
 	}
 
 	@Override
@@ -137,13 +137,12 @@ public class OrderService implements IOrderService {
 	// return list;
 	// }
 
-	// TODO fix it
 	@Override
 	public List<Order> getOrderList(String orgOid) {
 		List<Order> list = repo.getListByBranchOid();
 
 		for (Order order : list) {
-			order.setOrderDetailList(new ArrayList<OrderDetail>());
+			
 		}
 		return list;
 	}
