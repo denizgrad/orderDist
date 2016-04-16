@@ -328,16 +328,19 @@ sipApp.controller('updateStatusInstanceCtrl', function($scope, $http, $window, $
 	};
 	
 	var onFetchError = function(message) {
+		$scope.loadingStatus = false;
 		$scope.error = "Error Fetching Users. Message:" + message;
 	};
 
 	var onFetchCompleted = function(data) {
 		$scope.statusData = data;
 		$scope.statusData.selectedOption = rowStatu + "";
+		$scope.loadingStatus = false;
 		
 	};
 
 	var getStatus = function() {
+		$scope.loadingStatus = true;
 		statusRepoService.get().then(onFetchCompleted, onFetchError);
 	};
 
@@ -346,15 +349,15 @@ sipApp.controller('updateStatusInstanceCtrl', function($scope, $http, $window, $
 	
 	$scope.durumGuncelle = function durumGuncelle(statu) {
 		
-		$scope.loadingStatus = true;
+		$scope.loadingUpdateStatus = true;
 		$http.post('v1/siparis/islem/updateOrderStatus/' + rowOid + '-' + statu).success(
 		function(response) {
 			$uibModalInstance.close();
 			$window.location.reload();
-			$scope.loadingStatus = false;
+			$scope.loadingUpdateStatus = false;
 			
 		}).error(function(error) {
-			$scope.loadingStatus = false;
+			$scope.loadingUpdateStatus = false;
 		})
 	};
 });

@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<div ng-show="loadingList || loadingOrder || loadingStatus" class="loading-container">
+	<div class = "loading-inner-container">
+		<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>Yükleniyor...
+	</div>
+</div>
+	
 <div class="modal-header">
 	<h3 class="modal-title">Barkod</h3>
 </div>
