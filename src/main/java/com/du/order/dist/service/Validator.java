@@ -6,17 +6,18 @@ import java.util.Date;
 import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.du.order.dist.interfaces.IValidator;
 import com.du.order.dist.model.util.ValidationError;
-import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
 import com.du.order.dist.model.util.transfer.GenelSiparisIn;
 import com.du.order.dist.model.util.transfer.SiparisKalemIn;
-import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
 @Component
 public class Validator implements IValidator{
 
+	Logger logger = LoggerFactory.getLogger(getClass());
 	@Override
 	public void validate(GenelSiparisIn siparis) throws ValidationError {
 
@@ -46,7 +47,7 @@ public class Validator implements IValidator{
 			nullFields.add("siparisAdi");
 		};
 		if((siparis.getSiparisKalemList()==null||siparis.getSiparisKalemList().isEmpty())){
-			nullFields.add("siparisKalemList");
+			logger.info("Sipariş kalem list bos geldi. Create yapılıyor.");
 		} else {
 			//kalem validation
 			int sira = 0;

@@ -5,24 +5,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.owlike.genson.annotation.JsonDateFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 public class GenelSiparisIn extends AIn{
 	private String siparisAdi;
 	private String siparisVerenFirma;
 	private String siparisVerenKisi;
 	private String tedarikEdenKisi;
 	private String tedarikEdenFirma;
-	@JsonDateFormat("yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss")
 	private Date siparisOlusmaTarihi;
 	/**
 	 * //yapılan
 	 */
-	@JsonDateFormat("yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss")
 	private Date siparisTeslimTarihi;
 	/**
 	 * //istenen
 	 */
-	@JsonDateFormat("yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss")
 	private Date siparisTalepTeslimTarihi;
 	private BigDecimal araToplam;
 	private BigDecimal kdv;

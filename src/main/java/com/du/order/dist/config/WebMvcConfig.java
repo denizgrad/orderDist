@@ -7,6 +7,7 @@ import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.hibernate.ejb.HibernatePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import com.du.order.dist.interceptors.AuthenticationInterceptor;
 import com.du.order.dist.interceptors.LoggerInterceptor;
 import com.du.order.dist.interfaces.IMessageSource;
+import com.du.order.dist.service.DuJsonMapper;
 import com.du.order.dist.service.ResourceMessage;
 
 @EnableWebMvc
@@ -43,6 +45,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
 	@Autowired
 	Environment env;
+	
 	
 	@Bean
 	public Filter loggingFilter(){
