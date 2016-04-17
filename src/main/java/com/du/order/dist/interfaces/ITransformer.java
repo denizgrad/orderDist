@@ -1,11 +1,10 @@
 package com.du.order.dist.interfaces;
 
 import com.du.order.dist.model.entity.Order;
-import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
-import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
+import com.du.order.dist.model.util.transfer.GenelSiparisIn;
 
 public interface ITransformer {
 
-	public Order transform(CreateGenelSiparisIn objectIn) throws Exception; 
-	public Order transform(UpdateGenelSiparisIn objectIn) throws Exception;;
+	public Order transformCreate(GenelSiparisIn objectIn) throws Exception; 
+	public Order transformUpdate(GenelSiparisIn objectIn) throws Exception;;
 }

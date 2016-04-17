@@ -64,14 +64,14 @@ public class SfRestServiceController {
 
 	@ResponseBody
 	@RequestMapping(value = "/createSiparis", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
-	public ResponseEntity<Response> create(@RequestBody CreateGenelSiparisIn objectIn) {
+	public ResponseEntity<Response> create(@RequestBody GenelSiparisIn objectIn) {
 
 		Response resp = new Response(true, HttpStatus.OK.value(), resourceMessage.getMessage("service.success"));
 
 		try {
 			checkAuthentication(objectIn);
 			checkValidityCreate(objectIn);
-			Order order = transformer.transform(objectIn);
+			Order order = transformer.transformCreate(objectIn);
 			orderService.create(order);
 		} catch (AuthenticationError ex) {
 			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("authentication.exception"));
@@ -96,18 +96,18 @@ public class SfRestServiceController {
 
 	@ResponseBody
 	@RequestMapping(value = "/updateSiparis", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
-	public ResponseEntity<Response> update(@RequestBody UpdateGenelSiparisIn objectIn) {
+	public ResponseEntity<Response> update(@RequestBody GenelSiparisIn objectIn) {
 
 		Response resp = new Response(true, HttpStatus.OK.value(), resourceMessage.getMessage("service.success"));
 
 		try {
 			checkAuthentication(objectIn);
 			checkValidityUpdate(objectIn);
-			Order order = transformer.transform(objectIn);
-			if(StringUtils.isNotBlank(order.getRemoteId())){
-				orderService.update(order);
+			Order order = transformer.transformUpdate(objectIn);
+			if(order == null){
+				return create(objectIn);
 			} else {
-				orderService.create(order);
+				orderService.update(order);
 			}
 		} catch (AuthenticationError ex) {
 			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("authentication.exception"));
@@ -146,11 +146,11 @@ public class SfRestServiceController {
 	IValidator validator;
 
 	private void checkValidityUpdate(GenelSiparisIn objectIn) throws ValidationError {
-		validator.validate((UpdateGenelSiparisIn) objectIn);
+		validator.validate(objectIn);
 	}
 
 	private void checkValidityCreate(GenelSiparisIn objectIn) throws ValidationError {
-		validator.validate((CreateGenelSiparisIn) objectIn);
+		validator.validate(objectIn);
 	}
 
 	// ----------------------------

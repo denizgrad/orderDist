@@ -1,5 +1,8 @@
 package order.dist;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -35,7 +38,9 @@ public class DuJunit {
 //		System.out.println(accID);
 		Order order = new Order();
 		order.setRemoteId("a0i11000005duljAAA");
-		order.setSiparisDurum("Teslimatta");
+		order.setSiparisDurum("Görüldü");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		order.setSiparisTeslimTarihi(new Date());
 		sf.updateStatus(order);
 		
 		

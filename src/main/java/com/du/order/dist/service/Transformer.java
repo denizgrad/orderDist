@@ -17,6 +17,7 @@ import com.du.order.dist.model.entity.OrderDetail;
 import com.du.order.dist.model.util.OrderError;
 import com.du.order.dist.model.util.SystemError;
 import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
+import com.du.order.dist.model.util.transfer.GenelSiparisIn;
 import com.du.order.dist.model.util.transfer.SiparisKalemIn;
 import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
 import com.du.order.dist.repository.OrderDetailRepository;
@@ -31,7 +32,7 @@ public class Transformer implements ITransformer{
     @Autowired
     OrderDetailRepository repoDetail;
 	@Override
-	public Order transform(CreateGenelSiparisIn objectIn) throws Exception {
+	public Order transformCreate(GenelSiparisIn objectIn) throws Exception {
 		Order order = new Order();
 		if(repo.getByRemoteId(objectIn.getSfId()) != null){
 			throw new OrderError("Yaratılmaya çalışılan sipariş için sfId zaten girilmiş.");
@@ -54,13 +55,15 @@ public class Transformer implements ITransformer{
 	}
 
 	@Override
-	public Order transform(UpdateGenelSiparisIn objectIn) throws Exception{
+	public Order transformUpdate(GenelSiparisIn objectIn) throws Exception{
 		Order order = repo.getByRemoteId(objectIn.getSfId());
 		if(order == null){
 			logger.info("Bu sfId ile daha önce bir kayıt girilmemiş. Kayıt yapılacak");
+			return null;
 		}
 		try {
 			Utility.copyPrimitiveProperties(objectIn, order, false);
+			order.setRemoteId(objectIn.getSfId());
 			if(!CollectionUtils.isEmpty(objectIn.getSiparisKalemList())){
 				List<OrderDetail> productList = new ArrayList<>();
 				

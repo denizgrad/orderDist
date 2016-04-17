@@ -126,7 +126,15 @@ public class SalesForceClient implements ISalesForceClient {
 
 			ASiparis__c remoteOrder = new ASiparis__c();
 			remoteOrder.setId(order.getRemoteId().trim());
-			remoteOrder.setSiparis_Durum__c(order.getSiparisDurum());/*
+			remoteOrder.setSiparis_Durum__c(order.getSiparisDurum());
+			if(order.getSiparisTeslimTarihi() != null){
+				Calendar cal3 = Calendar.getInstance();
+				cal3.setTime(order.getSiparisTeslimTarihi());
+				remoteOrder.setTeslim_Tarihi__c(cal3);
+			}
+			/*	
+			}
+			
 			remoteOrder.setAdres__c(order.getAdres());
 			remoteOrder.setAdres_Aciklama__c(order.getAdresAciklama());
 
