@@ -31,8 +31,14 @@ public class DuJunit {
 	ISalesForceClient sf;
 	@Test
 	public void testSfContact(){
-		String accID  = sf.returnAccountId("hizli@ab.com.tr", "hizli1234");
-		System.out.println(accID);
+//		String accID  = sf.returnAccountId("hizli@ab.com.tr", "hizli1234");
+//		System.out.println(accID);
+		Order order = new Order();
+		order.setRemoteId("a0i11000005duljAAA");
+		order.setSiparisDurum("Teslimatta");
+		sf.updateStatus(order);
+		
+		
 	}
 	public void populateOrder (Order order){
 		order.setBarcodeNumber("TEST_BARCODE_NUMBER_!'^_123_ĞÜŞİÖÇ_ığüşöç");

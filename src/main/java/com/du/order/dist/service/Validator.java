@@ -38,7 +38,8 @@ public class Validator implements IValidator{
 			nullFields.add("genelToplam");
 		};
 		if((siparis.getKdv() == null  || siparis.getKdv().compareTo(BigDecimal.ZERO) == 0)){
-			nullFields.add("kdv");
+			//nullFields.add("kdv");
+			logger.info("Sipariş kdv bos geldi. Create yapılıyor.");
 		};
 		if(siparis.getSiparisTalepTeslimTarihi() == null){
 			nullFields.add("siparisTalepTeslimTarihi");

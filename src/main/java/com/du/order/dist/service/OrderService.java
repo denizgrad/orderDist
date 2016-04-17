@@ -46,7 +46,7 @@ public class OrderService implements IOrderService {
 		String barcodeNumber = generateBarcode(order);
 		order.setBarcodeNumber(barcodeNumber);
 		repo.save(order);
-		logger.info("order saved");
+		logger.info("order saved sfId:" +order.getRemoteId());
 	}
 
 	private String generateBarcode(Order order) {
@@ -66,9 +66,9 @@ public class OrderService implements IOrderService {
 		repoDetail.deleteChildrenByOid(dbOrder.getOid());
 		dbOrder.setOrderDetailList(order.getOrderDetailList());
 		setChildrenParent(dbOrder);
-		dbOrder.setCreated(new Date());
+		dbOrder.setLastUpdated(new Date());
 		repo.save(dbOrder);
-		logger.info("order updated");
+		logger.info("order updated sfId:" +order.getRemoteId());
 	}
 
 	@Override
@@ -111,6 +111,12 @@ public class OrderService implements IOrderService {
 		if (!order.getOrderDetailList().isEmpty()) {
 			for (OrderDetail od : order.getOrderDetailList()) {
 				od.setOrder(order);
+				if(od.getCreated()==null){
+					od.setCreated(new Date());
+				}
+				if(od.getLastUpdated()==null){
+					od.setLastUpdated(new Date());
+				}
 				od.setRemoteId(order.getRemoteId());
 			}
 		}

@@ -57,7 +57,7 @@ public class Transformer implements ITransformer{
 	public Order transform(UpdateGenelSiparisIn objectIn) throws Exception{
 		Order order = repo.getByRemoteId(objectIn.getSfId());
 		if(order == null){
-			throw new SystemError("Bu sfId ile daha önce bir kayıt girilmemiş");
+			logger.info("Bu sfId ile daha önce bir kayıt girilmemiş. Kayıt yapılacak");
 		}
 		try {
 			Utility.copyPrimitiveProperties(objectIn, order, false);

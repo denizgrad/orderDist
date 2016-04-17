@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +104,11 @@ public class SfRestServiceController {
 			checkAuthentication(objectIn);
 			checkValidityUpdate(objectIn);
 			Order order = transformer.transform(objectIn);
-			orderService.update(order);
+			if(StringUtils.isNotBlank(order.getRemoteId())){
+				orderService.update(order);
+			} else {
+				orderService.create(order);
+			}
 		} catch (AuthenticationError ex) {
 			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("authentication.exception"));
 			logger.error(ex.getMessage() + resourceMessage.getMessage("authentication.exception"));

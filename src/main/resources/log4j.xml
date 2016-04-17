@@ -11,9 +11,7 @@
 	</appender>
 
 	<appender name="file" class="org.apache.log4j.RollingFileAppender">
-	    <param name="append" value="false" />
-	    <param name="maxFileSize" value="10MB" />
-	    <param name="maxBackupIndex" value="10" />
+	    <param name="append" value="true" />
 	    <param name="file" value="/home/aslib/logs/order.dist.log4j.log" />
 	    <layout class="org.apache.log4j.PatternLayout">
 		<param name="ConversionPattern" 
@@ -22,7 +20,7 @@
 	</appender>
 
 	<root>
-		<level value="INFO" />
+		<level value="DEBUG" />
 		<appender-ref ref="console" />
 		<appender-ref ref="file" />
 	</root>
