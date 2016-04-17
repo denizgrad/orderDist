@@ -15,14 +15,13 @@ import com.du.order.dist.service.ServiceProvider;
 
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 	Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
-	@Autowired
-	IInfoProvider info;
-
+@Autowired
+IInfoProvider info;
+	
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+	public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
 		logger.debug("Interceptor: Pre-handle");
-
+ 
 		// Avoid a redirect loop for some urls
 		if (!request.getRequestURI().equals("/order.dist/") && !request.getRequestURI().equals("/order.dist/login")
 				&& !request.getRequestURI().equals("/order.dist/login.failed")
@@ -34,22 +33,20 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			if (userData == null) {
 				response.sendRedirect("/order.dist/");
 				return false;
-			} else {
-				ServiceProvider.setCurrentUserName(userData.getUserId());
-//				info.setAccId(userData.getUserId());
 			}
 		}
 		return true;
 	}
-
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+	public void postHandle(HttpServletRequest request,
+			HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		logger.debug("Post-handle");
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+	public void afterCompletion(HttpServletRequest request,
+			HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		logger.debug("After-completion");
 	}

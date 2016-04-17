@@ -3,6 +3,7 @@ package com.du.order.dist.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,16 +61,18 @@ public class Transformer implements ITransformer{
 		}
 		try {
 			Utility.copyPrimitiveProperties(objectIn, order, false);
-			List<OrderDetail> productList = new ArrayList<>();
-			
-//			deleteAllProducts(repo.getByRemoteId(objectIn.getSfId()).getOid());
-			
-			for(SiparisKalemIn sk : objectIn.getSiparisKalemList()){
-				OrderDetail product = new OrderDetail();
-				Utility.copyPrimitiveProperties(sk, product, false);
-				productList.add(product);
+			if(!CollectionUtils.isEmpty(objectIn.getSiparisKalemList())){
+				List<OrderDetail> productList = new ArrayList<>();
+				
+//				deleteAllProducts(repo.getByRemoteId(objectIn.getSfId()).getOid());
+				
+				for(SiparisKalemIn sk : objectIn.getSiparisKalemList()){
+					OrderDetail product = new OrderDetail();
+					Utility.copyPrimitiveProperties(sk, product, false);
+					productList.add(product);
+				}
+				order.setOrderDetailList(productList);
 			}
-			order.setOrderDetailList(productList);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw e;
