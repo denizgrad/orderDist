@@ -3,6 +3,8 @@ package com.du.order.dist.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,10 @@ import com.du.order.dist.interfaces.IValidator;
 import com.du.order.dist.interfaces.NamedEnum;
 import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.util.AuthenticationError;
+import com.du.order.dist.model.util.LoginForm;
 import com.du.order.dist.model.util.OrderError;
 import com.du.order.dist.model.util.PairModel;
 import com.du.order.dist.model.util.Response;
-import com.du.order.dist.model.util.SystemError;
 import com.du.order.dist.model.util.ValidationError;
 import com.du.order.dist.model.util.transfer.AIn;
 import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
@@ -55,6 +57,9 @@ public class SfRestServiceController {
 
 	@Autowired
 	private IOrderService orderService;
+	
+	 @Autowired 
+	 private HttpSession httpSession;
 
 	@ResponseBody
 	@RequestMapping(value = "/createSiparis", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
@@ -177,7 +182,8 @@ public class SfRestServiceController {
 		List<Order> retList = new ArrayList<>();
 		// TODO null check
 		try {
-			retList = orderService.getOrderList(ServiceProvider.getCurrentUserName());
+			LoginForm lf = (LoginForm) httpSession.getAttribute("LOGGEDIN_USER");
+			retList = orderService.getOrderList(lf.getUserId());
 		} catch (Exception e) {
 			logger.error("can not fetch list of order");
 		}

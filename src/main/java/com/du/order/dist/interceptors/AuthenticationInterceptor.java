@@ -23,27 +23,20 @@ IInfoProvider info;
 		logger.debug("Interceptor: Pre-handle");
  
 		// Avoid a redirect loop for some urls
-		if( !request.getRequestURI().equals("/order.dist/") &&
-		    !request.getRequestURI().equals("/order.dist/login") &&
-		    !request.getRequestURI().equals("/order.dist/login.failed") &&
-			!request.getRequestURI().equals("/order.dist/logout") &&
-			!request.getRequestURI().equals("/order.dist/v1/siparis/islem/createSiparis") &&
-			!request.getRequestURI().equals("/order.dist/v1/siparis/islem/updateSiparis") 
-			)
-		  {
-			  LoginForm userData = (LoginForm) request.getSession().getAttribute("LOGGEDIN_USER");
-			 
-		   if(userData == null)		   {
-		    response.sendRedirect("/order.dist/");
-		    return false;
-		   } else {
-			   ServiceProvider.setCurrentUserName(userData.getUserId());
-			   info.setAccId(userData.getUserId());
-		   }
-	  }
-	  return true;
+		if (!request.getRequestURI().equals("/order.dist/") && !request.getRequestURI().equals("/order.dist/login")
+				&& !request.getRequestURI().equals("/order.dist/login.failed")
+				&& !request.getRequestURI().equals("/order.dist/logout")
+				&& !request.getRequestURI().equals("/order.dist/v1/siparis/islem/createSiparis")
+				&& !request.getRequestURI().equals("/order.dist/v1/siparis/islem/updateSiparis")) {
+			LoginForm userData = (LoginForm) request.getSession().getAttribute("LOGGEDIN_USER");
+
+			if (userData == null) {
+				response.sendRedirect("/order.dist/");
+				return false;
+			}
+		}
+		return true;
 	}
-	
 	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
