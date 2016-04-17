@@ -23,6 +23,9 @@ public class Order extends BaseModel {
 	private String siparisAdi;
 	private String siparisVerenFirma;
 	private String siparisVerenKisi;
+	
+	private String tedarikEdenAccount;
+	
 	private String tedarikEdenKisi;
 	private String tedarikEdenFirma;
 	private Date siparisOlusmaTarihi;
@@ -57,8 +60,17 @@ public class Order extends BaseModel {
 
 	// getters setters
 
+	
 	public String getBarcodeNumber() {
 		return barcodeNumber;
+	}
+
+	public String getTedarikEdenAccount() {
+		return tedarikEdenAccount;
+	}
+
+	public void setTedarikEdenAccount(String tedarikEdenAccount) {
+		this.tedarikEdenAccount = tedarikEdenAccount;
 	}
 
 	public void setBarcodeNumber(String barcodeNumber) {

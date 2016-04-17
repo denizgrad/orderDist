@@ -96,10 +96,10 @@ public class AuthController {
 			String accId = sfClient.returnAccountId(username, password);
 			if ((username.equals(env.getProperty("admin.username"))	&& password.equals(env.getProperty("admin.password")))
 					|| (StringUtils.isNotBlank(accId))) { // sfaccount ıd 
-				loginform.setUserId(accId);
+				loginform.setAccId(accId);
 				request.getSession().setAttribute("LOGGEDIN_USER", loginform);
 				logger.info(String.format("logging success username: %s, userId: %s",
-				loginform.getUsername(), loginform.getUserId()));
+				loginform.getUsername(), loginform.getAccId()));
 				logger.info("redirect: siparis");
 				return "redirect:/siparis";
 			} else {

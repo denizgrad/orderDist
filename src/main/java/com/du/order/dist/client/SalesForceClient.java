@@ -62,6 +62,76 @@ public class SalesForceClient implements ISalesForceClient {
 		return null;
 	}
 
+	@Override
+	public String returnAccountId(String contactId) {
+		String accountId = null;
+		try {
+
+			ConnectorConfig config = new ConnectorConfig();
+			config.setUsername(env.getRequiredProperty("salesforce.api.name"));
+			config.setPassword(env.getRequiredProperty("salesforce.api.password"));
+			config.setTraceMessage(true);
+			connection = Connector.newConnection(config);
+			logger.info("Auth EndPoint: " + config.getAuthEndpoint());
+			logger.info("Service EndPoint: " + config.getServiceEndpoint());
+			logger.info("Username: " + config.getUsername());
+			logger.info("SessionId: " + config.getSessionId());
+
+			accountId = queryContact(contactId);
+			
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		if(StringUtils.isNotBlank(accountId)){
+			return accountId;
+		}
+		return null;
+	}
+
+	private String queryContact(String contactId) {
+		QueryResult qResult = null;
+		   Contact retCon = null;
+		   try {
+		      String soqlQuery = "SELECT AccountId, FirstName, LastName FROM Contact";
+		      String whereClause = String.format(" WHERE (Id = '%s')", contactId);
+		      qResult = connection.query(soqlQuery + whereClause);
+		      boolean done = false;
+		      if (qResult.getSize() > 0) {
+		         System.out.println("Logged-in user can see a total of "
+		            + qResult.getSize() + " contact records.");
+		         while (!done) {
+		            SObject[] records = qResult.getRecords();
+		            for (int i = 0; i < records.length; ++i) {
+		               Contact con = (Contact) records[i];
+		               retCon = con;
+		               String fName = con.getFirstName();
+		               String lName = con.getLastName();
+		               if (fName == null) {
+		                  System.out.println("Contact " + (i + 1) + ": " + lName);
+		               } else {
+		                  System.out.println("Contact " + (i + 1) + ": " + fName
+		                        + " " + lName);
+		               }
+		            }
+		            if (qResult.isDone()) {
+		               done = true;
+		            } else {
+		               qResult = connection.queryMore(qResult.getQueryLocator());
+		            }
+		         }
+		      } else {
+		         System.out.println("No records found.");
+		      }
+		      System.out.println("\nQuery succesfully executed.");
+		   } catch (ConnectionException ce) {
+		      ce.printStackTrace();
+		   }
+		   
+		   if(retCon != null){
+			   return retCon.getAccountId();
+		   } else { return null; }
+	}
+
 	public String queryContact(String username, String password) {
 		   QueryResult qResult = null;
 		   Contact retCon = null;
@@ -102,7 +172,7 @@ public class SalesForceClient implements ISalesForceClient {
 		   }
 		   
 		   if(retCon != null){
-			   return retCon.getId();
+			   return retCon.getAccountId();
 		   } else { return null; }
 		}
 	@Override

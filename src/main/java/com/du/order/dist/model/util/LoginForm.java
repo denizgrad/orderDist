@@ -3,7 +3,7 @@ package com.du.order.dist.model.util;
 public class LoginForm {
 	private String username;
 	private String password;
-	private String userId;
+	private String accId;
 	private String roleId;
 	
 	public String getRoleId() {
@@ -12,11 +12,11 @@ public class LoginForm {
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
-	public String getUserId() {
-		return userId;
+	public String getAccId() {
+		return accId;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setAccId(String userId) {
+		this.accId = userId;
 	}
 	public String getUsername() {
 		return username;

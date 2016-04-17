@@ -188,7 +188,7 @@ public class SfRestServiceController {
 		// TODO null check
 		try {
 			LoginForm lf = (LoginForm) httpSession.getAttribute("LOGGEDIN_USER");
-			retList = orderService.getOrderList(lf.getUserId());
+			retList = orderService.getOrderList(lf.getAccId());
 		} catch (Exception e) {
 			logger.error("can not fetch list of order");
 		}

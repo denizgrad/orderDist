@@ -45,6 +45,13 @@ public class OrderService implements IOrderService {
 		order.setCreated(new Date());
 		String barcodeNumber = generateBarcode(order);
 		order.setBarcodeNumber(barcodeNumber);
+		String accId = "";
+		if(StringUtils.isNotBlank(order.getTedarikEdenFirma())) {
+			accId=salesForceClient.returnAccountId(order.getTedarikEdenFirma());
+		} else if(StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
+			accId=salesForceClient.returnAccountId(order.getTedarikEdenKisi());
+		}
+		order.setTedarikEdenAccount(accId);
 		repo.save(order);
 		logger.info("order saved sfId:" +order.getRemoteId());
 	}

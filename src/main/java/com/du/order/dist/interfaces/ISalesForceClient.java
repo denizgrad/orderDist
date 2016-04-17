@@ -7,5 +7,7 @@ public interface ISalesForceClient {
 	public Order updateStatus(Order shipment);
 
 	public String returnAccountId(String userName, String password);
+	
+	public String returnAccountId(String contactId);
 
 }
