@@ -153,6 +153,7 @@ public class OrderService implements IOrderService {
 		} else if (order.getSiparisDurum().equals(OrderStatus.TESLIM_EDILDI.getKey())) {
 			salesForceClient.updateStatus(order);
 		} else {
+			order.setSiparisDurum(OrderStatus.HAZIRLANIYOR.getKey());
 			salesForceClient.updateStatus(order);
 		}
 
