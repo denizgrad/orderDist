@@ -101,7 +101,12 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 		var delivery = new Date(row.entity.siparisTalepTeslimTarihi); 
 		
 		var diff = (delivery - now)/1000;
-		if((row.entity.siparisDurum != 6 && row.entity.siparisDurum != 7) && diff < 0){
+		
+		var teslimEdildi = "Teslim Edildi";
+		var iptalEdildi = "İptal Edildi";
+		var siparisOlustu = "Sipariş Oluşturuldu";
+			
+		if((row.entity.siparisDurum.localeCompare(teslimEdildi) != 0 && row.entity.siparisDurum.localeCompare(iptalEdildi) != 0) && diff < 0){
 			warn = true;
 		}
 	    diff = Math.abs(Math.floor(diff));
@@ -115,7 +120,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 	    var min = Math.floor(leftSec/(60));
 	    var leftSec = leftSec - min * 60;
 	    
-	    if(((days <= 0 && hrs <= 4) || (row.entity.siparisDurum == 1))){
+	    if(((days <= 0 && hrs <= 4) || (row.entity.siparisDurum.localeCompare(siparisOlustu) == 0))){
 	    	warn = true;
 	    }
 		return warn;

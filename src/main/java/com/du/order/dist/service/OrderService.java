@@ -88,7 +88,7 @@ public class OrderService implements IOrderService {
 
 		Order dbOrder = repo.getByOid(oid);
 		dbOrder.setSiparisDurum(status);
-		if (status.equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))) {
+		if (status.equals(OrderStatus.TESLIM_EDILDI.getKey())) {
 			dbOrder.setSiparisTeslimTarihi(new Date());
 		}
 
@@ -141,7 +141,7 @@ public class OrderService implements IOrderService {
 	@Override
 	public void deliverOrder(String oid) throws Exception {
 
-		updateOrderStatus(oid, String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()));
+		updateOrderStatus(oid, OrderStatus.TESLIM_EDILDI.getKey());
 
 	}
 
@@ -154,14 +154,12 @@ public class OrderService implements IOrderService {
 		// repoDetail.deleteChildrenByOid(dbOrder.getOid());
 		order.setOrderDetailList(dbOrder.getOrderDetailList());
 
-		if (order.getSiparisDurum().equals(String.valueOf(OrderStatus.YOLA_CIKTI.getValue()))) {
-			order.setSiparisDurum("Teslimatta");
+		if (order.getSiparisDurum().equals(OrderStatus.YOLA_CIKTI.getKey())) {
 			salesForceClient.updateStatus(order);
-		} else if (order.getSiparisDurum().equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))) {
-			order.setSiparisDurum("Teslim Edildi");
+		} else if (order.getSiparisDurum().equals(OrderStatus.TESLIM_EDILDI.getKey())) {
 			salesForceClient.updateStatus(order);
 		} else {
-			order.setSiparisDurum("Hazirlaniyor");
+			order.setSiparisDurum(OrderStatus.HAZIRLANIYOR.getKey());
 			salesForceClient.updateStatus(order);
 		}
 
