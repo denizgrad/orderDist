@@ -12,7 +12,7 @@ public interface IOrderService {
 
 	public List<Order> getOrderList(String orgOid);
 
-	public void updateOrderStatus(String oid, String status);
+	public void updateOrderStatus(String oid, String status) throws Exception;
 
 	public Order getOrderByOid(String oid);
 
@@ -20,6 +20,6 @@ public interface IOrderService {
 
 	public void updateOrderBarcode(String oid, String barcode);
 
-	public void deliverOrder(String oid);
+	public void deliverOrder(String oid) throws Exception;
 
 }

@@ -7,15 +7,18 @@ tesApp.controller("teslimatCtrl", function($scope, $http, $window, statusRepoSer
 	  
 	var onFetchError = function(message) {
 		$scope.error = "referans datalar getirilemedi. Message:" + message;
+		$scope.loadingStatus = false;
 	};
 
 	var onFetchCompleted = function(data) {
 		$scope.statusData = data;
 		$scope.statusData.selectedOption = "";
+		$scope.loadingStatus = false;
 		
 	};
 
 	var getStatus = function() {
+		$scope.loadingStatus = true;
 		statusRepoService.get().then(onFetchCompleted, onFetchError);
 	};
 
@@ -29,11 +32,14 @@ tesApp.controller("teslimatCtrl", function($scope, $http, $window, statusRepoSer
 
 		if (form.$valid) {
 			var oid = $scope.oid;
+			$scope.loadingDeliver = true;
 			$http.post('v1/siparis/islem/deliverOrder/' + oid).success(
 					function(response) {
 						
+						$scope.loadingDeliver = false;
 						$window.location.reload();
 					}).error(function(error) {
+						$scope.loadingDeliver = false;
 
 			});
 			
@@ -64,6 +70,7 @@ tesApp.controller("teslimatCtrl", function($scope, $http, $window, statusRepoSer
 	$scope.getSiparis = function getSiparis(form) {
 		
 		if (form.$valid) {
+			$scope.loadingBarcode = true;
 			$http.post('v1/siparis/islem/getOrderByBarcode/' + form.barkod.$viewValue).success(
 					function(response) {
 						if("" !== response && null !== response){
@@ -92,8 +99,10 @@ tesApp.controller("teslimatCtrl", function($scope, $http, $window, statusRepoSer
 						else {
 							alert("Kayıt bulunamadı!");
 						}
+						$scope.loadingBarcode = false;
 					}).error(function(error) {
 						alert("Kayıt getirilirken hata oluştu. Lütfen tekrar deneyiniz!");
+						$scope.loadingBarcode = false;
 			});
 		}
 	}
@@ -118,6 +127,7 @@ tesApp.filter('currency', function () {
 var refDataService = function($http){
     
 	var getStatus = function() {
+
 		return $http.post("v1/siparis/islem/fillCombo/OrderStatus").then(
 				function(response) {
 					

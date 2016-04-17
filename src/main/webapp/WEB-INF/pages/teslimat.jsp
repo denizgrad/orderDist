@@ -26,6 +26,12 @@
 
 	<div ng-controller="teslimatCtrl" class = "teslimat-block">
 
+		<div ng-show = "loadingDeliver || loadingBarcode || loadingStatus" class="loading-container">
+			<div class = "loading-inner-container">
+				<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>Yükleniyor...
+			</div>
+		</div>
+		
 		<form name="form" ng-submit="teslimEt(form)" role="form">
 			<fieldset>
 				<div class="column">
@@ -68,13 +74,13 @@
 				<div class="column">
 					<label class="col-sm-2 control-label" for="siparisVerenFirma">Siparişi Veren Firma</label>  
 					<div class="col-sm-4">
-						<span id="siparisVerenFirma" class="form-control input-sm" readonly> {{siparisVerenFirma}}</span>
+						<input type = "text" id="siparisVerenFirma" class="form-control input-sm" readonly ng-model = "siparisVerenFirma" />
 					</div>
 				</div>
 				<div class="column">
 					<label class="col-sm-2 control-label" for="siparisVerenKisi">Siparişi Veren Kişi</label>  
 					<div class="col-sm-4">
-						<span id="siparisVerenKisi" class="form-control input-sm" readonly>{{siparisVerenKisi}}</span>
+						<input type = "text" id="siparisVerenKisi" class="form-control input-sm" readonly  ng-model = "siparisVerenKisi"/>
 					</div>
 				</div>
 		
@@ -84,14 +90,14 @@
 				<div class="column">
 					<label class="col-sm-2 control-label" for="siparisOlusmaTarihi">Sipariş Tarihi</label>  
 					<div class="col-sm-4">
-						<span id="siparisOlusmaTarihi" class="form-control input-sm" readonly>{{siparisOlusmaTarihi | date:'dd-MM-yyyy hh:mm'}}</span>
+						<input type = "text" id="siparisOlusmaTarihi" class="form-control input-sm" readonly  ng-model = "siparisOlusmaTarihi | date:'dd-MM-yyyy hh:mm'"/>
 					</div>
 				</div>
 				
 				<div class="column">
 					<label class="col-sm-2 control-label" for="siparisTalepTeslimTarihi">Talep Edilen Teslim Tarihi</label>  
 					<div class="col-sm-4">
-						<span id="siparisTalepTeslimTarihi" class="form-control input-sm" readonly>{{siparisTalepTeslimTarihi | date:'dd-MM-yyyy hh:mm'}}</span>
+						<input type = "text" id="siparisTalepTeslimTarihi" class="form-control input-sm" readonly  ng-model = "siparisTalepTeslimTarihi | date:'dd-MM-yyyy hh:mm'"/>
 					</div>
 				</div>
 			
@@ -129,7 +135,7 @@
 				<legend class="title"> Genel Tolam </legend>
 				<div class="column" style = "display: flex; justify-content: flex-end;">
 					<div class="col-sm-4">
-						<span class="form-control input-sm" id="genelToplam" readonly>{{genelToplam | currency}}</span>
+						<input type = "text" class="form-control input-sm" id="genelToplam" readonly  ng-model = "genelToplam | currency"/>
 					</div>
 				</div>
 			</fieldset>

@@ -1,8 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<div ng-show="loadingUpdateStatus || loadingStatus" class="loading-container">
+	<div class = "loading-inner-container">
+		<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>Yükleniyor...
+	</div>
+</div>
+	
 <div class="modal-header" style = "display: flex; justify-content: center;">
 	<h3 class="modal-title">Sipariş Durumu</h3>
 </div>
+
 <div class="modal-body">
 	<div style = "display: flex; justify-content: center;">
 		<select ng-model="statusData.selectedOption" >

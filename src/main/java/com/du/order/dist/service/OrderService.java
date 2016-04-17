@@ -1,6 +1,5 @@
 package com.du.order.dist.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.du.order.dist.Utility;
-import com.du.order.dist.controller.AuthController;
 import com.du.order.dist.interfaces.IOrderService;
+import com.du.order.dist.interfaces.ISalesForceClient;
 import com.du.order.dist.interfaces.ITransformer;
 import com.du.order.dist.model.entity.Order;
 import com.du.order.dist.model.entity.OrderDetail;
@@ -35,7 +34,11 @@ public class OrderService implements IOrderService {
 	@Autowired
 	ITransformer transformer;
 
+	@Autowired
+	ISalesForceClient salesForceClient;
+
 	private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+
 	@Override
 	public void create(Order order) {
 		setChildrenParent(order);
@@ -48,12 +51,12 @@ public class OrderService implements IOrderService {
 
 	private String generateBarcode(Order order) {
 		String remoteIdCopy = order.getRemoteId();
-		if(StringUtils.isNotBlank(order.getRemoteId())){
-			while(remoteIdCopy.length() < 8){
-				remoteIdCopy = remoteIdCopy +"x";
+		if (StringUtils.isNotBlank(order.getRemoteId())) {
+			while (remoteIdCopy.length() < 8) {
+				remoteIdCopy = remoteIdCopy + "x";
 			}
 		}
-		return String.valueOf(remoteIdCopy.hashCode());
+		return String.valueOf(Math.abs(remoteIdCopy.hashCode()));
 	}
 
 	@Override
@@ -81,14 +84,17 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public void updateOrderStatus(String oid, String status) {
+	public void updateOrderStatus(String oid, String status) throws Exception {
 
 		Order dbOrder = repo.getByOid(oid);
 		dbOrder.setSiparisDurum(status);
-		if(status.equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))){
+		if (status.equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))) {
 			dbOrder.setSiparisTeslimTarihi(new Date());
 		}
+
 		repo.save(dbOrder);
+
+		sendToSF(dbOrder);
 
 	}
 
@@ -110,30 +116,48 @@ public class OrderService implements IOrderService {
 		}
 	}
 
-//	@Override
-//	public List<Order> getOrderList(String orgOid) {
-//		List<Order> list = repo.getListByBranchOid(orgOid);
-//
-//		for (Order order : list) {
-//			order.setOrderDetailList(new ArrayList<OrderDetail>());
-//		}
-//		return list;
-//	}
-	
-	// TODO fix it
+	// @Override
+	// public List<Order> getOrderList(String orgOid) {
+	// List<Order> list = repo.getListByBranchOid(orgOid);
+	//
+	// for (Order order : list) {
+	// order.setOrderDetailList(new ArrayList<OrderDetail>());
+	// }
+	// return list;
+	// }
+
 	@Override
 	public List<Order> getOrderList(String orgOid) {
-		List<Order> list = repo.getListByBranchOid();
-
-		for (Order order : list) {
-			order.setOrderDetailList(new ArrayList<OrderDetail>());
-		}
+		List<Order> list = repo.getListByBranchOid(orgOid);
 		return list;
 	}
+
 	@Override
-	public void deliverOrder(String oid) {
+	public void deliverOrder(String oid) throws Exception {
 
 		updateOrderStatus(oid, String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()));
+
+	}
+
+	@Transactional(readOnly = true)
+	private void sendToSF(Order dbOrder) throws Exception {
+		// Hazirlaniyor Teslimatta Teslim Edildi
+
+		Order order = new Order();
+		Utility.copyPrimitiveProperties(dbOrder, order, false);
+		// repoDetail.deleteChildrenByOid(dbOrder.getOid());
+		order.setOrderDetailList(dbOrder.getOrderDetailList());
+
+		if (order.getSiparisDurum().equals(String.valueOf(OrderStatus.YOLA_CIKTI.getValue()))) {
+			order.setSiparisDurum("Teslimatta");
+			salesForceClient.updateStatus(order);
+		} else if (order.getSiparisDurum().equals(String.valueOf(OrderStatus.TESLIM_EDILDI.getValue()))) {
+			order.setSiparisDurum("Teslim Edildi");
+			salesForceClient.updateStatus(order);
+		} else {
+			order.setSiparisDurum("Hazirlaniyor");
+			salesForceClient.updateStatus(order);
+		}
 
 	}
 
