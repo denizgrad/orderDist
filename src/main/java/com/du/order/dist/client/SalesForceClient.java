@@ -102,7 +102,7 @@ public class SalesForceClient implements ISalesForceClient {
 		   }
 		   
 		   if(retCon != null){
-			   return retCon.getAccountId();
+			   return retCon.getId();
 		   } else { return null; }
 		}
 	@Override
