@@ -163,7 +163,7 @@ public class SfRestServiceController {
 		}
 		if (NamedEnum.class.isAssignableFrom(comboEnum)) {
 			for (Enum<?> e : comboEnum.getEnumConstants()) {
-				retList.add(new PairModel(((NamedEnum) e).getKey(), String.valueOf(((NamedEnum) e).getValue())));
+				retList.add(new PairModel(((NamedEnum) e).getKey(), String.valueOf(((NamedEnum) e).getKey())));
 			}
 		}
 		return new ResponseEntity<>(retList, HttpStatus.OK);

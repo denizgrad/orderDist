@@ -4,5 +4,5 @@ public interface NamedEnum {
 
 	public String getKey();
 
-	public int getValue();
+//	public int getValue();
 }
