@@ -94,6 +94,13 @@ tesApp.controller("teslimatCtrl", function($scope, $http, $window, statusRepoSer
 							$scope.siparisTalepTeslimTarihi = response.siparisTalepTeslimTarihi;
 							$scope.siparisDurum = response.siparisDurum;
 							
+							$scope.gelal = response.gelal == 1 ? "Evet" : "Hayır";
+							$scope.odemeSekli = response.odemeSekli;
+							$scope.adSoyad = response.teslimAlacakAd + " " + response.teslimAlacakSoyad;
+							$scope.teslimAlacakTel = response.teslimAlacakTel;
+							$scope.teslimAlacakGsm = response.teslimAlacakGsm;
+							$scope.teslimAlacakEmail = response.teslimAlacakEmail;
+							
 							$scope.teslimatGridOptions.data = response.orderDetailList;
 						}
 						else {

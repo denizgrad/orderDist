@@ -27,15 +27,15 @@
 		</fieldset>
 		<fieldset class = "form-group">
 			<div class="column">
-				<label class="col-sm-2 control-label" for="tedarikEdenFirma">Tedarik Eden Şube</label>  
+				<label class="col-sm-2 control-label" for="siparisVerenFirma">Sipariş Veren Şube</label>  
 				<div class="col-sm-4">
-					<input type = "text"  id="tedarikEdenFirma" class="form-control input-sm" readonly ng-model = "tedarikEdenFirma"/>
+					<input type = "text"  id="siparisVerenFirma" class="form-control input-sm" readonly ng-model = "siparisVerenFirma"/>
 				</div>
 			</div>
 			<div class="column">
-				<label class="col-sm-2 control-label" for="tedarikEdenKisi">Tedarik Eden Kişi</label>  
+				<label class="col-sm-2 control-label" for="siparisVerenKisi">Sipariş Veren Kişi</label>  
 				<div class="col-sm-4">
-					<input type = "text"  id="tedarikEdenKisi" class="form-control input-sm" readonly ng-model = "tedarikEdenKisi"/>
+					<input type = "text"  id="siparisVerenKisi" class="form-control input-sm" readonly ng-model = "siparisVerenKisi"/>
 				</div>
 			</div>
 	

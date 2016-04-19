@@ -40,8 +40,8 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 		                 { field: 'siparisAdi', displayName: "Sipariş Adı", visible: true},
 		                 { field: 'siparisVerenFirma', displayName: "Sipariş Veren Firma", visible: true},
 		                 { field: 'siparisVerenKisi', displayName: "Sipariş Veren Kişi", visible: true, height: 30},
-		                 { field: 'tedarikEdenFirma', displayName: "Tedarik Eden Firma", visible: false},
-		                 { field: 'tedarikEdenKisi', displayName: "Tedarik Eden Kişi", visible: false},
+//		                 { field: 'tedarikEdenFirma', displayName: "Tedarik Eden Firma", visible: false},
+//		                 { field: 'tedarikEdenKisi', displayName: "Tedarik Eden Kişi", visible: false},
 		                 { field: 'siparisOlusmaTarihi', displayName: "Sipariş Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy HH:mm\'', width : 140},
 		                 { field: 'siparisTeslimTarihi', displayName: "Teslim Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy HH:mm\'', width : 140},
 		                 { field: 'araToplam', displayName: "Ara Toplam", visible: false, cellFilter: 'currency'},
@@ -310,6 +310,13 @@ sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstanc
 						$scope.adresAciklama = response.adresAciklama;
 						$scope.siparisTalepTeslimTarihi = response.siparisTalepTeslimTarihi;
 						$scope.siparisDurum = response.siparisDurum;
+						
+						$scope.gelal = response.gelal == 1 ? "Evet" : "Hayır";
+						$scope.odemeSekli = response.odemeSekli;
+						$scope.adSoyad = response.teslimAlacakAd + " " + response.teslimAlacakSoyad;
+						$scope.teslimAlacakTel = response.teslimAlacakTel;
+						$scope.teslimAlacakGsm = response.teslimAlacakGsm;
+						$scope.teslimAlacakEmail = response.teslimAlacakEmail;
 						
 						$scope.teslimatGridOptions.data = response.orderDetailList;
 						$scope.loadingOrder = false;
