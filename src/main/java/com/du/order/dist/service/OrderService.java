@@ -41,17 +41,18 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public void create(Order order) {
-//		setChildrenParent(order);
+		// setChildrenParent(order);
 		order.setCreated(new Date());
 		String barcodeNumber = generateBarcode(order);
 		order.setBarcodeNumber(barcodeNumber);
 		String accId = "";
-		if(StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
-			accId=salesForceClient.returnAccountId(order.getTedarikEdenKisi());
+		if (StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
+			accId = salesForceClient.returnAccountId(order.getTedarikEdenKisi());
 		}
 		order.setTedarikEdenAccount(accId);
 		repo.save(order);
-		logger.info("order saved sfId:" +order.getRemoteId());
+		logger.info("order saved sfId:" + order.getRemoteId());
+
 	}
 
 	private String generateBarcode(Order order) {
@@ -64,32 +65,40 @@ public class OrderService implements IOrderService {
 		return String.valueOf(Math.abs(remoteIdCopy.hashCode()));
 	}
 
+	private void fetchOrderDetail(Order order) {
+
+		order.setOrderDetailList(repo.fetchOrderDetail(order.getRemoteId()));
+
+	}
+
 	@Override
 	public void update(Order order) throws Exception {
 		Order dbOrder = repo.getByRemoteId(order.getRemoteId());
 		Utility.copyPrimitiveProperties(order, dbOrder, false);
 		repoDetail.deleteByRemoteId(dbOrder.getRemoteId());
 		dbOrder.setOrderDetailList(order.getOrderDetailList());
-//		setChildrenParent(dbOrder);
+		// setChildrenParent(dbOrder);
 		dbOrder.setLastUpdated(new Date());
 		String accId = "";
-		if(StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
-			accId=salesForceClient.returnAccountId(order.getTedarikEdenKisi());
+		if (StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
+			accId = salesForceClient.returnAccountId(order.getTedarikEdenKisi());
 		}
 		order.setTedarikEdenAccount(accId);
 		repo.save(dbOrder);
-		logger.info("order updated sfId:" +order.getRemoteId());
+		logger.info("order updated sfId:" + order.getRemoteId());
 	}
 
 	@Override
 	public Order getOrderByOid(String oid) {
 		Order dbOrder = repo.getByOid(oid);
+		fetchOrderDetail(dbOrder);
 		return dbOrder;
 	}
 
 	@Override
 	public Order getOrderByBarcode(String oid) {
 		Order dbOrder = repo.getByBarcode(oid);
+		fetchOrderDetail(dbOrder);
 		return dbOrder;
 	}
 
@@ -115,20 +124,20 @@ public class OrderService implements IOrderService {
 
 	}
 
-//	private void setChildrenParent(Order order) {
-//		if (!order.getOrderDetailList().isEmpty()) {
-//			for (OrderDetail od : order.getOrderDetailList()) {
-//				od.setOrder(order);
-//				if(od.getCreated()==null){
-//					od.setCreated(new Date());
-//				}
-//				if(od.getLastUpdated()==null){
-//					od.setLastUpdated(new Date());
-//				}
-////				od.setRemoteId(order.getRemoteId());
-//			}
-//		}
-//	}
+	// private void setChildrenParent(Order order) {
+	// if (!order.getOrderDetailList().isEmpty()) {
+	// for (OrderDetail od : order.getOrderDetailList()) {
+	// od.setOrder(order);
+	// if(od.getCreated()==null){
+	// od.setCreated(new Date());
+	// }
+	// if(od.getLastUpdated()==null){
+	// od.setLastUpdated(new Date());
+	// }
+	//// od.setRemoteId(order.getRemoteId());
+	// }
+	// }
+	// }
 
 	// @Override
 	// public List<Order> getOrderList(String orgOid) {
@@ -159,7 +168,5 @@ public class OrderService implements IOrderService {
 		repoDetail.deleteByRemoteId(orderDetail.getRemoteId());
 		repoDetail.save(orderDetail);
 	}
-
-
 
 }
