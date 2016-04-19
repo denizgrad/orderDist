@@ -2,15 +2,13 @@ package com.du.order.dist.config;
 
 import java.util.Properties;
 
-import javax.sql.DataSource;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.filter.AbstractRequestLoggingFilter;
+import javax.sql.DataSource;
+
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.hibernate.ejb.HibernatePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +20,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.filter.AbstractRequestLoggingFilter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -32,7 +31,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import com.du.order.dist.interceptors.AuthenticationInterceptor;
 import com.du.order.dist.interceptors.LoggerInterceptor;
 import com.du.order.dist.interfaces.IMessageSource;
-import com.du.order.dist.service.DuJsonMapper;
 import com.du.order.dist.service.ResourceMessage;
 
 @EnableWebMvc
