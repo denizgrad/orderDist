@@ -27,6 +27,7 @@ IInfoProvider info;
 				&& !request.getRequestURI().equals("/order.dist/login.failed")
 				&& !request.getRequestURI().equals("/order.dist/logout")
 				&& !request.getRequestURI().equals("/order.dist/v1/siparis/islem/createSiparis")
+				&& !request.getRequestURI().equals("/order.dist/v1/siparis/islem/createSiparisDetay")
 				&& !request.getRequestURI().equals("/order.dist/v1/siparis/islem/updateSiparis")) {
 			LoginForm userData = (LoginForm) request.getSession().getAttribute("LOGGEDIN_USER");
 

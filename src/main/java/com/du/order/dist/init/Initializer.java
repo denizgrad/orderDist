@@ -56,9 +56,9 @@ public class Initializer implements WebApplicationInitializer {
         // The main Spring MVC servlet.
         ServletRegistration.Dynamic appServlet = servletContext.addServlet("appServlet", new DispatcherServlet(mvcContext));
 
-        HttpConstraintElement httpConstraintElement = new HttpConstraintElement(ServletSecurity.TransportGuarantee.NONE);
-        ServletSecurityElement servletSecurityElement = new ServletSecurityElement(httpConstraintElement);
-        appServlet.setServletSecurity(servletSecurityElement);
+//        HttpConstraintElement httpConstraintElement = new HttpConstraintElement(ServletSecurity.TransportGuarantee.NONE);
+//        ServletSecurityElement servletSecurityElement = new ServletSecurityElement(httpConstraintElement);
+//        appServlet.setServletSecurity(servletSecurityElement);
 
         appServlet.setLoadOnStartup(1);
         Set<String> mappingConflicts = appServlet.addMapping("/") ;

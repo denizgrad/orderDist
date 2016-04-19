@@ -59,7 +59,47 @@ public class SfRestServiceController {
 	
 	 @Autowired 
 	 private HttpSession httpSession;
+	 
+	 
+	 
+	 
+	 
+	 
+	 	@ResponseBody
+		@RequestMapping(value = "/createSiparisDetay", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
+		public ResponseEntity<Response> createDetay(@RequestBody SiparisKalemIn objectIn) {
+			logger.info("CREATE DETAY CALLED: "+ objectIn.getSfId());
+			Response resp = new Response(true, HttpStatus.OK.value(), resourceMessage.getMessage("service.success"));
 
+			try {
+				checkAuthentication(objectIn);
+//				checkValidityCreateDetay(objectIn);
+				OrderDetail orderDetail = transformer.transformCreateDetay(objectIn);
+				orderService.createDetay(orderDetail);
+			} catch (AuthenticationError ex) {
+				resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("authentication.exception"));
+				logger.error(ex.getMessage() + resourceMessage.getMessage("authentication.exception"));
+				return new ResponseEntity<>(resp, HttpStatus.OK);
+			} catch (ValidationError ex) {
+				resp = new Response(false, HttpStatus.OK.value(), Utility.validationErrorToString(ex));
+				logger.error(Utility.validationErrorToString(ex));
+				return new ResponseEntity<>(resp, HttpStatus.OK);
+			} catch (OrderError ex) {
+				resp = new Response(false, HttpStatus.OK.value(), ex.getDescription());
+				logger.error(ex.getDescription());
+				return new ResponseEntity<>(resp, HttpStatus.OK);
+			} catch (Exception ex) {
+				resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("service.exception"));
+				logger.error(ex.getMessage());
+				logger.error(ex.toString());
+				return new ResponseEntity<>(resp, HttpStatus.OK);
+			}
+			logger.info("CREATE DETAY OK");
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+		}
+	 
+	 
+	 
 	@ResponseBody
 	@RequestMapping(value = "/createSiparis", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
 	public ResponseEntity<Response> create(@RequestBody GenelSiparisIn objectIn) {
@@ -93,38 +133,7 @@ public class SfRestServiceController {
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "/createSiparisDetay", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
-	public ResponseEntity<Response> create(@RequestBody SiparisKalemIn objectIn) {
-		logger.info("CREATE DETAY CALLED: "+ objectIn.getSfId());
-		Response resp = new Response(true, HttpStatus.OK.value(), resourceMessage.getMessage("service.success"));
-
-		try {
-			checkAuthentication(objectIn);
-//			checkValidityCreateDetay(objectIn);
-			OrderDetail orderDetail = transformer.transformCreateDetay(objectIn);
-			orderService.createDetay(orderDetail);
-		} catch (AuthenticationError ex) {
-			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("authentication.exception"));
-			logger.error(ex.getMessage() + resourceMessage.getMessage("authentication.exception"));
-			return new ResponseEntity<>(resp, HttpStatus.OK);
-		} catch (ValidationError ex) {
-			resp = new Response(false, HttpStatus.OK.value(), Utility.validationErrorToString(ex));
-			logger.error(Utility.validationErrorToString(ex));
-			return new ResponseEntity<>(resp, HttpStatus.OK);
-		} catch (OrderError ex) {
-			resp = new Response(false, HttpStatus.OK.value(), ex.getDescription());
-			logger.error(ex.getDescription());
-			return new ResponseEntity<>(resp, HttpStatus.OK);
-		} catch (Exception ex) {
-			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("service.exception"));
-			logger.error(ex.getMessage());
-			logger.error(ex.toString());
-			return new ResponseEntity<>(resp, HttpStatus.OK);
-		}
-		logger.info("CREATE DETAY OK");
-		return new ResponseEntity<>(resp, HttpStatus.OK);
-	}
+	
 
 	@ResponseBody
 	@RequestMapping(value = "/updateSiparis", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)

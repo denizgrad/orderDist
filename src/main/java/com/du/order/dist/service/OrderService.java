@@ -166,6 +166,7 @@ public class OrderService implements IOrderService {
 	public void createDetay(OrderDetail orderDetail) {
 		logger.info("CREATE DETAY siparis sfId: " + orderDetail.getOrderRemoteId());
 		repoDetail.deleteByRemoteId(orderDetail.getRemoteId());
+		orderDetail.setCreated(new Date());
 		repoDetail.save(orderDetail);
 	}
 

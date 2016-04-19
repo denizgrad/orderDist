@@ -29,19 +29,6 @@ public class SiparisKalemIn extends AIn{
 	private BigDecimal indirim;
 	private BigDecimal kalemGenelToplam;
 	private String siparisId;
-	
-	public String getSiparisId() {
-		return siparisId;
-	}
-	public void setSiparisId(String siparisId) {
-		this.siparisId = siparisId;
-	}
-	public String getUrunId() {
-		return urunId;
-	}
-	public void setUrunId(String urunId) {
-		this.urunId = urunId;
-	}
 	public String getSiparisKalemAdi() {
 		return siparisKalemAdi;
 	}
@@ -53,6 +40,12 @@ public class SiparisKalemIn extends AIn{
 	}
 	public void setUrunAdi(String urunAdi) {
 		this.urunAdi = urunAdi;
+	}
+	public String getUrunId() {
+		return urunId;
+	}
+	public void setUrunId(String urunId) {
+		this.urunId = urunId;
 	}
 	public BigDecimal getAdet() {
 		return adet;
@@ -84,6 +77,13 @@ public class SiparisKalemIn extends AIn{
 	public void setKalemGenelToplam(BigDecimal kalemGenelToplam) {
 		this.kalemGenelToplam = kalemGenelToplam;
 	}
+	public String getSiparisId() {
+		return siparisId;
+	}
+	public void setSiparisId(String siparisId) {
+		this.siparisId = siparisId;
+	}
+	
 	
 	
 }
