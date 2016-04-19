@@ -17,7 +17,9 @@ public class OrderDetail extends BaseModel {
 	@ManyToOne(cascade = CascadeType.DETACH)
 	@JsonBackReference
 	private Order order;
+	
 	private String siparisKalemAdi;
+	private String orderRemoteId;
 	private String urunAdi;
 	private String urunId;
 	private BigDecimal adet;
@@ -25,6 +27,14 @@ public class OrderDetail extends BaseModel {
 	private BigDecimal araToplam;
 	private BigDecimal indirim;
 	private BigDecimal kalemGenelToplam;
+	
+	public String getOrderRemoteId() {
+		return orderRemoteId;
+	}
+
+	public void setOrderRemoteId(String orderRemoteId) {
+		this.orderRemoteId = orderRemoteId;
+	}
 
 	public String getUrunId() {
 		return urunId;

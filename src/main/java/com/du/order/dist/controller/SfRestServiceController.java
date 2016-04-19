@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ import com.du.order.dist.interfaces.ITransformer;
 import com.du.order.dist.interfaces.IValidator;
 import com.du.order.dist.interfaces.NamedEnum;
 import com.du.order.dist.model.entity.Order;
+import com.du.order.dist.model.entity.OrderDetail;
 import com.du.order.dist.model.util.AuthenticationError;
 import com.du.order.dist.model.util.LoginForm;
 import com.du.order.dist.model.util.OrderError;
@@ -34,10 +34,8 @@ import com.du.order.dist.model.util.PairModel;
 import com.du.order.dist.model.util.Response;
 import com.du.order.dist.model.util.ValidationError;
 import com.du.order.dist.model.util.transfer.AIn;
-import com.du.order.dist.model.util.transfer.CreateGenelSiparisIn;
 import com.du.order.dist.model.util.transfer.GenelSiparisIn;
-import com.du.order.dist.model.util.transfer.UpdateGenelSiparisIn;
-import com.du.order.dist.service.ServiceProvider;
+import com.du.order.dist.model.util.transfer.SiparisKalemIn;
 
 @RestController
 @RequestMapping("/v1/siparis/islem")
@@ -65,7 +63,7 @@ public class SfRestServiceController {
 	@ResponseBody
 	@RequestMapping(value = "/createSiparis", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
 	public ResponseEntity<Response> create(@RequestBody GenelSiparisIn objectIn) {
-
+		logger.info("CREATE CALLED: "+ objectIn.getSfId());
 		Response resp = new Response(true, HttpStatus.OK.value(), resourceMessage.getMessage("service.success"));
 
 		try {
@@ -91,18 +89,52 @@ public class SfRestServiceController {
 			logger.error(ex.toString());
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		}
+		logger.info("CREATE OK");
+		return new ResponseEntity<>(resp, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/createSiparisDetay", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<Response> create(@RequestBody SiparisKalemIn objectIn) {
+		logger.info("CREATE DETAY CALLED: "+ objectIn.getSfId());
+		Response resp = new Response(true, HttpStatus.OK.value(), resourceMessage.getMessage("service.success"));
+
+		try {
+//			checkAuthentication(objectIn);
+			checkValidityCreateDetay(objectIn);
+			OrderDetail orderDetail = transformer.transformCreateDetay(objectIn);
+			orderService.createDetay(orderDetail);
+		} catch (AuthenticationError ex) {
+			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("authentication.exception"));
+			logger.error(ex.getMessage() + resourceMessage.getMessage("authentication.exception"));
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+		} catch (ValidationError ex) {
+			resp = new Response(false, HttpStatus.OK.value(), Utility.validationErrorToString(ex));
+			logger.error(Utility.validationErrorToString(ex));
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+		} catch (OrderError ex) {
+			resp = new Response(false, HttpStatus.OK.value(), ex.getDescription());
+			logger.error(ex.getDescription());
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+		} catch (Exception ex) {
+			resp = new Response(false, HttpStatus.OK.value(), resourceMessage.getMessage("service.exception"));
+			logger.error(ex.getMessage());
+			logger.error(ex.toString());
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+		}
+		logger.info("CREATE DETAY OK");
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/updateSiparis", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
 	public ResponseEntity<Response> update(@RequestBody GenelSiparisIn objectIn) {
-
+		logger.info("UPDATE CALLED: " + objectIn.getSfId());
 		Response resp = new Response(true, HttpStatus.OK.value(), resourceMessage.getMessage("service.success"));
 
 		try {
 			checkAuthentication(objectIn);
-			checkValidityUpdate(objectIn);
+						checkValidityUpdate(objectIn);
 			Order order = transformer.transformUpdate(objectIn);
 			if(order == null){
 				return create(objectIn);
@@ -130,6 +162,7 @@ public class SfRestServiceController {
 			logger.error(ex.toString());
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 		}
+		logger.info("UPDATE OK");
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 
@@ -140,6 +173,7 @@ public class SfRestServiceController {
 				|| env.getRequiredProperty("sf.userName").equals(objectIn.getUserName()))) {
 			throw new AuthenticationError();
 		}
+		logger.info("Authentication OK");
 	}
 
 	@Autowired
@@ -151,6 +185,11 @@ public class SfRestServiceController {
 
 	private void checkValidityCreate(GenelSiparisIn objectIn) throws ValidationError {
 		validator.validate(objectIn);
+	}
+	
+
+	private void checkValidityCreateDetay(SiparisKalemIn objectIn) throws ValidationError {
+		validator.validateDetay(objectIn);
 	}
 
 	// ----------------------------

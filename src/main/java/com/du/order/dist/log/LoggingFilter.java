@@ -44,11 +44,12 @@ public class LoggingFilter extends OncePerRequestFilter {
             long requestId = id.incrementAndGet();
             request = new RequestWrapper(requestId, request);
             response = new ResponseWrapper(requestId, response);
-            logRequest(request);
+            
         try {
             filterChain.doFilter(request, response);
 //            response.flushBuffer();
         } finally {
+        	logRequest(request);
                 logResponse((ResponseWrapper) response);
         }
 
@@ -104,13 +105,13 @@ public class LoggingFilter extends OncePerRequestFilter {
         StringBuilder msg = new StringBuilder();
         msg.append(RESPONSE_PREFIX);
         msg.append("request id=").append((response.getId()));
-        try {
-        	 if (StringUtils.isNotBlank(response.getContentType())){
-        		 msg.append("; payload=").append(new String(response.toByteArray(), response.getCharacterEncoding()));
-        	 }
-        } catch (UnsupportedEncodingException e) {
-            logger.warn("Failed to parse response payload", e);
-        }
+//        try {
+//        	 if (StringUtils.isNotBlank(response.getContentType())){
+//        		 msg.append("; payload=").append(new String(response.toByteArray(), response.getCharacterEncoding()));
+//        	 }
+//        } catch (UnsupportedEncodingException e) {
+//            logger.warn("Failed to parse response payload", e);
+//        }
         logger.info(msg.toString());
     }
 

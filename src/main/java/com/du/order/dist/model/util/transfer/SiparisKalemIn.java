@@ -2,11 +2,7 @@ package com.du.order.dist.model.util.transfer;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ManyToOne;
-
 import com.du.order.dist.model.entity.Order;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * 
@@ -22,10 +18,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 	İndirim(TL olacak)
 	Kalem Fiyat(Ara toplamın indirimli hali. Siparişin hesaplanmasında kullanılacak değer)
  */
-public class SiparisKalemIn {
-	@ManyToOne(cascade= CascadeType.DETACH)
-	@JsonBackReference
-	private Order order;
+public class SiparisKalemIn extends AIn{
 	
 	private String siparisKalemAdi;
 	private String urunAdi;
@@ -35,18 +28,19 @@ public class SiparisKalemIn {
 	private BigDecimal araToplam;
 	private BigDecimal indirim;
 	private BigDecimal kalemGenelToplam;
+	private String siparisId;
 	
+	public String getSiparisId() {
+		return siparisId;
+	}
+	public void setSiparisId(String siparisId) {
+		this.siparisId = siparisId;
+	}
 	public String getUrunId() {
 		return urunId;
 	}
 	public void setUrunId(String urunId) {
 		this.urunId = urunId;
-	}
-	public Order getOrder() {
-		return order;
-	}
-	public void setOrder(Order order) {
-		this.order = order;
 	}
 	public String getSiparisKalemAdi() {
 		return siparisKalemAdi;

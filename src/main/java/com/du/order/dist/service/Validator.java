@@ -104,7 +104,38 @@ public class Validator implements IValidator{
 		if(siparis.getSiparisOlusmaTarihi() == null){
 			siparis.setSiparisOlusmaTarihi(new Date()); 
 		};
-		
+		logger.info("Validation OK");
 	}
-
+	@Override
+	public void validateDetay(SiparisKalemIn kalem) throws ValidationError {
+		List<String> nullFields = new ArrayList<>();
+		if(StringUtils.isBlank(kalem.getSiparisKalemAdi())){
+			nullFields.add( "siparisKalemAdi");
+		};
+		if(StringUtils.isBlank(kalem.getUrunId())){
+			nullFields.add( "kalem için urunId");
+		};
+		if(StringUtils.isBlank(kalem.getUrunAdi())){
+			nullFields.add( " kalem için urunAdi");
+		};
+		if((kalem.getAdet() == null  || kalem.getAdet().compareTo(BigDecimal.ZERO) == 0)){
+			nullFields.add( " kalem için adet");
+		};
+		if((kalem.getBirimFiyati() == null  || kalem.getBirimFiyati().compareTo(BigDecimal.ZERO) == 0)){
+			nullFields.add( " kalem için birimFiyati");
+		};
+		if((kalem.getAraToplam() == null  || kalem.getAraToplam().compareTo(BigDecimal.ZERO) == 0)){
+			nullFields.add( " kalem için araToplam");
+		};
+		if((kalem.getIndirim() == null  || kalem.getIndirim().compareTo(BigDecimal.ZERO) == 0)){
+			kalem.setIndirim(BigDecimal.ZERO);
+		};
+		if((kalem.getAraToplam() == null  || kalem.getAraToplam().compareTo(BigDecimal.ZERO) == 0)){
+			nullFields.add( " kalem için araToplam");
+		};
+		if(!nullFields.isEmpty()){
+			throw new ValidationError(nullFields.toArray(new String[nullFields.size()]), null);
+		}
+		logger.info("Validation Detay OK");
+	}
 }

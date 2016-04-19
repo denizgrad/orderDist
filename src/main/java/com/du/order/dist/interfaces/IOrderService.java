@@ -3,6 +3,7 @@ package com.du.order.dist.interfaces;
 import java.util.List;
 
 import com.du.order.dist.model.entity.Order;
+import com.du.order.dist.model.entity.OrderDetail;
 
 public interface IOrderService {
 
@@ -21,5 +22,7 @@ public interface IOrderService {
 	public void updateOrderBarcode(String oid, String barcode);
 
 	public void deliverOrder(String oid) throws Exception;
+
+	public void createDetay(OrderDetail orderDetail);
 
 }

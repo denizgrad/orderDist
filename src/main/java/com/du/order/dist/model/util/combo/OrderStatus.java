@@ -15,7 +15,7 @@ public enum OrderStatus implements NamedEnum {
 	GORULDU("Görüldü"), 
 	HAZIRLANIYOR("Hazırlanıyor"), 
 	HAZIRLANDI("Hazırlandı"), 
-	YOLA_CIKTI("Yola Çıktı"), 
+	TESLIMATTA("Teslimatta"), 
 	TESLIM_EDILDI("Teslim Edildi"), 
 	IPTAL_EDILDI("İptal Edildi");
 	

@@ -33,6 +33,7 @@ public class Transformer implements ITransformer{
     OrderDetailRepository repoDetail;
 	@Override
 	public Order transformCreate(GenelSiparisIn objectIn) throws Exception {
+		logger.info("Transforming Create...");
 		Order order = new Order();
 		if(repo.getByRemoteId(objectIn.getSfId()) != null){
 			throw new OrderError("Yaratılmaya çalışılan sipariş için sfId zaten girilmiş.");
@@ -44,6 +45,7 @@ public class Transformer implements ITransformer{
 			for(SiparisKalemIn sk : objectIn.getSiparisKalemList()){
 				OrderDetail product = new OrderDetail();
 				Utility.copyPrimitiveProperties(sk, product, false);
+				product.setRemoteId(sk.getSfId());
 				productList.add(product);
 			}
 			order.setOrderDetailList(productList);
@@ -51,12 +53,16 @@ public class Transformer implements ITransformer{
 			logger.error(e.getMessage());
 			throw e;
 		}
+		logger.info("Transforming Create OK");
 		return order;
 	}
 
 	@Override
 	public Order transformUpdate(GenelSiparisIn objectIn) throws Exception{
-		Order order = repo.getByRemoteId(objectIn.getSfId());
+		logger.info("Transforming Update...");
+		logger.info("Checked sfId ::" + objectIn.getSfId() + ":::::::");
+		Order order = repo.getByRemoteId(objectIn.getSfId().trim());
+		
 		if(order == null){
 			logger.info("Bu sfId ile daha önce bir kayıt girilmemiş. Kayıt yapılacak");
 			return null;
@@ -72,6 +78,7 @@ public class Transformer implements ITransformer{
 				for(SiparisKalemIn sk : objectIn.getSiparisKalemList()){
 					OrderDetail product = new OrderDetail();
 					Utility.copyPrimitiveProperties(sk, product, false);
+					product.setRemoteId(sk.getSfId());
 					productList.add(product);
 				}
 				order.setOrderDetailList(productList);
@@ -80,11 +87,23 @@ public class Transformer implements ITransformer{
 			logger.error(e.getMessage());
 			throw e;
 		}
+		logger.info("Transforming Update OK");
 		return order;
 	}
 
 	private void deleteAllProducts(String oidOrder) {
 		repoDetail.deleteChildrenByOid(oidOrder);
+	}
+
+	@Override
+	public OrderDetail transformCreateDetay(SiparisKalemIn objectIn) throws Exception {
+		logger.info("Transforming DETAY Create...");
+		OrderDetail od = new OrderDetail();
+		Utility.copyPrimitiveProperties(objectIn, od, false);
+		od.setRemoteId(objectIn.getSfId());
+		od.setOrderRemoteId(objectIn.getSiparisId());
+		logger.info("Transforming Detay Create OK");
+		return od;
 	}
 
 }

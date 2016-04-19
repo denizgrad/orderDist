@@ -46,9 +46,7 @@ public class OrderService implements IOrderService {
 		String barcodeNumber = generateBarcode(order);
 		order.setBarcodeNumber(barcodeNumber);
 		String accId = "";
-		if(StringUtils.isNotBlank(order.getTedarikEdenFirma())) {
-			accId=salesForceClient.returnAccountId(order.getTedarikEdenFirma());
-		} else if(StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
+		if(StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
 			accId=salesForceClient.returnAccountId(order.getTedarikEdenKisi());
 		}
 		order.setTedarikEdenAccount(accId);
@@ -74,6 +72,11 @@ public class OrderService implements IOrderService {
 		dbOrder.setOrderDetailList(order.getOrderDetailList());
 		setChildrenParent(dbOrder);
 		dbOrder.setLastUpdated(new Date());
+		String accId = "";
+		if(StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
+			accId=salesForceClient.returnAccountId(order.getTedarikEdenKisi());
+		}
+		order.setTedarikEdenAccount(accId);
 		repo.save(dbOrder);
 		logger.info("order updated sfId:" +order.getRemoteId());
 	}
@@ -100,9 +103,7 @@ public class OrderService implements IOrderService {
 		}
 
 		repo.save(dbOrder);
-
-		sendToSF(dbOrder);
-
+		salesForceClient.updateStatus(dbOrder);
 	}
 
 	@Override
@@ -124,7 +125,7 @@ public class OrderService implements IOrderService {
 				if(od.getLastUpdated()==null){
 					od.setLastUpdated(new Date());
 				}
-				od.setRemoteId(order.getRemoteId());
+//				od.setRemoteId(order.getRemoteId());
 			}
 		}
 	}
@@ -152,24 +153,19 @@ public class OrderService implements IOrderService {
 
 	}
 
-	@Transactional(readOnly = true)
-	private void sendToSF(Order dbOrder) throws Exception {
-		// Hazirlaniyor Teslimatta Teslim Edildi
-
-		Order order = new Order();
-		Utility.copyPrimitiveProperties(dbOrder, order, false);
-		// repoDetail.deleteChildrenByOid(dbOrder.getOid());
-		order.setOrderDetailList(dbOrder.getOrderDetailList());
-
-		if (order.getSiparisDurum().equals(OrderStatus.YOLA_CIKTI.getKey())) {
-			salesForceClient.updateStatus(order);
-		} else if (order.getSiparisDurum().equals(OrderStatus.TESLIM_EDILDI.getKey())) {
-			salesForceClient.updateStatus(order);
+	@Override
+	public void createDetay(OrderDetail orderDetail) {
+		logger.info("CREATE DETAY siparis sfId: " + orderDetail.getOrderRemoteId());
+		repoDetail.deleteByRemoteId(orderDetail.getRemoteId());
+		Order order = repo.getByRemoteId(orderDetail.getOrderRemoteId());
+		orderDetail.setOrder(order);
+		if(order != null){
+			repoDetail.save(orderDetail);
 		} else {
-			order.setSiparisDurum(OrderStatus.HAZIRLANIYOR.getKey());
-			salesForceClient.updateStatus(order);
+			logger.info("Baba Order null");
 		}
-
 	}
+
+
 
 }
