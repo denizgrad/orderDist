@@ -4,11 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.du.order.dist.model.base.BaseModel;
 
@@ -16,16 +14,18 @@ import com.du.order.dist.model.base.BaseModel;
 @Table(name = "DU_ORDER")
 public class Order extends BaseModel {
 
-//	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
+	// @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade =
+	// CascadeType.ALL)
+	@Transient
 	private List<OrderDetail> orderDetailList;
 
 	private String barcodeNumber;
 	private String siparisAdi;
 	private String siparisVerenFirma;
 	private String siparisVerenKisi;
-	
+
 	private String tedarikEdenAccount;
-	
+
 	private String tedarikEdenKisi;
 	private String tedarikEdenFirma;
 	private String teslimAlacakAd;
@@ -49,7 +49,7 @@ public class Order extends BaseModel {
 	private String adres;
 	private String adresAciklama;
 	private String siparisAciklama;
-	private boolean gelal;
+	private boolean gelal = false;
 	private String odemeSekli;
 
 	/**
@@ -82,7 +82,6 @@ public class Order extends BaseModel {
 		this.gelal = gelal;
 	}
 
-	
 	public String getBarcodeNumber() {
 		return barcodeNumber;
 	}

@@ -2,13 +2,10 @@ package com.du.order.dist.model.entity;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.du.order.dist.model.base.BaseModel;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "DU_ORDER_DETAIL")

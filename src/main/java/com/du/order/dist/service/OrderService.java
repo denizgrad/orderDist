@@ -68,7 +68,7 @@ public class OrderService implements IOrderService {
 	public void update(Order order) throws Exception {
 		Order dbOrder = repo.getByRemoteId(order.getRemoteId());
 		Utility.copyPrimitiveProperties(order, dbOrder, false);
-		repoDetail.deleteChildrenByOid(dbOrder.getOid());
+		repoDetail.deleteByRemoteId(dbOrder.getRemoteId());
 		dbOrder.setOrderDetailList(order.getOrderDetailList());
 //		setChildrenParent(dbOrder);
 		dbOrder.setLastUpdated(new Date());
