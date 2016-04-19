@@ -10,8 +10,11 @@
 	    </layout>
 	</appender>
 
-	<appender name="file" class="org.apache.log4j.RollingFileAppender">
-	    <param name="append" value="true" />
+	<appender name="FILE" class="org.apache.log4j.FileAppender">
+
+	   <param name="immediateFlush" value="true"/>
+	   <param name="threshold" value="debug"/>
+	   <param name="append" value="false"/>
 	    <param name="file" value="/home/aslib/logs/order.dist.log4j.log" />
 	    <layout class="org.apache.log4j.PatternLayout">
 		<param name="ConversionPattern" 
@@ -22,7 +25,7 @@
 	<root>
 		<level value="INFO" />
 		<appender-ref ref="console" />
-		<appender-ref ref="file" />
+		<appender-ref ref="FILE" />
 	</root>
 
 </log4j:configuration>
