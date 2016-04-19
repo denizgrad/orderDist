@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	@Query("SELECT o FROM Order o WHERE o.oid = :oid")
 	public Order getByOid(@Param("oid") String oid);
 
-	@Query("SELECT o FROM OrderDetail o WHERE o.remoteOrderId = :remoteOid")
+	@Query("SELECT o FROM OrderDetail o WHERE o.orderRemoteId = :remoteOid")
 	public List<OrderDetail> fetchOrderDetail(@Param("remoteOid") String remoteOid);
 
 	@Query("SELECT o FROM Order o WHERE ((o.siparisDurum != 'Teslim Edildi' and o.siparisDurum != 'İptal Edildi') or (o.siparisTeslimTarihi >= current_date )) AND (o.tedarikEdenAccount = :orgOid)")
