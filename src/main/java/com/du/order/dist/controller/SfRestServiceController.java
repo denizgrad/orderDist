@@ -68,7 +68,7 @@ public class SfRestServiceController {
 
 		try {
 			checkAuthentication(objectIn);
-			checkValidityCreate(objectIn);
+//			checkValidityCreate(objectIn);
 			Order order = transformer.transformCreate(objectIn);
 			orderService.create(order);
 		} catch (AuthenticationError ex) {
@@ -100,8 +100,8 @@ public class SfRestServiceController {
 		Response resp = new Response(true, HttpStatus.OK.value(), resourceMessage.getMessage("service.success"));
 
 		try {
-//			checkAuthentication(objectIn);
-			checkValidityCreateDetay(objectIn);
+			checkAuthentication(objectIn);
+//			checkValidityCreateDetay(objectIn);
 			OrderDetail orderDetail = transformer.transformCreateDetay(objectIn);
 			orderService.createDetay(orderDetail);
 		} catch (AuthenticationError ex) {
@@ -134,7 +134,7 @@ public class SfRestServiceController {
 
 		try {
 			checkAuthentication(objectIn);
-						checkValidityUpdate(objectIn);
+//			checkValidityUpdate(objectIn);
 			Order order = transformer.transformUpdate(objectIn);
 			if(order == null){
 				return create(objectIn);

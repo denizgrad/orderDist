@@ -16,7 +16,7 @@ import com.du.order.dist.model.base.BaseModel;
 @Table(name = "DU_ORDER")
 public class Order extends BaseModel {
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
+//	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderDetail> orderDetailList;
 
 	private String barcodeNumber;
@@ -28,6 +28,11 @@ public class Order extends BaseModel {
 	
 	private String tedarikEdenKisi;
 	private String tedarikEdenFirma;
+	private String teslimAlacakAd;
+	private String teslimAlacakSoyad;
+	private String teslimAlacakTel;
+	private String teslimAlacakGsm;
+	private String teslimAlacakEmail;
 	private Date siparisOlusmaTarihi;
 	/**
 	 * //yapılan
@@ -44,6 +49,8 @@ public class Order extends BaseModel {
 	private String adres;
 	private String adresAciklama;
 	private String siparisAciklama;
+	private boolean gelal;
+	private String odemeSekli;
 
 	/**
 	 * <pre>
@@ -59,10 +66,65 @@ public class Order extends BaseModel {
 	private String siparisDurum = "Sipariş Oluşturuldu";
 
 	// getters setters
+	public String getOdemeSekli() {
+		return odemeSekli;
+	}
+
+	public void setOdemeSekli(String odemeSekli) {
+		this.odemeSekli = odemeSekli;
+	}
+
+	public boolean isGelal() {
+		return gelal;
+	}
+
+	public void setGelal(boolean gelal) {
+		this.gelal = gelal;
+	}
 
 	
 	public String getBarcodeNumber() {
 		return barcodeNumber;
+	}
+
+	public String getTeslimAlacakEmail() {
+		return teslimAlacakEmail;
+	}
+
+	public void setTeslimAlacakEmail(String teslimAlacakEmail) {
+		this.teslimAlacakEmail = teslimAlacakEmail;
+	}
+
+	public String getTeslimAlacakAd() {
+		return teslimAlacakAd;
+	}
+
+	public void setTeslimAlacakAd(String teslimAlacakAd) {
+		this.teslimAlacakAd = teslimAlacakAd;
+	}
+
+	public String getTeslimAlacakSoyad() {
+		return teslimAlacakSoyad;
+	}
+
+	public void setTeslimAlacakSoyad(String teslimAlacakSoyad) {
+		this.teslimAlacakSoyad = teslimAlacakSoyad;
+	}
+
+	public String getTeslimAlacakTel() {
+		return teslimAlacakTel;
+	}
+
+	public void setTeslimAlacakTel(String teslimAlacakTel) {
+		this.teslimAlacakTel = teslimAlacakTel;
+	}
+
+	public String getTeslimAlacakGsm() {
+		return teslimAlacakGsm;
+	}
+
+	public void setTeslimAlacakGsm(String teslimAlacakGsm) {
+		this.teslimAlacakGsm = teslimAlacakGsm;
 	}
 
 	public String getTedarikEdenAccount() {

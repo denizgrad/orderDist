@@ -41,7 +41,7 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public void create(Order order) {
-		setChildrenParent(order);
+//		setChildrenParent(order);
 		order.setCreated(new Date());
 		String barcodeNumber = generateBarcode(order);
 		order.setBarcodeNumber(barcodeNumber);
@@ -70,7 +70,7 @@ public class OrderService implements IOrderService {
 		Utility.copyPrimitiveProperties(order, dbOrder, false);
 		repoDetail.deleteChildrenByOid(dbOrder.getOid());
 		dbOrder.setOrderDetailList(order.getOrderDetailList());
-		setChildrenParent(dbOrder);
+//		setChildrenParent(dbOrder);
 		dbOrder.setLastUpdated(new Date());
 		String accId = "";
 		if(StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
@@ -115,20 +115,20 @@ public class OrderService implements IOrderService {
 
 	}
 
-	private void setChildrenParent(Order order) {
-		if (!order.getOrderDetailList().isEmpty()) {
-			for (OrderDetail od : order.getOrderDetailList()) {
-				od.setOrder(order);
-				if(od.getCreated()==null){
-					od.setCreated(new Date());
-				}
-				if(od.getLastUpdated()==null){
-					od.setLastUpdated(new Date());
-				}
-//				od.setRemoteId(order.getRemoteId());
-			}
-		}
-	}
+//	private void setChildrenParent(Order order) {
+//		if (!order.getOrderDetailList().isEmpty()) {
+//			for (OrderDetail od : order.getOrderDetailList()) {
+//				od.setOrder(order);
+//				if(od.getCreated()==null){
+//					od.setCreated(new Date());
+//				}
+//				if(od.getLastUpdated()==null){
+//					od.setLastUpdated(new Date());
+//				}
+////				od.setRemoteId(order.getRemoteId());
+//			}
+//		}
+//	}
 
 	// @Override
 	// public List<Order> getOrderList(String orgOid) {
@@ -157,13 +157,7 @@ public class OrderService implements IOrderService {
 	public void createDetay(OrderDetail orderDetail) {
 		logger.info("CREATE DETAY siparis sfId: " + orderDetail.getOrderRemoteId());
 		repoDetail.deleteByRemoteId(orderDetail.getRemoteId());
-		Order order = repo.getByRemoteId(orderDetail.getOrderRemoteId());
-		orderDetail.setOrder(order);
-		if(order != null){
-			repoDetail.save(orderDetail);
-		} else {
-			logger.info("Baba Order null");
-		}
+		repoDetail.save(orderDetail);
 	}
 
 

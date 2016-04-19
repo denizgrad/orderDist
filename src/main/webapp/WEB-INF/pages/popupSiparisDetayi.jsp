@@ -78,7 +78,7 @@
 		</fieldset>
 		
 		<fieldset class = "form-group">
-			<legend> Genel Tolam </legend>
+			<legend> Genel Toplam </legend>
 			<div class="column" style = "display: flex; justify-content: flex-end;">
 				<div class="col-sm-4">
 					<input type = "text"  class="form-control input-sm" id="genelToplam" readonly ng-model = "genelToplam | currency"/>
