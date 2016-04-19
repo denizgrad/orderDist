@@ -31,7 +31,70 @@ public class GenelSiparisIn extends AIn{
 	private String adres;
 	private String adresAciklama;
 	private String siparisAciklama;
-	
+	private String teslimAlacakAd;
+	private String teslimAlacakSoyad;
+	private String teslimAlacakTel;
+	private String teslimAlacakGsm;
+	private String teslimAlacakEmail;
+	private boolean gelal;
+	private String odemeSekli;
+
+	public String getOdemeSekli() {
+		return odemeSekli;
+	}
+
+	public void setOdemeSekli(String odemeSekli) {
+		this.odemeSekli = odemeSekli;
+	}
+
+	public boolean isGelal() {
+		return gelal;
+	}
+
+	public void setGelal(boolean gelal) {
+		this.gelal = gelal;
+	}
+
+	public String getTeslimAlacakEmail() {
+		return teslimAlacakEmail;
+	}
+
+	public void setTeslimAlacakEmail(String teslimAlacakEmail) {
+		this.teslimAlacakEmail = teslimAlacakEmail;
+	}
+
+	public String getTeslimAlacakAd() {
+		return teslimAlacakAd;
+	}
+
+	public void setTeslimAlacakAd(String teslimAlacakAd) {
+		this.teslimAlacakAd = teslimAlacakAd;
+	}
+
+	public String getTeslimAlacakSoyad() {
+		return teslimAlacakSoyad;
+	}
+
+	public void setTeslimAlacakSoyad(String teslimAlacakSoyad) {
+		this.teslimAlacakSoyad = teslimAlacakSoyad;
+	}
+
+	public String getTeslimAlacakTel() {
+		return teslimAlacakTel;
+	}
+
+	public void setTeslimAlacakTel(String teslimAlacakTel) {
+		this.teslimAlacakTel = teslimAlacakTel;
+	}
+
+	public String getTeslimAlacakGsm() {
+		return teslimAlacakGsm;
+	}
+
+	public void setTeslimAlacakGsm(String teslimAlacakGsm) {
+		this.teslimAlacakGsm = teslimAlacakGsm;
+	}
+
 	public String getSiparisAciklama() {
 		return siparisAciklama;
 	}

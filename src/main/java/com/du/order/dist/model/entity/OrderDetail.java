@@ -14,9 +14,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "DU_ORDER_DETAIL")
 public class OrderDetail extends BaseModel {
 
-	@ManyToOne(cascade = CascadeType.DETACH)
-	@JsonBackReference
-	private Order order;
+//	@ManyToOne(cascade = CascadeType.DETACH)
+//	@JsonBackReference
+//	private Order order;
 	
 	private String siparisKalemAdi;
 	private String orderRemoteId;
@@ -42,14 +42,6 @@ public class OrderDetail extends BaseModel {
 
 	public void setUrunId(String urunId) {
 		this.urunId = urunId;
-	}
-
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
 	}
 
 	public String getSiparisKalemAdi() {
