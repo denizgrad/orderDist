@@ -83,9 +83,12 @@ public class LoggingFilter extends OncePerRequestFilter {
         if (request instanceof RequestWrapper && !isMultipart(request) && !isBinaryContent(request)) {
             RequestWrapper requestWrapper = (RequestWrapper) request;
             try {
+            	// TODO deniz check it ( String str = new String(requestWrapper.toByteArray(), charEncoding); );
                 String charEncoding = requestWrapper.getCharacterEncoding() != null ? requestWrapper.getCharacterEncoding() :
                         "UTF-8";
-                	msg.append("; payload=").append(JsonFormatter.format(new JSONObject( new String(requestWrapper.toByteArray(), charEncoding))));
+                String str = new String(requestWrapper.toByteArray(), charEncoding);
+                str = "".equals(str) || str == null ? "{}" : str; 
+                	msg.append("; payload=").append(JsonFormatter.format(new JSONObject( )));
             } catch (UnsupportedEncodingException e) {
                 logger.warn("Failed to parse request payload", e);
             }

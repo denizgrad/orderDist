@@ -47,8 +47,8 @@ public class OrderService implements IOrderService {
 		String barcodeNumber = generateBarcode(order);
 		order.setBarcodeNumber(barcodeNumber);
 		String accId = "";
-		if (StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
-			accId = salesForceClient.returnAccountId(order.getTedarikEdenKisi());
+		if (StringUtils.isNotBlank(order.getTedarikEdenFirma())) {
+			accId = salesForceClient.returnAccountId(order.getTedarikEdenFirma());
 		}
 		order.setTedarikEdenAccount(accId);
 		repo.save(order);

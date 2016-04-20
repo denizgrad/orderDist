@@ -5,7 +5,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 	$scope.langs = i18nService.getAllLangs();
 	$scope.lang = 'tr';
 	
-	setInterval(function(){ getSiparisList(); }, 1000*60*2);
+	setInterval(function(){ getSiparisList(); }, 1000*60*1);
 	
 	var onFetchError = function(message) {
 		console.log("error: " +  message);
