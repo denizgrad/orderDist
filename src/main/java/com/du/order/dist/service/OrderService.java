@@ -1,5 +1,6 @@
 package com.du.order.dist.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -47,9 +48,10 @@ public class OrderService implements IOrderService {
 		String barcodeNumber = generateBarcode(order);
 		order.setBarcodeNumber(barcodeNumber);
 		String accId = "";
-		if (StringUtils.isNotBlank(order.getTedarikEdenFirma())) {
-			accId = salesForceClient.returnAccountId(order.getTedarikEdenFirma());
-		}
+//		if (StringUtils.isNotBlank(order.getTedarikEdenFirma())) {
+//			accId = salesForceClient.returnAccountId(order.getTedarikEdenFirma());
+//		}
+		accId = order.getTedarikEdenFirma();
 		order.setTedarikEdenAccount(accId);
 		repo.save(order);
 		logger.info("ORDER CREATE OK sfId:" + order.getRemoteId());
@@ -57,7 +59,10 @@ public class OrderService implements IOrderService {
 	}
 
 	private String generateBarcode(Order order) {
-		String remoteIdCopy = order.getRemoteId();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Date d = order.getCreated();
+		
+		String remoteIdCopy = sdf.format(d) + order.getRemoteId();
 		if (StringUtils.isNotBlank(order.getRemoteId())) {
 			while (remoteIdCopy.length() < 8) {
 				remoteIdCopy = remoteIdCopy + "x";
@@ -80,9 +85,10 @@ public class OrderService implements IOrderService {
 		// setChildrenParent(dbOrder);
 		dbOrder.setLastUpdated(new Date());
 		String accId = "";
-		if (StringUtils.isNotBlank(order.getTedarikEdenKisi())) {
-			accId = salesForceClient.returnAccountId(order.getTedarikEdenKisi());
-		}
+//		if (StringUtils.isNotBlank(order.getTedarikEdenFirma())) {
+//			accId = salesForceClient.returnAccountId(order.getTedarikEdenFirma());
+//		}
+		accId = order.getTedarikEdenFirma();
 		order.setTedarikEdenAccount(accId);
 		repo.save(dbOrder);
 		logger.info("ORDER UPDATE OK sfId:" + order.getRemoteId());

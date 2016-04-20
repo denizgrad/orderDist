@@ -1,8 +1,6 @@
 package com.du.order.dist.client;
 
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -14,15 +12,14 @@ import org.springframework.stereotype.Component;
 
 import com.du.order.dist.interfaces.ISalesForceClient;
 import com.du.order.dist.model.entity.Order;
-import com.du.order.dist.model.entity.OrderDetail;
 import com.sforce.soap.enterprise.Connector;
 import com.sforce.soap.enterprise.EnterpriseConnection;
 import com.sforce.soap.enterprise.QueryResult;
 import com.sforce.soap.enterprise.SaveResult;
 import com.sforce.soap.enterprise.sobject.ASiparis__c;
+import com.sforce.soap.enterprise.sobject.Account;
 import com.sforce.soap.enterprise.sobject.Contact;
 import com.sforce.soap.enterprise.sobject.SObject;
-import com.sforce.soap.enterprise.sobject.Sipari_Kalem__c;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 
@@ -87,52 +84,56 @@ public class SalesForceClient implements ISalesForceClient {
 		}
 		return null;
 	}
+
 	private String queryContact(String contactId) {
 		QueryResult qResult = null;
-		   Contact retCon = null;
-		   try {
-			   //AccountId, FirstName, LastName
-			   
-//			   String soqlQuery = "SELECT AccountId, FirstName, LastName FROM Contact";
-		      String soqlQuery = "SELECT Id, Name FROM Account";
-		      String whereClause = String.format(" WHERE (Id = '%s')", contactId);
-		      qResult = connection.query(soqlQuery + whereClause);
-		      boolean done = false;
-		      if (qResult.getSize() > 0) {
-		         System.out.println("Logged-in user can see a total of "
-		            + qResult.getSize() + " contact records.");
-		         while (!done) {
-		            SObject[] records = qResult.getRecords();
-		            for (int i = 0; i < records.length; ++i) {
-		               Contact con = (Contact) records[i];
-		               retCon = con;
-		               String name = con.getName();
-//		               String lName = con.getLastName();
-		               if (name == null) {
-		                  System.out.println("Contact " + (i + 1) + ": " + name);
-		               }
-//		               else {
-//		                  System.out.println("Contact " + (i + 1) + ": " + fName
-//		                        + " " + lName);
-//		               }
-		            }
-		            if (qResult.isDone()) {
-		               done = true;
-		            } else {
-		               qResult = connection.queryMore(qResult.getQueryLocator());
-		            }
-		         }
-		      } else {
-		         System.out.println("No records found.");
-		      }
-		      System.out.println("\nQuery succesfully executed.");
-		   } catch (ConnectionException ce) {
-		      ce.printStackTrace();
-		   }
-		   
-		   if(retCon != null){
-			   return retCon.getId();
-		   } else { return null; }
+		Account retAcc = null;
+		try {
+			// AccountId, FirstName, LastName
+
+			// String soqlQuery = "SELECT AccountId, FirstName, LastName FROM
+			// Contact";
+			String soqlQuery = "SELECT Id, Name FROM Account";
+			String whereClause = String.format(" WHERE (Id = '%s')", contactId);
+			qResult = connection.query(soqlQuery + whereClause);
+			boolean done = false;
+			if (qResult.getSize() > 0) {
+				System.out.println("Logged-in user can see a total of " + qResult.getSize() + " contact records.");
+				while (!done) {
+					SObject[] records = qResult.getRecords();
+					for (int i = 0; i < records.length; ++i) {
+						Account acc = (Account) records[i];
+						retAcc = acc;
+						String name = acc.getName();
+						// String lName = con.getLastName();
+						if (name == null) {
+							System.out.println("Contact " + (i + 1) + ": " + name);
+						}
+						// else {
+						// System.out.println("Contact " + (i + 1) + ": " +
+						// fName
+						// + " " + lName);
+						// }
+					}
+					if (qResult.isDone()) {
+						done = true;
+					} else {
+						qResult = connection.queryMore(qResult.getQueryLocator());
+					}
+				}
+			} else {
+				System.out.println("No records found.");
+			}
+			System.out.println("\nQuery succesfully executed.");
+		} catch (ConnectionException ce) {
+			ce.printStackTrace();
+		}
+
+		if (retAcc != null) {
+			return retAcc.getId();
+		} else {
+			return null;
+		}
 	}
 //	private String queryContact(String contactId) {
 //		QueryResult qResult = null;
@@ -179,48 +180,49 @@ public class SalesForceClient implements ISalesForceClient {
 //	}
 
 	public String queryContact(String username, String password) {
-		   QueryResult qResult = null;
-		   Contact retCon = null;
-		   try {
-		      String soqlQuery = "SELECT AccountId, FirstName, LastName FROM Contact";
-		      String whereClause = String.format(" WHERE (Contact_Username__c = '%s')AND(Contact_Password__c = '%s')", username, password);
-		      qResult = connection.query(soqlQuery + whereClause);
-		      boolean done = false;
-		      if (qResult.getSize() > 0) {
-		         System.out.println("Logged-in user can see a total of "
-		            + qResult.getSize() + " contact records.");
-		         while (!done) {
-		            SObject[] records = qResult.getRecords();
-		            for (int i = 0; i < records.length; ++i) {
-		               Contact con = (Contact) records[i];
-		               retCon = con;
-		               String fName = con.getFirstName();
-		               String lName = con.getLastName();
-		               if (fName == null) {
-		                  System.out.println("Contact " + (i + 1) + ": " + lName);
-		               } else {
-		                  System.out.println("Contact " + (i + 1) + ": " + fName
-		                        + " " + lName);
-		               }
-		            }
-		            if (qResult.isDone()) {
-		               done = true;
-		            } else {
-		               qResult = connection.queryMore(qResult.getQueryLocator());
-		            }
-		         }
-		      } else {
-		         System.out.println("No records found.");
-		      }
-		      System.out.println("\nQuery succesfully executed.");
-		   } catch (ConnectionException ce) {
-		      ce.printStackTrace();
-		   }
-		   
-		   if(retCon != null){
-			   return retCon.getAccountId();
-		   } else { return null; }
+		QueryResult qResult = null;
+		Contact retCon = null;
+		try {
+			String soqlQuery = "SELECT AccountId, FirstName, LastName FROM Contact";
+			String whereClause = String.format(" WHERE (Contact_Username__c = '%s')AND(Contact_Password__c = '%s')",
+					username, password);
+			qResult = connection.query(soqlQuery + whereClause);
+			boolean done = false;
+			if (qResult.getSize() > 0) {
+				System.out.println("Logged-in user can see a total of " + qResult.getSize() + " contact records.");
+				while (!done) {
+					SObject[] records = qResult.getRecords();
+					for (int i = 0; i < records.length; ++i) {
+						Contact con = (Contact) records[i];
+						retCon = con;
+						String fName = con.getFirstName();
+						String lName = con.getLastName();
+						if (fName == null) {
+							System.out.println("Contact " + (i + 1) + ": " + lName);
+						} else {
+							System.out.println("Contact " + (i + 1) + ": " + fName + " " + lName);
+						}
+					}
+					if (qResult.isDone()) {
+						done = true;
+					} else {
+						qResult = connection.queryMore(qResult.getQueryLocator());
+					}
+				}
+			} else {
+				System.out.println("No records found.");
+			}
+			System.out.println("\nQuery succesfully executed.");
+		} catch (ConnectionException ce) {
+			ce.printStackTrace();
 		}
+
+		if (retCon != null) {
+			return retCon.getAccountId();
+		} else {
+			return null;
+		}
+	}
 	@Override
 	public Order updateStatus(Order order) {
 		try {

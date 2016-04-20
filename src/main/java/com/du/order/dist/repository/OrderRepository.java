@@ -20,7 +20,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	@Query("SELECT o FROM OrderDetail o WHERE o.orderRemoteId = :remoteOid")
 	public List<OrderDetail> fetchOrderDetail(@Param("remoteOid") String remoteOid);
 
-	@Query("SELECT o FROM Order o WHERE ((o.siparisDurum != 'Teslim Edildi' and o.siparisDurum != 'İptal Edildi') or (o.siparisTeslimTarihi >= current_date )) AND (o.tedarikEdenAccount = :orgOid)")
+	@Query("SELECT o FROM Order o WHERE (((o.siparisDurum != 'Teslim Edildi' and o.siparisDurum != 'İptal Edildi') or (o.siparisTeslimTarihi >= current_date )) AND (o.tedarikEdenAccount = :orgOid)) ORDER BY o.created DESC")
 	public List<Order> getListByBranchOid(@Param("orgOid") String orgOid);
 
 	@Query("SELECT o FROM Order o WHERE o.barcodeNumber = :barcode")
