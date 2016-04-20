@@ -31,7 +31,7 @@ public class Transformer implements ITransformer {
 
 	@Override
 	public Order transformCreate(GenelSiparisIn objectIn) throws Exception {
-		logger.info("Transforming Create...");
+		logger.info("Transforming Create siparis...");
 		Order order = new Order();
 		if (repo.getByRemoteId(objectIn.getSfId()) != null) {
 			throw new OrderError("Yaratılmaya çalışılan sipariş için sfId zaten girilmiş.");
@@ -57,7 +57,7 @@ public class Transformer implements ITransformer {
 
 	@Override
 	public Order transformUpdate(GenelSiparisIn objectIn) throws Exception {
-		logger.info("Transforming Update...");
+		logger.info("Transforming Update siparis...");
 		logger.info("Checked sfId ::" + objectIn.getSfId() + ":::::::");
 		Order order = repo.getByRemoteId(objectIn.getSfId().trim());
 
@@ -85,13 +85,13 @@ public class Transformer implements ITransformer {
 			logger.error(e.getMessage());
 			throw e;
 		}
-		logger.info("Transforming Update OK");
+		logger.info("Transforming Update siparis OK");
 		return order;
 	}
 
 	@Override
 	public OrderDetail transformCreateDetay(SiparisKalemIn objectIn) throws Exception {
-		logger.info("Transforming DETAY Create...");
+		logger.info("Transforming DETAY Create... kendi id:"+objectIn.getSfId()+" siparis id:"+ objectIn.getSiparisId());
 		OrderDetail od = new OrderDetail();
 		Utility.copyPrimitiveProperties(objectIn, od, false);
 		od.setRemoteId(objectIn.getSfId());

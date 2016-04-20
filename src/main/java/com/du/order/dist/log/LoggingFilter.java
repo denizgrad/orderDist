@@ -18,19 +18,23 @@
 
 package com.du.order.dist.log;
 
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.filter.OncePerRequestFilter;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.concurrent.atomic.AtomicLong;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.du.order.dist.JsonFormatter;
 
 public class LoggingFilter extends OncePerRequestFilter {
 
@@ -81,7 +85,7 @@ public class LoggingFilter extends OncePerRequestFilter {
             try {
                 String charEncoding = requestWrapper.getCharacterEncoding() != null ? requestWrapper.getCharacterEncoding() :
                         "UTF-8";
-                	msg.append("; payload=").append(new String(requestWrapper.toByteArray(), charEncoding));
+                	msg.append("; payload=").append(JsonFormatter.format(new JSONObject( new String(requestWrapper.toByteArray(), charEncoding))));
             } catch (UnsupportedEncodingException e) {
                 logger.warn("Failed to parse request payload", e);
             }

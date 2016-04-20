@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -56,6 +57,10 @@ public class BaseModel {
 
 	public void setOid(String oid) {
 		this.oid = oid;
+	}
+	@Override
+	public String toString() {
+		   return ReflectionToStringBuilder.toString(this);
 	}
 
 }

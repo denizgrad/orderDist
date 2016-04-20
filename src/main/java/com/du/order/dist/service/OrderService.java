@@ -42,6 +42,7 @@ public class OrderService implements IOrderService {
 	@Override
 	public void create(Order order) {
 		// setChildrenParent(order);
+		logger.info("ORDER CREATE sfId:" + order.getRemoteId());
 		order.setCreated(new Date());
 		String barcodeNumber = generateBarcode(order);
 		order.setBarcodeNumber(barcodeNumber);
@@ -51,8 +52,8 @@ public class OrderService implements IOrderService {
 		}
 		order.setTedarikEdenAccount(accId);
 		repo.save(order);
-		logger.info("order saved sfId:" + order.getRemoteId());
-
+		logger.info("ORDER CREATE OK sfId:" + order.getRemoteId());
+		logger.info(order.toString());
 	}
 
 	private String generateBarcode(Order order) {
@@ -66,13 +67,12 @@ public class OrderService implements IOrderService {
 	}
 
 	private void fetchOrderDetail(Order order) {
-
 		order.setOrderDetailList(repo.fetchOrderDetail(order.getRemoteId()));
-
 	}
 
 	@Override
 	public void update(Order order) throws Exception {
+		logger.info("ORDER UPDATE sfId:" + order.getRemoteId());
 		Order dbOrder = repo.getByRemoteId(order.getRemoteId());
 		Utility.copyPrimitiveProperties(order, dbOrder, false);
 		repoDetail.deleteByRemoteId(dbOrder.getRemoteId());
@@ -85,7 +85,8 @@ public class OrderService implements IOrderService {
 		}
 		order.setTedarikEdenAccount(accId);
 		repo.save(dbOrder);
-		logger.info("order updated sfId:" + order.getRemoteId());
+		logger.info("ORDER UPDATE OK sfId:" + order.getRemoteId());
+		logger.info(order.toString());
 	}
 
 	@Override
@@ -104,50 +105,21 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public void updateOrderStatus(String oid, String status) throws Exception {
-
 		Order dbOrder = repo.getByOid(oid);
 		dbOrder.setSiparisDurum(status);
 		if (status.equals(OrderStatus.TESLIM_EDILDI.getKey())) {
 			dbOrder.setSiparisTeslimTarihi(new Date());
 		}
-
 		repo.save(dbOrder);
 		salesForceClient.updateStatus(dbOrder);
 	}
 
 	@Override
 	public void updateOrderBarcode(String oid, String barcode) {
-
 		Order dbOrder = repo.getByOid(oid);
 		dbOrder.setBarcodeNumber(barcode);
 		repo.save(dbOrder);
-
 	}
-
-	// private void setChildrenParent(Order order) {
-	// if (!order.getOrderDetailList().isEmpty()) {
-	// for (OrderDetail od : order.getOrderDetailList()) {
-	// od.setOrder(order);
-	// if(od.getCreated()==null){
-	// od.setCreated(new Date());
-	// }
-	// if(od.getLastUpdated()==null){
-	// od.setLastUpdated(new Date());
-	// }
-	//// od.setRemoteId(order.getRemoteId());
-	// }
-	// }
-	// }
-
-	// @Override
-	// public List<Order> getOrderList(String orgOid) {
-	// List<Order> list = repo.getListByBranchOid(orgOid);
-	//
-	// for (Order order : list) {
-	// order.setOrderDetailList(new ArrayList<OrderDetail>());
-	// }
-	// return list;
-	// }
 
 	@Override
 	public List<Order> getOrderList(String orgOid) {
@@ -157,17 +129,17 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public void deliverOrder(String oid) throws Exception {
-
 		updateOrderStatus(oid, OrderStatus.TESLIM_EDILDI.getKey());
-
 	}
 
 	@Override
-	public void createDetay(OrderDetail orderDetail) {
-		logger.info("CREATE DETAY siparis sfId: " + orderDetail.getOrderRemoteId());
+	public synchronized void createDetay(OrderDetail orderDetail) {
+		logger.info("CREATE DETAY kendi id: "+orderDetail.getRemoteId()+" siparis sfId: " + orderDetail.getOrderRemoteId());
 		repoDetail.deleteByRemoteId(orderDetail.getRemoteId());
 		orderDetail.setCreated(new Date());
 		repoDetail.save(orderDetail);
+		logger.info("CREATE DETAY OK kendi id: "+orderDetail.getRemoteId()+" siparis sfId: " + orderDetail.getOrderRemoteId());
+		logger.info(orderDetail.toString());
 	}
 
 }
