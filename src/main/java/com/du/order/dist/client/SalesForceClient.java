@@ -1,6 +1,8 @@
 package com.du.order.dist.client;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -32,9 +34,31 @@ public class SalesForceClient implements ISalesForceClient {
 	private Environment env;
 
 	static EnterpriseConnection connection;
+	
+	
+	public static void printAll(List l) {
+		for (Object object : l) {
+			System.out.println(object);
+		}
+	}
+	
+	public static void main(String[] args) {
+		List<String> a = new ArrayList<String>();
+		List<Integer>  b = new ArrayList<Integer>();
+		
+		a.add("sda");
+		
+		b.add(12);
+		
+		printAll(a);
+		printAll(b);
+	}
 
 	@Override
 	public String returnAccountId(String userName, String password) {
+		
+		
+		
 		String accountId = null;
 		try {
 
@@ -85,6 +109,33 @@ public class SalesForceClient implements ISalesForceClient {
 		return null;
 	}
 
+	@Override
+	public String testSfClient(){
+		String soqlQuery = "SELECT Id, Name FROM Account";
+		QueryResult qResult = null;
+		String ret ="";
+		try {
+
+			ConnectorConfig config = new ConnectorConfig();
+			config.setUsername(env.getRequiredProperty("salesforce.api.name"));
+			config.setPassword(env.getRequiredProperty("salesforce.api.password"));
+			config.setTraceMessage(true);
+			connection = Connector.newConnection(config);
+			logger.info("Auth EndPoint: " + config.getAuthEndpoint());
+			logger.info("Service EndPoint: " + config.getServiceEndpoint());
+			logger.info("Username: " + config.getUsername());
+			logger.info("SessionId: " + config.getSessionId());
+			qResult = connection.query(soqlQuery);
+			SObject[] records = qResult.getRecords();
+			Account acc = (Account) records[0];
+			ret = acc.getId();
+		} catch (ConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
 	private String queryContact(String contactId) {
 		QueryResult qResult = null;
 		Account retAcc = null;
