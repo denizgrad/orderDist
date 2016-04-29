@@ -38,7 +38,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 		    columnDefs: [
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
 		                 { field: 'siparisAdi', displayName: "Sipariş Adı", visible: true},
-		                 { field: 'adres', displayName: "Adres", visible: true},
+		                 { field: 'adres', displayName: "Adres", visible: false},
 		                 { field: 'adresAciklama', displayName: "Adres Açıkama", visible: true},
 		                 { field: 'siparisTalepTeslimTarihi', displayName: "Talep Edilen Teslim Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy HH:mm\'', width : 140},
 		                 { field: 'siparisAciklama', displayName: "Sipariş Açıkama", visible: true},
