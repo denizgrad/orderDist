@@ -1,10 +1,10 @@
 package order.dist;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,12 @@ public class DuJunit {
 	}
 	@Autowired
 	ISalesForceClient sf;
+	
+	@Test
+	public void testSfProdQuery(){
+		Assert.isTrue(StringUtils.isNotBlank(sf.testSfClient()));
+	}
+	
 	@Test
 	public void testSfContact(){
 //		String accID  = sf.returnAccountId("hizli@ab.com.tr", "hizli1234");
@@ -39,7 +45,6 @@ public class DuJunit {
 		Order order = new Order();
 		order.setRemoteId("a0i11000005duljAAA");
 		order.setSiparisDurum("Görüldü");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		order.setSiparisTeslimTarihi(new Date());
 		sf.updateStatus(order);
 		

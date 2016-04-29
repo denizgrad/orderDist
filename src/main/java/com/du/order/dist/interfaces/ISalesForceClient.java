@@ -10,4 +10,6 @@ public interface ISalesForceClient {
 	
 	public String returnAccountId(String contactId);
 
+	public String testSfClient();
+
 }
