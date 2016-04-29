@@ -1,5 +1,11 @@
-.grey .ui-grid-cell-contents {
+.rowColorRed .ui-grid-cell-contents {
 	background-color: red;
+}
+.rowColorGreen .ui-grid-cell-contents {
+	background-color: #48DE48;
+}
+.rowColorOrange .ui-grid-cell-contents {
+	background-color: #F3DE49;
 }
 
 body {
