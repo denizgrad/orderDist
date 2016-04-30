@@ -92,13 +92,9 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 
 		var teslimEdildi = "Teslim Edildi";
 		var iptalEdildi = "İptal Edildi";
+		var siparisDegisti = "Sipariş Değiştirildi";
 		var siparisOlustu = "Sipariş Oluşturuldu";
 
-		if(row.entity.siparisDurum.localeCompare(siparisOlustu) == 0){
-			color = 'rowColorGreen';
-			return color;
-		}
-		
 		var now = new Date();
 		var delivery = new Date(row.entity.siparisTalepTeslimTarihi); 
 		
@@ -109,6 +105,12 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 			color = 'rowColorRed';
 			return color;
 		}
+		
+		if(row.entity.siparisDurum.localeCompare(siparisOlustu) == 0){
+			color = 'rowColorGreen';
+			return color;
+		}
+		
 	    diff = Math.abs(Math.floor(diff));
 	    
 	    var days = Math.floor(diff/(24*60*60));
@@ -125,8 +127,12 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 			return color;
 	    }
 	    
-		color = 'rowColorOrange';
-		return color;
+	    if(row.entity.siparisDurum.localeCompare(siparisDegisti) == 0){
+	    	color = 'rowColorOrange';
+	    	return color;
+	    }
+		return false;
+		
 	}
 	
 	function arrangeButtonGroup(row) {
