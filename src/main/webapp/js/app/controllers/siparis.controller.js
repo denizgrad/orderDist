@@ -87,7 +87,6 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 		+ '</div>';
 	}
 	$scope.rowFormatter = function(row, color) {
-		debugger;
 		var color = "";
 
 		var teslimEdildi = "Teslim Edildi";
@@ -128,6 +127,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 	    }
 	    
 	    if(row.entity.siparisDurum.localeCompare(siparisDegisti) == 0){
+	    	// orange değil mor oldu css de 
 	    	color = 'rowColorOrange';
 	    	return color;
 	    }

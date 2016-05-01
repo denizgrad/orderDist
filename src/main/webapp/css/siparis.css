@@ -5,7 +5,8 @@
 	background-color: #48DE48;
 }
 .rowColorOrange .ui-grid-cell-contents {
-	background-color: #F3DE49;
+/* 	background-color: #F3DE49; */
+ 	background-color: #9933FF;
 }
 
 body {
