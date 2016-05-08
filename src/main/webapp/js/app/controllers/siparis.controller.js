@@ -38,7 +38,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 		    columnDefs: [
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
 		                 { field: 'siparisAdi', displayName: "Sipariş Adı", visible: true},
-		                 { field: 'adres', displayName: "Adres", visible: true},
+		                 { field: 'adres', displayName: "Adres", visible: false},
 		                 { field: 'adresAciklama', displayName: "Adres Açıkama", visible: true},
 		                 { field: 'siparisTalepTeslimTarihi', displayName: "Talep Edilen Teslim Tarihi", visible: true, cellFilter: 'date:\'dd-MM-yyyy HH:mm\'', width : 140},
 		                 { field: 'siparisAciklama', displayName: "Sipariş Açıkama", visible: true},
@@ -75,9 +75,64 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 	}
 
 	function rowTemplate(row) {
-		return '<div ng-class="{ \'grey\':grid.appScope.rowFormatter( row ) }" ng-dblclick="grid.appScope.openPopupSiparisDetayi(row.entity)">'
-		+ '  <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell></div>'
+		//'<div ng-class="{ \'grey\':grid.appScope.rowFormatter( row ) }" ng-dblclick="grid.appScope.openPopupSiparisDetayi(row.entity)">'
+		return '<div ng-class="{ '
+		
+		+ '  \'rowColorOrange\':grid.appScope.rowFormatter( row ) == \'rowColorOrange\',  '
+		+ '  \'rowColorGreen\':grid.appScope.rowFormatter( row ) == \'rowColorGreen\', '
+		+ '  \'rowColorRed\':grid.appScope.rowFormatter( row ) == \'rowColorRed\'}"'
+		
+		+ ' ng-dblclick="grid.appScope.openPopupSiparisDetayi(row.entity)">'
+		+ ' <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell></div>'
 		+ '</div>';
+	}
+	$scope.rowFormatter = function(row, color) {
+		var color = "";
+
+		var teslimEdildi = "Teslim Edildi";
+		var iptalEdildi = "İptal Edildi";
+		var siparisDegisti = "Sipariş Değiştirildi";
+		var siparisOlustu = "Sipariş Oluşturuldu";
+
+		var now = new Date();
+		var delivery = new Date(row.entity.siparisTalepTeslimTarihi); 
+		
+		var diff = (delivery - now)/1000;
+		
+			
+		if((row.entity.siparisDurum.localeCompare(teslimEdildi) != 0 && row.entity.siparisDurum.localeCompare(iptalEdildi) != 0) && diff < 0){
+			color = 'rowColorRed';
+			return color;
+		}
+		
+		if(row.entity.siparisDurum.localeCompare(siparisOlustu) == 0){
+			color = 'rowColorGreen';
+			return color;
+		}
+		
+	    diff = Math.abs(Math.floor(diff));
+	    
+	    var days = Math.floor(diff/(24*60*60));
+	    var leftSec = diff - days * 24*60*60;
+	    
+	    var hrs = Math.floor(leftSec/(60*60));
+	    var leftSec = leftSec - hrs * 60*60;
+	      
+	    var min = Math.floor(leftSec/(60));
+	    var leftSec = leftSec - min * 60;
+	    
+	    if(days <= 0 && hrs <= 4){
+	    	color = 'rowColorRed';
+			return color;
+	    }
+	    
+	    if(row.entity.siparisDurum.localeCompare(siparisDegisti) == 0){
+	    	// orange değil mor oldu css de 
+	    	color = 'rowColorOrange';
+	    	return color;
+	    }
+		return false;
+		
 	}
 	
 	function arrangeButtonGroup(row) {
@@ -94,37 +149,56 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 		 '</button>'+
 		 '</div>';
 	}
-	$scope.rowFormatter = function(row) {
-		var warn = false;
-		
-		var now = new Date();
-		var delivery = new Date(row.entity.siparisTalepTeslimTarihi); 
-		
-		var diff = (delivery - now)/1000;
-		
-		var teslimEdildi = "Teslim Edildi";
-		var iptalEdildi = "İptal Edildi";
-		var siparisOlustu = "Sipariş Oluşturuldu";
-			
-		if((row.entity.siparisDurum.localeCompare(teslimEdildi) != 0 && row.entity.siparisDurum.localeCompare(iptalEdildi) != 0) && diff < 0){
-			warn = true;
-		}
-	    diff = Math.abs(Math.floor(diff));
-	    
-	    var days = Math.floor(diff/(24*60*60));
-	    var leftSec = diff - days * 24*60*60;
-	    
-	    var hrs = Math.floor(leftSec/(60*60));
-	    var leftSec = leftSec - hrs * 60*60;
-	      
-	    var min = Math.floor(leftSec/(60));
-	    var leftSec = leftSec - min * 60;
-	    
-	    if(((days <= 0 && hrs <= 4) || (row.entity.siparisDurum.localeCompare(siparisOlustu) == 0))){
-	    	warn = true;
-	    }
-		return warn;
-	};
+
+//	$scope.rowFormatterRed = function(row) {
+//		debugger;
+//		var warn = false;
+//		
+//		var now = new Date();
+//		var delivery = new Date(row.entity.siparisTalepTeslimTarihi); 
+//		
+//		var diff = (delivery - now)/1000;
+//		
+//		var teslimEdildi = "Teslim Edildi";
+//		var iptalEdildi = "İptal Edildi";
+//		var siparisOlustu = "Sipariş Oluşturuldu";
+//			
+//		if((row.entity.siparisDurum.localeCompare(teslimEdildi) != 0 && row.entity.siparisDurum.localeCompare(iptalEdildi) != 0) && diff < 0){
+//			warn = true;
+//		}
+//	    diff = Math.abs(Math.floor(diff));
+//	    
+//	    var days = Math.floor(diff/(24*60*60));
+//	    var leftSec = diff - days * 24*60*60;
+//	    
+//	    var hrs = Math.floor(leftSec/(60*60));
+//	    var leftSec = leftSec - hrs * 60*60;
+//	      
+//	    var min = Math.floor(leftSec/(60));
+//	    var leftSec = leftSec - min * 60;
+//	    
+//	    if(((days <= 0 && hrs <= 4) || (row.entity.siparisDurum.localeCompare(siparisOlustu) == 0))){
+//	    	warn = true;
+//	    }
+//		return warn;
+//	};
+//	
+//	$scope.rowFormatterGreen = function(row) {
+//		debugger;
+//		var siparisOlustu = "Sipariş Oluşturuldu";
+//		var warn = false;
+//		if(row.entity.siparisDurum.localeCompare(siparisOlustu) === 0){
+//			warn = true;
+//		}
+//		return warn;
+//	}
+//	
+//	$scope.rowFormatterOrange = function(row) {
+//		debugger;
+//		var warn = true;
+//		
+//		return warn;
+//	}
 	
 	function getSiparisList() {
 		$scope.loadingList = true;

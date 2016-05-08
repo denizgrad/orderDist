@@ -16,7 +16,8 @@ public enum OrderStatus implements NamedEnum {
 	HAZIRLANIYOR("Hazırlanıyor"), 
 	HAZIRLANDI("Hazırlandı"), 
 	TESLIMATTA("Teslimatta"), 
-	TESLIM_EDILDI("Teslim Edildi"), 
+	TESLIM_EDILDI("Teslim Edildi"),
+	SIPARIS_DEGISTIRILDI("Sipariş Değiştirildi"),
 	IPTAL_EDILDI("İptal Edildi");
 	
 	private String key;
