@@ -37,9 +37,13 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request,
                            HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
+    	if(request.getRequestURI().indexOf("getOrderList") > -1){
+    		logger.info("Request Url: getOrderList");
+    	} else {
         logger.info("Request URL::" + request.getRequestURL().toString()
                 + " Sent to Handler :: Current Time=" + System.currentTimeMillis()
                 + " ::Request.Ip::" + request.getRemoteAddr());
+    	}
         //we can add attributes in the modelAndView and use that in the view page
     }
 

@@ -22,6 +22,7 @@ import com.sforce.soap.enterprise.sobject.ASiparis__c;
 import com.sforce.soap.enterprise.sobject.Account;
 import com.sforce.soap.enterprise.sobject.Contact;
 import com.sforce.soap.enterprise.sobject.SObject;
+import com.sforce.soap.enterprise.sobject.Sipari_Kalem__c;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 
@@ -186,22 +187,66 @@ public class SalesForceClient implements ISalesForceClient {
 			return null;
 		}
 	}
-//	private String queryContact(String contactId) {
-//		QueryResult qResult = null;
-//		   Contact retCon = null;
-//		   try {
-//		      String soqlQuery = "SELECT AccountId, FirstName, LastName FROM Contact";
-//		      String whereClause = String.format(" WHERE (Id = '%s')", contactId);
-//		      qResult = connection.query(soqlQuery + whereClause);
-//		      boolean done = false;
-//		      if (qResult.getSize() > 0) {
-//		         System.out.println("Logged-in user can see a total of "
-//		            + qResult.getSize() + " contact records.");
-//		         while (!done) {
-//		            SObject[] records = qResult.getRecords();
-//		            for (int i = 0; i < records.length; ++i) {
-//		               Contact con = (Contact) records[i];
-//		               retCon = con;
+	private Contact getContactbyId(String contactId) {
+		QueryResult qResult = null;
+		   Contact retCon = null;
+		   try {
+		      String soqlQuery = "SELECT Id, Description FROM Contact";
+		      String whereClause = String.format(" WHERE (Id = '%s')", contactId);
+		      qResult = connection.query(soqlQuery + whereClause);
+		      boolean done = false;
+		      if (qResult.getSize() > 0) {
+		         System.out.println("Logged-in user can see a total of "
+		            + qResult.getSize() + " contact records.");
+		         while (!done) {
+		            SObject[] records = qResult.getRecords();
+		            for (int i = 0; i < records.length; ++i) {
+		               Contact con = (Contact) records[i];
+		               retCon = con;
+		               String fName = con.getFirstName();
+		               String lName = con.getLastName();
+		               if (fName == null) {
+		                  System.out.println("Contact " + (i + 1) + ": " + lName);
+		               } else {
+		                  System.out.println("Contact " + (i + 1) + ": " + fName
+		                        + " " + lName);
+		               }
+		            }
+		            if (qResult.isDone()) {
+		               done = true;
+		            } else {
+		               qResult = connection.queryMore(qResult.getQueryLocator());
+		            }
+		         }
+		      } else {
+		         System.out.println("No records found.");
+		      }
+		      System.out.println("\nQuery succesfully executed.");
+		   } catch (ConnectionException ce) {
+		      ce.printStackTrace();
+		   }
+		   
+		   if(retCon != null){
+			   return retCon;
+		   } else { return null; }
+	}
+
+	private ASiparis__c getASiparisById(String sipId) {
+		QueryResult qResult = null;
+		ASiparis__c retCon = null;
+		   try {
+		      String soqlQuery = "SELECT Id, Siparis_Durum__c FROM ASiparis__c";
+		      String whereClause = String.format(" WHERE (Id = '%s')", sipId);
+		      qResult = connection.query(soqlQuery + whereClause);
+		      boolean done = false;
+		      if (qResult.getSize() > 0) {
+		         System.out.println("Logged-in user can see a total of "
+		            + qResult.getSize() + " contact records.");
+		         while (!done) {
+		            SObject[] records = qResult.getRecords();
+		            for (int i = 0; i < records.length; ++i) {
+		               ASiparis__c con = (ASiparis__c) records[i];
+		               retCon = con;
 //		               String fName = con.getFirstName();
 //		               String lName = con.getLastName();
 //		               if (fName == null) {
@@ -210,26 +255,78 @@ public class SalesForceClient implements ISalesForceClient {
 //		                  System.out.println("Contact " + (i + 1) + ": " + fName
 //		                        + " " + lName);
 //		               }
-//		            }
-//		            if (qResult.isDone()) {
-//		               done = true;
-//		            } else {
-//		               qResult = connection.queryMore(qResult.getQueryLocator());
-//		            }
-//		         }
-//		      } else {
-//		         System.out.println("No records found.");
-//		      }
-//		      System.out.println("\nQuery succesfully executed.");
-//		   } catch (ConnectionException ce) {
-//		      ce.printStackTrace();
-//		   }
-//		   
+		            }
+		            if (qResult.isDone()) {
+		               done = true;
+		            } else {
+		               qResult = connection.queryMore(qResult.getQueryLocator());
+		            }
+		         }
+		      } else {
+		         System.out.println("No records found.");
+		      }
+		      System.out.println("\nQuery succesfully executed.");
+		   } catch (ConnectionException ce) {
+		      ce.printStackTrace();
+		   }
+		   
+		   if(retCon != null){
+			   return retCon;
+		   } else { return null; }
+	}
+	@Override
+	public void getASiparisKalemBySipId(String sipId) {
+		
+		QueryResult qResult = null;
+		Sipari_Kalem__c retCon = null;
+		   try {
+			   ConnectorConfig config = new ConnectorConfig();
+				config.setUsername(env.getRequiredProperty("salesforce.api.name"));
+				config.setPassword(env.getRequiredProperty("salesforce.api.password"));
+				config.setTraceMessage(true);
+				connection = Connector.newConnection(config);
+		      String soqlQuery = "SELECT Id, Name FROM Sipari_Kalem__c";
+		      String whereClause = String.format(" WHERE (Siparis__c = '%s')", sipId);
+		      qResult = connection.query(soqlQuery + whereClause);
+		      boolean done = false;
+		      if (qResult.getSize() > 0) {
+		         System.out.println("Logged-in user can see a total of "
+		            + qResult.getSize() + " contact records.");
+		         while (!done) {
+		            SObject[] records = qResult.getRecords();
+		            for (int i = 0; i < records.length; ++i) {
+		            Sipari_Kalem__c con = (Sipari_Kalem__c) records[i];
+		               retCon = con;
+//		               String fName = con.getFirstName();
+//		               String lName = con.getLastName();
+//		               if (fName == null) {
+		                  System.out.println("Kalem " + (i + 1) + ": " + retCon.getId());
+		                  System.out.println("Kalem adı" + (i + 1) + ": " + retCon.getName());
+//		                  System.out.println("Kalem KAlem fiyat" + (i + 1) + ": " + retCon.getKalem_Fiyat__c());
+//		               } else {
+//		                  System.out.println("Contact " + (i + 1) + ": " + fName
+//		                        + " " + lName);
+//		               }
+		            }
+		            if (qResult.isDone()) {
+		               done = true;
+		            } else {
+		               qResult = connection.queryMore(qResult.getQueryLocator());
+		            }
+		         }
+		      } else {
+		         System.out.println("No records found.");
+		      }
+		      System.out.println("\nQuery succesfully executed.");
+		   } catch (ConnectionException ce) {
+		      ce.printStackTrace();
+		   }
+		   
 //		   if(retCon != null){
-//			   return retCon.getAccountId();
+//			   return retCon;
 //		   } else { return null; }
-//	}
-
+	}
+	
 	public String queryContact(String username, String password) {
 		QueryResult qResult = null;
 		Contact retCon = null;
@@ -361,7 +458,7 @@ public class SalesForceClient implements ISalesForceClient {
 			for (int i = 0; i < svArr.length; i++) {
 				if (svArr[i].isSuccess()) {
 					logger.info(i + ". Successfully created record - Id: " + svArr[i].getId());
-
+ 
 				} else {
 					com.sforce.soap.enterprise.Error[] errors = svArr[i].getErrors();
 					for (int j = 0; j < errors.length; j++) {
@@ -373,5 +470,134 @@ public class SalesForceClient implements ISalesForceClient {
 			logger.error(ex.getMessage());
 		}
 		return order;
+	}
+
+	@Override
+	public void testModelUpdate() throws Exception {
+		ConnectorConfig config = new ConnectorConfig();
+		config.setUsername(env.getRequiredProperty("salesforce.api.name"));
+		config.setPassword(env.getRequiredProperty("salesforce.api.password"));
+		config.setTraceMessage(true);
+		connection = Connector.newConnection(config);
+		
+		ASiparis__c[] remoteOrderList = new ASiparis__c[1];
+		ASiparis__c firstASiparis = null;
+		Contact testContact2 = null;
+		
+
+		firstASiparis = getFirstASiparis();
+		
+		String eskiDurum = firstASiparis.getSiparis_Durum__c();
+
+		ASiparis__c toUpdate = new ASiparis__c();
+		toUpdate.setId(firstASiparis.getId().trim());
+		toUpdate.setSiparis_Durum__c(firstASiparis.getSiparis_Durum__c()+"_");
+		remoteOrderList[0] = toUpdate;
+
+		SaveResult[] svArr = connection.update(remoteOrderList);
+
+		for (int i = 0; i < svArr.length; i++) {
+			if (svArr[i].isSuccess()) {
+				logger.info(i + ". Successfully created ASİPARİS - Id: " + svArr[i].getId());
+
+			} else {
+				com.sforce.soap.enterprise.Error[] errors = svArr[i].getErrors();
+				for (int j = 0; j < errors.length; j++) {
+					logger.info("ERROR creating ASİPARİS: " + errors[j].getMessage());
+				}
+			}
+		}
+		Thread.sleep(1000);
+		
+		ASiparis__c toTest = getASiparisById(firstASiparis.getId());
+		System.out.println(toTest.getSiparis_Durum__c());
+
+		
+		toUpdate.setSiparis_Durum__c(firstASiparis.getSiparis_Durum__c());
+		remoteOrderList[0] = toUpdate;
+
+		SaveResult[] svArr2 = connection.update(remoteOrderList);
+
+		for (int i = 0; i < svArr2.length; i++) {
+			if (svArr2[i].isSuccess()) {
+				logger.info(i + ". Successfully created ASİPARİS - Id: " + svArr2[i].getId());
+
+			} else {
+				com.sforce.soap.enterprise.Error[] errors = svArr[i].getErrors();
+				for (int j = 0; j < errors.length; j++) {
+					logger.info("ERROR creating ASİPARİS: " + errors[j].getMessage());
+				}
+			}
+		}
+	}
+	
+	public Contact updateAdd_toDescription(Contact con) throws ConnectionException {
+		Contact[] remoteContactList = new Contact[1];
+
+		Contact remoteContact = new Contact();
+		remoteContact.setId(con.getId().trim());
+		if(con.getDescription() != null){
+			remoteContact.setDescription(con.getDescription()+"_");
+		} else {
+			remoteContact.setDescription("_");
+		}
+		
+		
+		remoteContactList[0] = remoteContact;
+
+		SaveResult[] svArr = connection.update(remoteContactList);
+
+		for (int i = 0; i < svArr.length; i++) {
+			if (svArr[i].isSuccess()) {
+				logger.info(i + ". Successfully created record - Id: " + svArr[i].getId());
+
+			} else {
+				com.sforce.soap.enterprise.Error[] errors = svArr[i].getErrors();
+				for (int j = 0; j < errors.length; j++) {
+					logger.info("ERROR creating record: " + errors[j].getMessage());
+				}
+			}
+		}
+
+		return con;
+	}
+	
+	public ASiparis__c getFirstASiparis(){
+		QueryResult qResult = null;
+		ASiparis__c retCon = null;
+		try {
+			String soqlQuery = "SELECT Id FROM ASiparis__c";
+//			String whereClause = String.format(" WHERE (Contact_Username__c = '%s')AND(Contact_Password__c = '%s')",
+//					username, password);
+			qResult = connection.query(soqlQuery);
+			boolean done = false;
+			if (qResult.getSize() > 0) {
+				System.out.println("Logged-in user can see a total of " + qResult.getSize() + " contact records.");
+				while (!done) {
+					SObject[] records = qResult.getRecords();
+					for (int i = 0; i < records.length; ++i) {
+						ASiparis__c con = (ASiparis__c) records[i];
+						retCon = con;
+//						String fName = con.getFirstName();
+//						String lName = con.getLastName();
+//						if (fName == null) {
+//							System.out.println("Contact " + (i + 1) + ": " + lName);
+//						} else {
+//							System.out.println("Contact " + (i + 1) + ": " + fName + " " + lName);
+//						}
+					}
+					if (qResult.isDone()) {
+						done = true;
+					} else {
+						qResult = connection.queryMore(qResult.getQueryLocator());
+					}
+				}
+			} else {
+				System.out.println("No records found.");
+			}
+		} catch (Exception e){
+			
+		}
+		return retCon;
 	}
 }

@@ -152,6 +152,15 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
         properties.put("hibernate.connection.CharSet" , env.getRequiredProperty("hibernate.connection.CharSet"));
         properties.put("hibernate.connection.characterEncoding" , env.getRequiredProperty("hibernate.connection.characterEncoding"));
         properties.put("hibernate.connection.useUnicode" , env.getRequiredProperty("hibernate.connection.useUnicode"));
+        //c3p0
+        properties.put("hibernate.c3p0.acquire_increment" , env.getRequiredProperty("hibernate.c3p0.acquire_increment"));
+        properties.put("hibernate.c3p0.idle_test_period" , env.getRequiredProperty("hibernate.c3p0.idle_test_period"));
+        properties.put("hibernate.c3p0.max_size" , env.getRequiredProperty("hibernate.c3p0.max_size"));
+        properties.put("hibernate.c3p0.max_statements" , env.getRequiredProperty("hibernate.c3p0.max_statements"));
+        properties.put("hibernate.c3p0.min_size" , env.getRequiredProperty("hibernate.c3p0.min_size"));
+        properties.put("hibernate.c3p0.timeout" , env.getRequiredProperty("hibernate.c3p0.timeout"));
+        properties.put("hibernate.c3p0.validate" , env.getRequiredProperty("hibernate.c3p0.validate"));
+        properties.put("hibernate.c3p0.preferredTestQuery" , env.getRequiredProperty("hibernate.c3p0.preferredTestQuery"));
         return properties;
     }
 

@@ -80,8 +80,8 @@ public class OrderService implements IOrderService {
 		logger.info("ORDER UPDATE sfId:" + order.getRemoteId());
 		Order dbOrder = repo.getByRemoteId(order.getRemoteId());
 		Utility.copyPrimitiveProperties(order, dbOrder, false);
-		repoDetail.deleteByRemoteId(dbOrder.getRemoteId());
-		dbOrder.setOrderDetailList(order.getOrderDetailList());
+//		repoDetail.deleteByRemoteId(dbOrder.getRemoteId());
+//		dbOrder.setOrderDetailList(order.getOrderDetailList());
 		// setChildrenParent(dbOrder);
 		dbOrder.setLastUpdated(new Date());
 		String accId = "";

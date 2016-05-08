@@ -34,8 +34,23 @@ public class DuJunit {
 	ISalesForceClient sf;
 	
 	@Test
+	public void testProdClientUpdate(){
+		try {
+			sf.testModelUpdate();
+//			sf.getASiparisKalemBySipId("a0pj0000003ROO1AAO");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Test
 	public void testSfProdQuery(){
 		Assert.isTrue(StringUtils.isNotBlank(sf.testSfClient()));
+		String c = sf.returnAccountId("c@c.com", "ccc");
+		
+		System.out.println(c);
 	}
 	
 	@Test

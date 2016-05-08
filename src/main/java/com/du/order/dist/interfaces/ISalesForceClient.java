@@ -12,4 +12,8 @@ public interface ISalesForceClient {
 
 	public String testSfClient();
 
+	public void testModelUpdate() throws Exception;
+
+	public void getASiparisKalemBySipId(String sipId);
+
 }
