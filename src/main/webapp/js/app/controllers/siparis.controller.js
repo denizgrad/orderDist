@@ -89,11 +89,16 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 	$scope.rowFormatter = function(row, color) {
 		var color = "";
 
+		var durum = row.entity.siparisDurum;
 		var teslimEdildi = "Teslim Edildi";
 		var iptalEdildi = "İptal Edildi";
 		var siparisDegisti = "Sipariş Değiştirildi";
 		var siparisOlustu = "Sipariş Oluşturuldu";
 
+		if(durum.localeCompare(teslimEdildi) == 0 || durum.localeCompare(iptalEdildi) == 0) {
+			return false;
+		}
+		
 		var now = new Date();
 		var delivery = new Date(row.entity.siparisTalepTeslimTarihi); 
 		
@@ -121,7 +126,7 @@ sipApp.controller("siparisCtrl", function($scope, $http, $uibModal, $location, s
 	    var min = Math.floor(leftSec/(60));
 	    var leftSec = leftSec - min * 60;
 	    
-	    if(days <= 0 && hrs <= 4){
+	    if((row.entity.siparisDurum.localeCompare(teslimEdildi) != 0 && row.entity.siparisDurum.localeCompare(iptalEdildi) != 0) && days <= 0 && hrs <= 4){
 	    	color = 'rowColorRed';
 			return color;
 	    }
