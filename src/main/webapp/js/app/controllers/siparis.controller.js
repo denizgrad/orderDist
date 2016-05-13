@@ -347,16 +347,18 @@ sipApp.controller('siparisDetayiInstanceCtrl', function($scope, $uibModalInstanc
 	$scope.teslimatGridOptions = {
 			//enableSorting: true,
 			enableGridMenu: true,
+			enableHorizontalScrollbar : 1,
+			enableVerticalScrollbar : 1,
 		    columnDefs: [
 		                 { field: 'oid', displayName: "Oid", visible: false, enableHiding: false},
 //		                 { field: 'siparisOid', displayName: "siparisOid", visible: false, enableHiding: false},
-		                 { field: 'siparisKalemAdi', displayName: "Sipariş Kalem Adı", visible: true},
-		                 { field: 'adet', displayName: "Adet", visible: true},
-		                 { field: 'birimFiyati', displayName: "Birim Fiyat", visible: true, cellFilter: 'currency'},
-		                 { field: 'araToplam', displayName: "Ara Toplam", visible: true, cellFilter: 'currency'},
-		                 { field: 'indirim', displayName: "İndirim", visible: true, cellFilter: 'currency'},
-		                 { field: 'kalemGenelToplam', displayName: "Ürün Fiyatı", visible: true, cellFilter: 'currency'},
-		                 { field: 'urunAdi', displayName: "Ürün Adı", visible: true}
+		                 { field: 'siparisKalemAdi', displayName: "Sipariş Kalem Adı", visible: true, width : 175},
+		                 { field: 'adet', displayName: "Adet", visible: true, width : 75},
+		                 { field: 'birimFiyati', displayName: "Birim Fiyat", visible: true, cellFilter: 'currency', width : 110},
+		                 { field: 'araToplam', displayName: "Ara Toplam", visible: true, cellFilter: 'currency', width : 110},
+		                 { field: 'indirim', displayName: "İndirim", visible: true, cellFilter: 'currency', width : 80},
+		                 { field: 'kalemGenelToplam', displayName: "Ürün Fiyatı", visible: true, cellFilter: 'currency', width : 110},
+		                 { field: 'urunAdi', displayName: "Ürün Adı", visible: true, width : 300}
 		    ], 
 		    data : []
 		    
