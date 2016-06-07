@@ -35,7 +35,7 @@ public class Validator implements IValidator{
 //			nullFields.add("adres");
 			siparis.setAdres(EMPTY);
 		}else{
-			siparis.setAdres(siparis.getAdres().substring(0, Math.min(siparis.getAdres().length(), 220))+"...");
+			siparis.setAdres(siparis.getAdres().substring(0, Math.min(siparis.getAdres().length(), 1000))+"...");
 		}
 		if((siparis.getAraToplam() == null  || siparis.getAraToplam().compareTo(BigDecimal.ZERO) == 0)){
 //			nullFields.add("araToplam");
@@ -58,7 +58,7 @@ public class Validator implements IValidator{
 //			nullFields.add("siparisAdi");
 			siparis.setSiparisAdi(EMPTY);
 		}else{
-			siparis.setSiparisAdi(siparis.getSiparisAdi().substring(0, Math.min(siparis.getSiparisAdi().length(), 220))+"...");
+			siparis.setSiparisAdi(siparis.getSiparisAdi().substring(0, Math.min(siparis.getSiparisAdi().length(), 1000))+"...");
 		}
 		if(StringUtils.isBlank(siparis.getSiparisVerenFirma())&& StringUtils.isBlank(siparis.getSiparisVerenKisi())){
 //			nullFields.add("siparisVerenFirma ya da siparisVerenKisi");
@@ -94,7 +94,7 @@ public class Validator implements IValidator{
 //			nullFields.add("tedarikEdenFirma ya da tedarikEdenKisi");
 			siparis.setSiparisAciklama(EMPTY);
 		}else{
-			siparis.setSiparisAciklama(siparis.getSiparisAciklama().substring(0, Math.min(siparis.getSiparisAciklama().length(), 220))+"...");
+			siparis.setSiparisAciklama(siparis.getSiparisAciklama().substring(0, Math.min(siparis.getSiparisAciklama().length(), 1000))+"...");
 		}
 		if(StringUtils.isBlank(siparis.getTeslimAlacakAd())){
 			siparis.setTeslimAlacakAd(EMPTY);
