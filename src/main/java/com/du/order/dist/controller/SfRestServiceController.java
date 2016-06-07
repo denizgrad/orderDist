@@ -60,11 +60,6 @@ public class SfRestServiceController {
 	 @Autowired 
 	 private HttpSession httpSession;
 	 
-	 
-	 
-	 
-	 
-	 
 	 	@ResponseBody
 		@RequestMapping(value = "/createSiparisDetay", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
 		public ResponseEntity<Response> createDetay(@RequestBody SiparisKalemIn objectIn) {
@@ -73,7 +68,7 @@ public class SfRestServiceController {
 
 			try {
 				checkAuthentication(objectIn);
-//				checkValidityCreateDetay(objectIn);
+				checkValidityCreateDetay(objectIn);
 				OrderDetail orderDetail = transformer.transformCreateDetay(objectIn);
 				orderService.createDetay(orderDetail);
 			} catch (AuthenticationError ex) {
@@ -108,7 +103,7 @@ public class SfRestServiceController {
 
 		try {
 			checkAuthentication(objectIn);
-//			checkValidityCreate(objectIn);
+			checkValidityCreate(objectIn);
 			Order order = transformer.transformCreate(objectIn);
 			orderService.create(order);
 		} catch (AuthenticationError ex) {
@@ -143,7 +138,7 @@ public class SfRestServiceController {
 
 		try {
 			checkAuthentication(objectIn);
-//			checkValidityUpdate(objectIn);
+			checkValidityUpdate(objectIn);
 			Order order = transformer.transformUpdate(objectIn);
 			if(order == null){
 				return create(objectIn);
@@ -195,7 +190,6 @@ public class SfRestServiceController {
 	private void checkValidityCreate(GenelSiparisIn objectIn) throws ValidationError {
 		validator.validate(objectIn);
 	}
-	
 
 	private void checkValidityCreateDetay(SiparisKalemIn objectIn) throws ValidationError {
 		validator.validateDetay(objectIn);

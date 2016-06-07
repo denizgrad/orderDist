@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.du.order.dist.Utility;
@@ -24,7 +25,7 @@ import com.du.order.dist.repository.OrderDetailRepository;
 import com.du.order.dist.repository.OrderRepository;
 
 @Component
-@Transactional
+@Transactional(propagation=Propagation.REQUIRES_NEW)
 public class OrderService implements IOrderService {
 	@Resource
 	OrderRepository repo;
